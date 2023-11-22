@@ -34,19 +34,18 @@ IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='Languages'
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='Movies'
+IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='ShowTime'
                         AND XTYPE = 'U') 
                         BEGIN 
-                        Create Table [Movies] (
-   [Id] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
-   [Title] varchar (100) Not Null,
-   [ReleaseDate] dateTime NOT NULL,
-   [Genre] varchar (50) Not Null,   
-   [Rating] int NOT NULL,
-   [SelectedLanguageID] int NOT NULL ,   
-   [IsDeleted] bit Not Null Default 0,
-   [MovieImage] varchar (Max),
-   [Price] decimal Not Null
+                        Create Table [ShowTime] (
+   [ShowTimeId] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+   [StartDate] dateTime NOT NULL,
+   [EndDate] dateTime NOT NULL,
+   [FirstShowTime] varchar (100) Not Null,
+   [SecondShowTime] varchar (100) Not Null,
+   [ThirdShowTime] varchar (100) Not Null,
+   [MovieId] int NOT NULL,  
+   [IsHousefull] bit Not Null Default 0,   
 )ON [PRIMARY]
 END
 GO
