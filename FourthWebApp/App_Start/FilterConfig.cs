@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace FourthWebApp
+namespace MvcMovie
 {
     public class FilterConfig
     {

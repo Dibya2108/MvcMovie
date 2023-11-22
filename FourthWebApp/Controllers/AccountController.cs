@@ -10,7 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using ViewModel;
 
-namespace FourthWebApp.Controllers
+namespace MvcMovie.Controllers
 {
     public class AccountController : Controller
     {

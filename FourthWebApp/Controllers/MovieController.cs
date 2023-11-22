@@ -1,6 +1,6 @@
 ﻿using Data_Access;
-using FourthWebApp.Models;
-using FourthWebApp.Utils;
+using MvcMovie.Models;
+using MvcMovie.Utils;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System.Drawing.Imaging;
@@ -17,7 +17,7 @@ using System.Web.Mvc;
 using ViewModel;
 using System.Web.Hosting;
 
-namespace FourthWebApp.Controllers
+namespace MvcMovie.Controllers
 {
     
         public class MovieController : Controller

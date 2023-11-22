@@ -1,4 +1,4 @@
-﻿using FourthWebApp.Models;
+﻿using MvcMovie.Models;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -9,7 +9,7 @@ using System.Web.Mvc;
 //using Kendo.Mvc.Extensions;
 //using Kendo.Mvc.UI;
 
-namespace FourthWebApp.Controllers
+namespace MvcMovie.Controllers
 {
     public class EmployeeController : Controller
     {

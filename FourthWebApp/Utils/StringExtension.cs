@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace FourthWebApp.Utils
+namespace MvcMovie.Utils
 {
     public static class StringExtension
     {

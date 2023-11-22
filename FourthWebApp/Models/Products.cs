@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace FourthWebApp.Models
+namespace MvcMovie.Models
 {
     public class Product
     {

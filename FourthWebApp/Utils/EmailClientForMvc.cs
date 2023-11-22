@@ -11,7 +11,7 @@ using SendGrid.Helpers.Mail;
 using System.IO;
 using Attachment = System.Net.Mail.Attachment;
 
-namespace FourthWebApp.Utils
+namespace MvcMovie.Utils
 {
     public class EmailClientForMvc
     {
