@@ -1,0 +1,53 @@
+﻿
+@model ViewModel.UserViewModel
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="~/Content/login-style.css" rel="stylesheet" />
+<style>
+
+    #errorMsgUser {
+        color: red;
+    }
+</style>
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label><strong>User Name</strong></label><br />
+        @*@Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })*@
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+            <span style="color: red;">@Html.ValidationMessageFor(model => model.UserName)</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label><strong>Password</strong></label><br />
+        @*@Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })*@
+        <div class="col-md-10">
+            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+            <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
+        </div>
+    </div>
+
+    <span id="errorMsgUser">@ViewBag.ErrorMessage</span>
+
+    <div style="margin-top: 10px;"></div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-primary"> Login </button>
+
+        </div>
+
+        <p>Don't have an account? <a href="@Url.Action("Register", "Account")">Register</a></p>
+    </div>
+
+}

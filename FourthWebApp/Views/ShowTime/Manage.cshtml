@@ -1,0 +1,259 @@
+﻿@model ViewModel.ShowTimeViewModel
+@using Kendo.Mvc.UI
+@using System.Web.Mvc
+@{
+    ViewBag.Title = "ManageShowTime";
+}
+<link href="~/assets4.1/libs/clockpicker/bootstrap-clockpicker.min.css" rel="stylesheet" type="text/css" />
+<link href="~/assets4.1/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<h2>Manage ShowTime</h2>
+<script>
+
+    $(document).ready(function () {
+
+
+        $('#datepickerStartGrid').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+        });
+
+        $('#datepickerEndGrid').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+        });
+
+        if ('@Model.StartDateString' != '') {
+
+            var startDateNew = new Date('@Model.StartDateString');
+            var dateOne = (moment(startDateNew).format('MM/DD/YYYY'));
+
+            $('#datepickerStartGrid').val(dateOne);
+            $('#datepickerStartGrid').datepicker("setDate", dateOne);
+
+
+        }
+
+        if ('@Model.EndDateString' != '') {
+
+    var endDateNew = new Date('@Model.EndDateString');
+    var dateTwo = (moment(endDateNew).format('MM/DD/YYYY'));
+
+            $('#datepickerEndGrid').val(dateTwo);
+            $('#datepickerEndGrid').datepicker("setDate", dateTwo);
+        }
+
+        if ('@Model.FirstShowTime' != '') {
+    var timeOne = '@Model.FirstShowTime'; // Assuming '@Model.FirstShowTime' is in 'hh:mm tt' format.
+
+    $('#timepickerFirst').val(timeOne); // Set the value of the input element
+
+    // Initialize ClockPicker and set the time
+    $('#timepickerFirst').clockpicker('show').clockpicker('pop');
+}
+
+        @*if ('@Model.SecondShowTime' != '') {
+
+            var secondShowNew = new Date('1/1/2023 @Model.SecondShowTime');
+            var timeTwo = (moment(secondShowNew).format('hh:mm A'));
+
+            $('#timepickerSecond').val(timeTwo);
+            $('#timepickerSecond').clockpicker("setDate", timeTwo);
+        }*@
+        if ('@Model.SecondShowTime' != '') {
+    var timeTwo = '@Model.SecondShowTime';
+
+    $('#timepickerSecond').val(timeTwo);
+
+
+    $('#timepickerSecond').clockpicker('show').clockpicker('pop');
+}
+
+
+
+
+
+        if ('@Model.ThirdShowTime' != '') {
+    var timeThree = '@Model.ThirdShowTime';
+
+    $('#timepickerThird').val(timeThree);
+
+
+    $('#timepickerThird').clockpicker('show').clockpicker('pop');
+}
+
+
+
+    })
+
+</script>
+
+@Html.ValidationSummary(true)
+
+@using (Ajax.BeginForm("Manage", "ShowTime",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "ajax_contentMain"
+    }, new { autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.MovieId, new { id = "MovieId" })
+
+
+    @Html.HiddenFor(model => model.ShowTimeId, new { id = "ShowTimeId" })
+    @Html.HiddenFor(model => model.StartDateString, new { id = "StartDateString" })
+    @Html.HiddenFor(model => model.EndDateString, new { id = "EndDateString" })
+    @Html.HiddenFor(model => model.FirstShowTime, new { id = "FirstShowTime" })
+    @Html.HiddenFor(model => model.SecondShowTime, new { id = "SecondShowTime" })
+    @Html.HiddenFor(model => model.ThirdShowTime, new { id = "ThirdShowTime" })
+
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+
+            @Html.HiddenFor(model => model.MovieId, new { id = "MovieId" })
+            @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+
+            @if (Model.ShowTimeId > 0)
+            {
+                <label>@Model.Title</label>
+                @Html.HiddenFor(model => model.Title) @* To preserve the value when submitting the form *@
+            }
+            else
+            {
+                @(Html.Kendo().DropDownList()
+            .Name("titleDrop")
+            .Label(label => label.Content("Select a movie"))
+            .DataTextField("Title")
+            .DataValueField("Id")
+            .DataSource(source =>
+            {
+                source.Read(read =>
+                {
+                    read.Action("GetMovies", "ShowTime");
+                });
+            })
+            )
+            }
+
+
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div style="overflow:hidden">
+        <div data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; float:left; padding-right:10px">
+            <label><strong>Select Start Date</strong></label><br />
+            @(Html.Kendo().DatePicker()
+              .Name("datepickerStartGrid")
+
+              //.Value(Model.StartDate)
+              .Format("MM/dd/yyyy")
+              .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+        )
+        </div>
+    </div>
+
+    <div style="overflow:hidden">
+        <div data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; float:left; padding-right:10px">
+            <label><strong>Select End Date</strong></label><br />
+            @(Html.Kendo().DatePicker()
+            .Name("datepickerEndGrid")
+            //.Value(Model.EndDate)
+            .Format("MM/dd/yyyy")
+            .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+        )
+        </div>
+    </div>
+
+
+
+
+    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; padding-right:5px;  float: left ">
+        <label><strong>Select First ShowTime</strong></label><br />
+        @(Html.Kendo().TimePicker()
+                .Name("timepickerFirst")
+                .Format("hh:mm tt")
+                //.Value(Model.FirstShowTime)
+                .HtmlAttributes(new { style = "width: 100%", title = "timepicker1"})
+            )
+    </div>
+
+    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; padding-right:5px;  float: left ">
+        <label><strong>Select Second ShowTime</strong></label><br />
+        @(Html.Kendo().TimePicker()
+            .Name("timepickerSecond")
+
+            .Format("hh:mm tt")  // Specify the time format
+                                 //.Value(Model.SecondShowTime)
+            .HtmlAttributes(new { style = "width: 100%", title = "timepicker2"})
+        )
+    </div>
+
+    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; padding-right:5px;  float: left ">
+        <label><strong>Select Third ShowTime</strong></label><br />
+        @(Html.Kendo().TimePicker()
+            .Name("timepickerThird")
+            .Format("hh:mm tt")  // Specify the time format
+                                 //.Value(Model.ThirdShowTime)
+            .HtmlAttributes(new { style = "width: 100%", title = "timepicker3" })
+        )
+    </div>
+</div>
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" onclick="ShowTimeAlert()" />
+    </div>
+}
+
+<script>
+    function ShowTimeAlert() {
+        //var startDate = $('datepickerStartGrid').val();
+        //var endDate = $('datepickerEndGrid').val();
+        //var firstShow = $('timepickerFirst').val();
+        //var secondShow = $('timepickerSecond').val();
+        //var thirdShow = $('timepickerThird').val();
+
+        var startDate = $('#datepickerStartGrid').val();
+        var endDate = $('#datepickerEndGrid').val();
+        var firstShow = $('#timepickerFirst').val();
+        var secondShow = $('#timepickerSecond').val();
+        var thirdShow = $('#timepickerThird').val();
+
+        var title = $('#titleDrop').val();
+
+
+        
+
+        @*var movieId = '@Model.MovieId'; // Retrieve the MovieId from your model
+        var titleDropdown = $("#titleDrop").data("kendoDropDownList");
+        titleDropdown.value(movieId); // Set the selected value in the dropdown
+
+        alert(titleDropdown);*@
+        //var startDateFormatted = moment(startDate, 'MM/DD/YYYY').format('YYYY-MM-DD');
+        //var endDateFormatted = moment(endDate, 'MM/DD/YYYY').format('YYYY-MM-DD');
+
+        //$("#StartDateString").val(startDateFormatted);
+        //$("#EndDateString").val(endDateFormatted);
+
+        $("#StartDateString").val(startDate);
+        $("#EndDateString").val(endDate);
+        $("#FirstShowTime").val(firstShow);
+        $("#SecondShowTime").val(secondShow);
+        $("#ThirdShowTime").val(thirdShow);
+        $("#MovieId").val(title);
+
+
+    }
+
+</script>
+
+
+

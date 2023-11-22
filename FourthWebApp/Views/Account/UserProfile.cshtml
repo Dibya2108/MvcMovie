@@ -1,0 +1,72 @@
+﻿
+@model ViewModel.UserViewModel
+@{
+    ViewBag.Title = "Profile";
+}
+<div id="nonEditableProfile">
+    <h2>User Profile</h2>
+    <p><strong>Name:</strong> @Model.FirstName @Model.LastName</p>
+    <p><strong>Username:</strong> @Model.UserName</p>
+    <p><strong>Email:</strong> @Model.Email</p>
+    <p><strong>Password:</strong> @Model.Password</p>
+    <p><strong>Phone:</strong> @Model.Phone</p>
+    <p><strong>Address:</strong> @Model.Address</p>
+
+    <button id="editButton">Edit Profile</button>
+</div>
+
+<div id="editableProfile" style="display: none;">
+    <h2>Edit Profile</h2>
+    @using (Html.BeginForm("UserProfile", "Account", FormMethod.Post))
+    {
+        @Html.HiddenFor(x => x.UserId)
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName)
+            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName)
+            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName)
+            @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password)
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email)
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Phone)
+            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address)
+            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" id="cancelButton">Cancel</button>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#editButton").click(function () {
+            $("#nonEditableProfile").hide();
+            $("#editableProfile").show();
+        });
+
+        $("#cancelButton").click(function () {
+            $("#editableProfile").hide();
+            $("#nonEditableProfile").show();
+        });
+    });
+</script>
+
+

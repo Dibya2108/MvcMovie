@@ -1,0 +1,113 @@
+﻿@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>All Languages</h2>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div style="float: left;">
+        <input style="width: 300px;" type="text" id="LanguageSearchText" placeholder="Search Language" onkeypress="return SearchOnEnter(event)" />
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" onclick="AddLanguage(0)"><i class="fas fa-plus"></i>&nbsp;Add New Language</button>
+    </div>
+</div>
+
+<div id="LanguageBody">
+    @(Html.Kendo().Grid<ViewModel.MovieViewModel>()
+    .Name("langGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.LanguageName).Title("Language Name").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+
+        columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='AddLanguage(#=LanguageID#)' id='editAnchor_#=LanguageID#'><i class='fas fa-edit'></i></a>").Width(30).Sortable(false).Filterable(false);
+    })
+    .Sortable()
+    .DataSource(dataSource => dataSource
+    .Ajax()
+    .Read(read => read.Action("GetLanguages", "Language").Data("searchLanguage"))
+)
+
+    )
+</div>
+
+<script>
+    @if (TempData["ManageSuccess"] != null && (bool)TempData["ManageSuccess"])
+    {
+        <text>
+            CloseLanguage();
+        </text>
+    }
+
+    @if (TempData["DuplicateCheck"] != null && (bool)TempData["DuplicateCheck"])
+    {
+        <text>
+            DuplicateName();
+        </text>
+    }
+
+    var LanguageWindow;
+
+    function AddLanguage(languageId) {
+        var url = '';
+        var title = "";
+
+        try {
+            if (languageId === 0) {
+                url = '/Language/ManageLanguage';
+                title = "Add Language";
+            } else {
+                url = '/Language/ManageLanguage?LanguageID=' + languageId;
+                title = "Edit Language ";
+            }
+
+            LanguageWindow = OpenConfirmWindowModal(url, title, 550);
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    function CloseLanguage() {
+        if (LanguageWindow) {
+            LanguageWindow.close();
+        }
+
+        var grid = $("#langGrid").data("kendoGrid");
+        if (grid) {
+            grid.dataSource.read();
+        }
+    }
+
+    function DuplicateName() {
+        const errorSpan = document.getElementById("errorSpan");
+        if (errorSpan) {
+            errorSpan.innerHTML = "Duplicate language name detected. Please choose a different name.";
+            errorSpan.style.display = "block";
+        }
+
+        const languageNameInput = document.getElementById("LanguageName");
+        if (languageNameInput) {
+            languageNameInput.value = "";
+            languageNameInput.focus();
+        }
+    }
+
+    function searchLanguage() {
+        var searchText1 = $("#LanguageSearchText").val();
+        return {
+            searchText: searchText1
+        };
+    }
+
+    function SearchOnEnter(e) {
+        var keyCode = e.which ? e.which : e.keyCode;
+        //alert(keyCode);
+
+        if (keyCode == 13) {
+            $('#langGrid').data('kendoGrid').dataSource.read();
+        }
+    }
+
+</script>

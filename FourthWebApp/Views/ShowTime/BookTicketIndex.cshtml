@@ -1,0 +1,170 @@
+﻿@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "BookTicketIndex";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<h2>BookTicket Index</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div style="float: left; ">
+        @*<input style="width: 300px;" type="text" id="ShowSearchTicket" placeholder="Search Bookings Time" onkeyup="SortBookingTimeTable()" />*@
+
+        @(Html.Kendo().DropDownList()
+.Name("timeFilterDrop")
+.Label(label => label.Content("Select a show Time"))
+.DataTextField("SelectedTime")
+.DataValueField("BookTicketId")
+.OptionLabel("Filter by show Time")
+.DataSource(source =>
+{
+    source.Read(read =>
+    {
+        read.Action("GetShowTimings", "ShowTime");
+    });
+})
+.Events(e => e.Change("SortBookingTimeTable"))
+)
+        
+    </div>
+    <div>
+        @*<button type="button" class="btn btn-primary" onclick="ManageShow(0)"><i class="fa fa-plus"></i>&nbsp;Add New Show</button>*@
+        <!--<input style="width: 300px;" type="text" id="ShowSearchTitle" placeholder="Search Show Booking" onkeyup="SortBookingTable()" />-->
+        @(Html.Kendo().DropDownList()
+.Name("titleFilterDrop")
+.Label(label => label.Content("Select a show"))
+.DataTextField("Title")
+.DataValueField("MovieId")
+.OptionLabel("Filter by show Title")
+.DataSource(source =>
+{
+    source.Read(read =>
+    {
+        read.Action("GetShowBookings", "ShowTime");
+    });
+})
+.Events(e => e.Change("SortBookingTable"))
+)
+
+
+
+    </div>
+
+</div>
+
+<div id="bookingKendoGrid">
+    @(Html.Kendo().Grid<ViewModel.ShowTimeViewModel>()
+     .Name("bookingGrid")
+     .Columns(columns =>
+     {
+         columns.Bound(c => c.Title).Title("Show Name").ClientTemplate("<div class='text-center' style='width:110px'><span id='spanName_#=MovieId#'>#=Title# </span></div>").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.SelectedDate).Title("Selected Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.SelectedTime).Title("Selected Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.SelectedSeat).Title("Selected Seat").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.NoOfTicket).Title("No Of Ticket").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.PaymentAmount).Title("Payment Amount").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.PaymentStatus).Title("Payment Status").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.UserId).Title("User Id").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+
+         //columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Book Ticket' onclick='BookShow(#=ShowTimeId#)'><i class='fa fa-ticket'></i></a>").Width(30).Sortable(false).Filterable(false);
+         //columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='ManageShow(#=BookTicketId#)' id='editAnchor_#=BookTicketId#'><i class='fa fa-pencil'></i></a>").Width(30).Sortable(false).Filterable(false);
+         //columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Delete' onclick='DeleteShowTime(#=ShowTimeId#)'><i class='fa fa-trash'></i></a>").Width(30).Sortable(false).Filterable(false);
+
+
+
+     })
+     .Sortable()
+     .DataSource(dataSource => dataSource
+         .Ajax()
+         .Read(read => read.Action("GetBookings", "ShowTime"))
+     )
+ )
+</div>
+
+<script>
+
+    //function SortBookingTimeTable() {
+    //    var searchTime = $("#ShowSearchTicket").val();
+    //    //console.log("Search Time: " + searchTime);
+
+    //    var bookGridData = $('#bookingGrid').data('kendoGrid')._data;
+    //    var idCol = 'MovieId';
+
+    //    for (var i = 0; i < bookGridData.length; i++) {
+    //        var bookId = bookGridData[i][idCol] * 1;
+    //        var anchor = document.getElementById('spanName_' + bookId);
+    //        var row = $(anchor).closest('tr');
+
+    //        row.hide();
+
+    //        var a = 'SelectedTime';
+    //        var x = bookGridData[i][a];
+    //        //console.log("Selected Time: " + x);
+
+    //        if (x.toLowerCase().includes(searchTime.toLowerCase())) {
+    //            row.show();
+    //        }
+    //    }
+    //}
+
+    function SortBookingTimeTable() {
+        var dropdown = $("#timeFilterDrop").data("kendoDropDownList");
+        var selectedTime = dropdown.value(); 
+
+        var bookGrid = $('#bookingGrid').data('kendoGrid');
+        bookGrid.dataSource.filter({
+            logic: "and",
+            filters: [
+                {
+                    field: "SelectedTime", 
+                    operator: "eq",
+                    value: selectedTime
+                }
+            ]
+        });
+    }
+
+
+
+
+
+    //function SortBookingTable() {
+    //    var searchText = $("#titleFilterDrop").data("kendoDropDownList");
+
+    //    var bookGridData = $('#bookingGrid').data('kendoGrid')._data;
+    //    var idCol = 'MovieId'
+
+    //    for (var i = 0; i < bookGridData.length; i++) {
+
+    //        var bookId = bookGridData[i][idCol] * 1;
+    //        var anchor = document.getElementById('spanName_' + bookId);
+    //        var row = $(anchor).closest('tr');
+
+    //        row.hide();
+
+    //        var a = 'Title';
+    //        var x = bookGridData[i][a];
+
+    //        if (x.toLowerCase().includes(searchText.toLowerCase())) {
+    //            row.show();
+    //        }
+    //    }
+   /* }*/
+
+    function SortBookingTable() {
+        var dropdown = $("#titleFilterDrop").data("kendoDropDownList");
+        var selectedMovieId = dropdown.value();
+
+        var bookGrid = $('#bookingGrid').data('kendoGrid');
+        bookGrid.dataSource.filter({
+            logic: "and",
+            filters: [
+                {
+                    field: "MovieId",
+                    operator: "eq",
+                    value: selectedMovieId
+                }
+            ]
+        });
+    }
+
+</script>

@@ -1,0 +1,106 @@
+﻿@model ViewModel.WatchViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "ManageWatchList";
+}
+<script src="~/Scripts/jquery-confirm.js"></script>
+
+<h2>Manage WatchList</h2>
+
+<script>
+    function getWatchlistId() {
+
+        var watchListId = $("#WatchListId").val();
+        var filterId = 0;
+
+        if (watchListId == "" || watchListId == "0") {
+            filterId = 0;
+        } else {
+            filterId = watchListId;
+        }
+        return {
+            watchlisId: filterId,
+        }
+    }
+
+</script>
+
+@Html.ValidationSummary(true)
+
+@using (Ajax.BeginForm("ManageWatchList", "Account",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "ajax_contentMain"
+    }, new { autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.WatchListId, new { id = "WatchListId" })
+    @Html.HiddenFor(model => model.MovieIdString, new { id = "MovieIdString" })
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "control-label" })
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", maxlength = "200", id = "WatchListName" })
+                <span class="text-danger">@Html.ValidationMessageFor(model => model.Name)</span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", maxlength = "200", id = "Description" })
+                <span class="text-danger">@Html.ValidationMessageFor(model => model.Description)</span>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="form-group">
+        <label><strong>Select Movies</strong></label><br />
+        @(Html.Kendo().MultiSelectFor(model => model.MovieIds)
+        .Name("multiselectWatchGrid")
+        .DataTextField("Title")
+        .DataValueField("Id")
+        .Placeholder("Select movies")
+        .HtmlAttributes(new { style = "width: 100%" })
+        .DataSource(source =>
+        {
+            source.Read(read =>
+            {
+                read.Action("GetAllMovies", "Account").Data("getWatchlistId");
+            });
+        })
+    )
+    </div>
+
+
+    <div class="modal-footer">
+        <span id="errorSpan"></span>
+        @*<button type="submit" class="btn btn-primary" onclick="MovieIdAlert()">Save</button>*@
+        <button type="submit" class="btn btn-primary" onclick="MovieIdAlert()">Save</button>
+
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        $("#MovieIds").kendoMultiSelect({
+            placeholder: "Select movies...",
+            dataTextField: "Title",
+            dataValueField: "Id"
+        });
+    });
+
+
+    function MovieIdAlert() {
+        var movie = $("#multiselectWatchGrid").val();
+        $("#MovieIdString").val(movie);
+       /* alert($("#MovieIdString").val());*/
+    }
+
+
+</script>
+

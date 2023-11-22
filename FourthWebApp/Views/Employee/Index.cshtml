@@ -1,0 +1,23 @@
+﻿@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<div class="text-center">
+    <h2>Kendo UI Grid</h2>
+    @(Html.Kendo().Grid<FourthWebApp.Models.Product>()
+            .Name("grid")
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.ProductID).Width(100);
+                columns.Bound(c => c.ProductName).Width(300);
+                columns.Bound(c => c.UnitPrice).Width(100);
+                columns.Bound(c => c.Discontinued).Width(200);
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Read(read => read.Action("Select", "Employee"))
+            )
+        )
+</div>

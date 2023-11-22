@@ -1,0 +1,145 @@
+﻿@model ViewModel.ShowTimeViewModel
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "BookTicket";
+}
+
+
+@using (Ajax.BeginForm("BookTicket", "ShowTime",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "ajax_contentMain"
+    }, new { autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.ShowTimeId, new { id = "ShowTimeId" })
+    @Html.HiddenFor(model => model.MovieId, new { id = "MovieId" })
+    @Html.HiddenFor(model => model.StartDate, new { id = "StartDate" })
+    @Html.HiddenFor(model => model.SelectedDate, new { id = "SelectedDate" })
+    @Html.HiddenFor(model => model.SelectedTime, new { id = "SelectedTime" })
+    @Html.HiddenFor(model => model.SelectedSeat, new { id = "ShowTimeId" })
+    @Html.HiddenFor(model => model.TicketCount, new { id = "TicketCount" })
+    @Html.HiddenFor(model => model.SeatTypeOptions, new { id = "SeatTypeOptions" })
+
+
+
+
+    <h2>@Model.Title</h2>
+
+
+    <div id="selectDate">
+        <div class="k-d-flex k-justify-content" style="padding-bottom: 30px;">
+            <div class="k-w-300">
+                <label>Select a Date:</label>
+                @(Html.Kendo().DatePicker()
+            .Name("datepickerTicket")
+            .Value(Model.StartDate)
+            .Min(Model.StartDate)
+            .Max(Model.StartDate.AddDays(3))
+            )
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="selectTime" style="padding-bottom: 30px;">
+        <label for="Showtime">Select Showtime:</label>
+        @(Html.Kendo().DropDownListFor(m => m.SelectedShowtime)
+        //.Name("timeDropTicket")
+        .Name("SelectedShowtime")
+            .DataTextField("Text")
+            .DataValueField("Value")
+            //.BindTo((IEnumerable<Kendo.Mvc.UI.DropDownListItem>)ViewBag.ShowtimeOptions)
+            .BindTo(new List<SelectListItem>()
+            {
+                new SelectListItem() {
+                  Text = Model.FirstShowTime,
+                  Value = Model.FirstShowTime
+              },
+              new SelectListItem() {
+                  Text = Model.SecondShowTime,
+                  Value = Model.SecondShowTime
+              },
+              new SelectListItem() {
+                  Text = Model.ThirdShowTime,
+                  Value = Model.ThirdShowTime
+              }
+            })
+            .Value(Model.FirstShowTime)
+
+        )
+
+    </div>
+
+    @*<div class="demo-section" id="selectSeat" style="padding-bottom: 30px;">
+        <label for="radiogroup" class="label">Select Seat Type:</label>
+
+        @foreach (var seatType in Model.SeatTypeOptions)
+        {
+            <label>
+                <input type="radio" name="SelectedSeatType" value="@seatType.Value" @(Model.SelectedSeatType == seatType.Value ? "checked" : "") />
+                @seatType.Text
+            </label>
+        }
+    </div>*@
+
+    <div class="demo-section" id="selectSeat" style="padding-bottom: 30px;">
+        <label for="radiogroup" class="label">Select Seat Type:</label>
+
+        @foreach (var seatType in Model.SeatTypeOptions)
+        {
+            <label>
+                <input type="radio" name="SelectedSeatType" value="@seatType.Value" @(Model.SelectedSeatType == seatType.Value ? "checked" : "") />
+                @seatType.Text
+            </label>
+        }
+    </div>
+
+
+
+
+    <div id="selectTicketQuantity" style="padding-bottom: 30px;">
+        <label for="TicketQuantity">Select Number of Tickets:</label>
+        @(Html.Kendo().NumericTextBoxFor(m => m.TicketQuantity)
+        .Name("countTicket")
+        .Min(1)
+        .Max(10)
+        .Value(1)
+        .HtmlAttributes(new { style = "width: 100px;" })
+        .Format("n0")
+    )
+    </div>
+
+
+
+
+
+
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" onclick="BookTicket()" />
+    </div>
+
+}
+
+<script>
+
+    function BookTicket() {
+        var ticketDate = $('#datepickerTicket').val();
+        var ticketTime = $('#SelectedShowtime').val();
+        var ticketSeat = $('input[name="SelectedSeatType"]:checked').val();
+        var ticketCount = $('#countTicket').val();
+
+        //alert(ticketDate);
+        //alert(ticketTime);
+        //alert(ticketSeat);
+        //alert(ticketCount);
+
+        $("#TicketCount").val(ticketCount);
+    }
+
+</script>
+

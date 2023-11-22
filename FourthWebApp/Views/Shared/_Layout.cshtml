@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    @* Add the jQuery script from the Telerik CDN: *@
+    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/jquery.min.js"></script>
+
+    @*<script src="~/Scripts/jquery-3.4.1.min.js"></script>*@
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <link href="~/Content/jquery-confirm.css" rel="stylesheet" />
+    @*<script src="~/Scripts/CommonUI.js"></script>
+        <script src="~/Scripts/jquery-confirm.js"></script>*@
+
+    @* Add the Kendo SASS Bootstrap theme: *@
+    <link href="https://kendo.cdn.telerik.com/themes/6.7.0/bootstrap/bootstrap-main.css" rel="stylesheet" type="text/css" />
+
+
+
+    @* Add the Kendo UI scripts: *@
+    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/jszip.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2023.2.829/js/kendo.aspnetmvc.min.js"></script>
+
+    <link href="~/assets4.1/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <script src="~/assets4.1/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <link href="~/assets4.1/libs/clockpicker/bootstrap-clockpicker.min.css" rel="stylesheet" />
+    <script src="~/assets4.1/libs/clockpicker/bootstrap-clockpicker.min.js"></script>
+
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
+    </div>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery-confirm.js"></script>
+    <script src="~/Scripts/CommonUI.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+
+    @*@Scripts.Render("~/bundles/jquery")*@
+    @*@Scripts.Render("~/bundles/bootstrap")*@
+    @Styles.Render("~/Kendo/styles")
+    @*@RenderSection("scripts", required: false)*@
+
+</body>
+</html>

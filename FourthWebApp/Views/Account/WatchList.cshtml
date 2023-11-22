@@ -1,0 +1,171 @@
+﻿@*@model List<ViewModel.UserViewModel>*@
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "WatchList";
+}
+
+<h2>WatchList</h2>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+<h2>My Movie Project</h2>
+
+<!-- Tab navigation -->
+@*<ul class="nav nav-tabs" id="myTabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="watchlist-tab" data-toggle="tab" href="#watchlist">WatchList</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="favorites-tab" data-toggle="tab" href="#favorites">Favorites</a>
+        </li>
+    </ul>*@
+
+<!-- Tab navigation -->
+<ul class="nav nav-tabs" id="myTabs">
+    <li class="nav-item">
+        <a class="nav-link active" id="watchlist-tab" data-toggle="tab" href="#watchlist">WatchList</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" id="favorites-tab" data-toggle="tab" href="#favorites">Favorites</a>
+    </li>
+</ul>
+
+
+<!-- Tab content -->
+<div class="tab-content">
+    <!-- WatchList Tab -->
+    <div class="tab-pane fade show active" id="watchlist">
+        <div id="Add" style="float:right">
+            <p>
+                <button type="button" class="btn btn-primary" onclick="AddWatchList(0)"><i class="fa fa-plus"></i>&nbsp;Add New WatchList</button>
+            </p>
+        </div>
+
+        <div id="WatchBody">
+            @*@Html.Raw(ViewBag.MyWatchList)*@
+            @(Html.Kendo().Grid<ViewModel.WatchViewModel>()
+    .Name("watchGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.Name).Title("WatchList Name").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+        columns.Bound(c => c.Description).Title("Description").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+        columns.Bound(c => c.Count).Title("Count").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+        columns.Bound(c => c.CreatedOn).Title("Created On").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+
+        columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='AddWatchList(#=WatchListId#)' id='editAnchor_#=WatchListId#'><i class='fas fa-edit'></i></a>").Width(30).Sortable(false).Filterable(false);
+        columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Delete' onclick='DeleteWatchlist(#=WatchListId#)'><i class='fas fa-trash'></i></a>").Width(30).Sortable(false).Filterable(false);
+
+    })
+    .Sortable()
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .Read(read => read.Action("GetWatchlist", "Account"))
+    )
+)
+
+        </div>
+    </div>
+
+    <!-- Favorites Tab -->
+    <div class="tab-pane fade" id="favorites">
+        <div id="Add" style="float:right">
+            <p>
+                <button type="button" class="btn btn-primary" onclick="openFavMovieManagement(0)"><i class="fa fa-plus"></i>&nbsp;Add New Favourites</button>
+            </p>
+        </div>
+
+        <div id="FavBody">
+            @Html.Raw(ViewBag.MyFavourite)
+        </div>
+
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script>
+@if (TempData["WatchSuccess"] != null && (bool)TempData["WatchSuccess"])
+{
+    <text>
+        CloseWatchList();
+    </text>
+}
+
+    var LanguageWindow;
+
+    function AddWatchList(WatchListId) {
+        var url = '';
+        var title = "";
+
+        try {
+            if (WatchListId == 0) {
+                url = '/Account/ManageWatchList';
+                title = "Add WatchList";
+            }
+            else {
+                url = '/Account/ManageWatchList?WatchListId=' + WatchListId;
+                title = "Edit WatchList ";
+            }
+
+            LanguageWindow = OpenConfirmWindowModal(url, title, 850);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    function CloseWatchList() {
+
+        if (LanguageWindow) {
+            LanguageWindow.close();
+        }
+
+        var grid = $("#watchGrid").data("kendoGrid");
+        if (grid) {
+            grid.dataSource.read();
+        }
+    }
+
+    function openFavMovieManagement(WatchListId) {
+        var url = '';
+        var title = "";
+
+        try {
+            if (WatchListId == 0) {
+                url = '/Account/ManageFavourites';
+                title = "Add Favourites";
+            }
+            else {
+                url = '/Account/ManageFavourites?WatchListId=' + WatchListId;
+                title = "Edit Favourites ";
+            }
+
+            LanguageWindow = OpenConfirmWindowModal(url, title, 850);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    function CloseFavMovieManagement() {
+        LanguageWindow.close();
+        $.get("/Account/GetFavouritesTable", function (data) {
+            $("#FavBody").html(data);
+        });
+    }
+
+    function DeleteWatchlist(watchlistId) {
+        var url = '';
+        var title = "";
+
+        try {
+            url = '/Account/DeleteWatchList?WatchListId=' + watchlistId;
+            title = "Delete Movie ";
+            LanguageWindow = OpenConfirmWindowModal(url, title, 450);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+        $('#watchGrid').data('kendoGrid').dataSource.read();
+    }
+
+
+</script>

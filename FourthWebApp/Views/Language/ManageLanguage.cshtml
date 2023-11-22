@@ -1,0 +1,64 @@
+﻿@model ViewModel.MovieViewModel
+
+@{
+    Layout = null;
+}
+<style>
+    .validationError {
+        color: red;
+        font-size: 12px;
+    }
+
+    .modal-footer {
+        display: flex;
+        align-items: center;
+    }
+
+    #errorSpan {
+        color: red;
+        display: inline-block;
+        vertical-align: middle;
+        /*margin-right: 10px;*/
+    }
+</style>
+<h2>@*@(Model.Id == 0 ? "Add New Language" : "Edit Language")*@</h2>
+
+@Html.ValidationSummary(true)
+
+@using (Ajax.BeginForm("ManageLanguage", "Language",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "ajax_contentMain",
+
+    }, new { autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.LanguageID, new { id = "LanguageID" })
+
+
+    <div style="width:100%!important">
+
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label><strong>Language Name</strong></label><br />
+                @Html.TextBoxFor(model => model.LanguageName, new { @class = "form-control", maxlength = "200", id = "LanguageName" })
+                <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.LanguageName)</span>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <span id="errorSpan"></span>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+
+
+}
+
+

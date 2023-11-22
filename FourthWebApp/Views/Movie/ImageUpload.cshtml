@@ -1,0 +1,75 @@
+﻿@using Kendo.Mvc.UI
+@model ViewModel.MovieViewModel
+
+<script>
+
+    function onRemove(e) {
+        $("#displayPhoto").attr("src", "/Images/Large/Movies/movie.png");
+
+    }
+
+    function onSelect(e) {
+        var file = e.files[0].rawFile;
+        var ext = e.files[0].extension.toLowerCase();
+
+        if (ext == ".jpg" || ext == ".jpeg" || ext == ".png") {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                $("#displayPhoto").attr("src", this.result); //img id where the photo is to be displayed
+            };
+
+            reader.readAsDataURL(file); //Read the selected photo and display in UI
+        }
+        else { //If file extension does not belong to photo display a default image
+            $("#displayPhoto").attr("src", "/Images/Large/Movies/movie.png");
+
+        }
+    }
+</script>
+
+
+<div class="row">
+     <div class="col-md-4" style="float:none;margin:auto;margin-top:10%;">
+         @using (Html.BeginForm("Save", "Movie", FormMethod.Post))
+         {
+             @Html.AntiForgeryToken()
+             @Html.HiddenFor(model => model.Id)
+             <div>
+                 <div class="col-md-12">
+                     <div class="card">
+                         <div class="card-body" style="text-align:center;">
+                             <img src=@ViewBag.Photo id="displayPhoto" class="imageDisplay img-thumbnail" />
+                         </div>
+                     </div>
+                 </div>
+                 <div class="col-md-12">
+                     @(Html.Kendo().Upload()
+                                .Name("Photo")
+                                .HtmlAttributes(new { aria_label = "files", @style = "width:300px;" })
+                                .Validation(validation =>
+                                {
+                                    validation.AllowedExtensions(new string[] { ".jpg", ".jpeg", ".png" });
+                                    validation.MaxFileSize(500000);
+                                })
+                                .Messages(m => m.Select("Select Image"))
+                                .Multiple(false)
+                                 .Events(events => events
+                                 .Select("onSelect")
+                                 .Remove("onRemove")
+                                 )
+                    )
+                 </div>
+                 <div class="col-md-12" style="margin-top:5px;">
+                     <button type="submit" class="btn btn-success w-100">Save</button>
+                 </div>
+
+             </div>
+
+         }
+     </div>
+</div>
+
+
+
+
+

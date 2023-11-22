@@ -1,0 +1,123 @@
+﻿@using Kendo.Mvc.UI
+@model ViewModel.MovieViewModel
+
+<h2 class="text-center">Movie List</h2>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div style="float: left;">
+        <input style="width: 300px;" type="text" id="MovieSearchText" placeholder="Search Movie" onkeyup="SortMovieTable()" />
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" onclick="ManageMovie(0)">
+            <i class="fa fa-plus"></i>&nbsp;Add New Movie
+        </button>
+        <a href="/Language/Index" class="btn btn-primary">
+            <i class="fa fa-plus"></i>&nbsp;Manage Language
+        </a>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.Id)
+<div id="movTable">
+    @(Html.Kendo().Grid<ViewModel.MovieViewModel>()
+        .Name("grid")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.Title).Title("Movie Title").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.Genre).Title("Genre").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.ReleaseDate).Title("Release Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.Rating).Title("Rating").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.LanguageName).Title("Language").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.Price).Title("Price").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+
+            columns.Bound(c => c.MovieImage)
+                .Title("Image")
+                .Width(100)
+                .ClientTemplate("<img src='#=MovieImage#' style='width: 50px; height: 50px;' />")
+                .HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+
+            columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='ManageMovie(#=Id#)' id='editAnchor_#=Id#'><i class='fa fa-pencil'></i></a>").Width(30).Sortable(false).Filterable(false);
+            columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Delete' onclick='DeleteMovie(#=Id#)'><i class='fa fa-trash-o'></i></a>").Width(30).Sortable(false).Filterable(false);
+            columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Add Image' onclick='AddImage(#=Id#)'><i class='fa fa-image'></i></a>").Width(30).Sortable(false).Filterable(false);
+        })
+        .Sortable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Read(read => read.Action("GetMovies", "Movie"))
+        )
+    )
+</div>
+
+<script>
+    var LanguageWindow;
+
+    @if (TempData["ManageSuccess"] != null && (bool)TempData["ManageSuccess"])
+    {
+        <text>
+            CloseManageMovie();
+        </text>
+     }
+
+    function ManageMovie(id) {
+        var url = id === 0 ? '/Movie/Manage' : '/Movie/Manage?Id=' + id;
+        var title = id === 0 ? "Add Movie" : "Edit Movie";
+
+        try {
+            LanguageWindow = OpenConfirmWindowModal(url, title, 850);
+            console.log('LanguageWindow after opening modal:', LanguageWindow);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    function CloseManageMovie() {
+        console.log('LanguageWindow before closing modal:', LanguageWindow);
+
+        if (LanguageWindow) {
+            LanguageWindow.close();
+            $('#grid').data('kendoGrid').dataSource.read();
+        }
+    }
+
+    function SortMovieTable() {
+        var searchText = $("#MovieSearchText").val().toLowerCase();
+        var grid = $('#grid').data('kendoGrid');
+
+        grid.dataSource.filter({
+            logic: "or",
+            filters: [
+                { field: "Title", operator: "contains", value: searchText },
+                { field: "Genre", operator: "contains", value: searchText },
+                { field: "LanguageName", operator: "contains", value: searchText }
+            ]
+        });
+    }
+
+    function DeleteMovie(id) {
+        var url = '/Movie/Delete?Id=' + id;
+        var title = "Delete Movie";
+
+        try {
+            LanguageWindow = OpenConfirmWindowModal(url, title, 450);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    function AddImage(id) {
+        var url = '/Movie/ImageUpload?Id=' + id;
+        var title = "Upload Image";
+
+        try {
+            LanguageWindow = OpenConfirmWindowModal(url, title, 600);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+    }
+</script>

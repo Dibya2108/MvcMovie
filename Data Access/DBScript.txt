@@ -1,0 +1,54 @@
+﻿------------------------------
+----     21/11/2023       ----
+------------------------------
+
+IF NOT EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = 'Dibyashri')
+    CREATE DATABASE Dibyashri;
+
+USE Dibyashri;
+
+IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='Movies'
+                        AND XTYPE = 'U') 
+                        BEGIN 
+                        Create Table [Movies] (
+   [Id] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+   [Title] varchar (100) Not Null,
+   [ReleaseDate] dateTime NOT NULL,
+   [Genre] varchar (50) Not Null,   
+   [Rating] int NOT NULL,
+   [SelectedLanguageID] int NOT NULL ,   
+   [IsDeleted] bit Not Null Default 0,
+   [MovieImage] varchar (Max),
+   [Price] decimal Not Null
+)ON [PRIMARY]
+END
+GO
+
+IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='Languages'
+                        AND XTYPE = 'U') 
+                        BEGIN 
+                        Create Table [Languages] (
+   [LanguageID] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+   [LanguageName] varchar (100) Not Null,   
+)ON [PRIMARY]
+END
+GO
+
+
+IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='MovieShowSeatAssociation'
+                        AND XTYPE = 'U') 
+                        BEGIN 
+                        Create Table [MovieShowSeatAssociation] (
+   [MovieShowSeatAssociationId] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+   [MovieId] int NOT NULL,
+   [FirstShowSeatCount] int NOT NULL ,
+   [SecondShowSeatCount] int NOT NULL,
+   [ThirdShowSeatCount] int NOT NULL ,
+   [SeatNormal] int NOT NULL,
+   [SeatExecutive] int NOT NULL ,
+   [SeatPremium] int NOT NULL,
+   [SeatVIP] int NOT NULL ,
+   
+)ON [PRIMARY]
+END
+GO
