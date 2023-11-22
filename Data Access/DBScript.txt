@@ -34,6 +34,23 @@ IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='Languages'
 END
 GO
 
+IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='Movies'
+                        AND XTYPE = 'U') 
+                        BEGIN 
+                        Create Table [Movies] (
+   [Id] int IDENTITY(1,1) NOT NULL PRIMARY KEY,
+   [Title] varchar (100) Not Null,
+   [ReleaseDate] dateTime NOT NULL,
+   [Genre] varchar (50) Not Null,   
+   [Rating] int NOT NULL,
+   [SelectedLanguageID] int NOT NULL ,   
+   [IsDeleted] bit Not Null Default 0,
+   [MovieImage] varchar (Max),
+   [Price] decimal Not Null
+)ON [PRIMARY]
+END
+GO
+
 
 IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='MovieShowSeatAssociation'
                         AND XTYPE = 'U') 
