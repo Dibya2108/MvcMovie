@@ -10,55 +10,20 @@
         display: inline-block;
     }
 </style>
-
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <h2>@(Model.Id == 0 ? "Create New Movie" : "Edit Movie")</h2>
 
-@*<script>
 
-    var File_onFileSelect = function (e) {
-        //console.log(this.element.attr('id'));
-
-        var controlId = this.element.attr('id');
-
-        $.each(e.files, function (index, value) {
-            if (value.extension.toUpperCase() != ".JPG" && value.extension.toUpperCase() != ".JPEG" && value.extension.toUpperCase() != ".PNG") {
-                e.preventDefault();
-                alert('jpg or png image supported');
-            } else {
-
-                var fileReader = new FileReader();
-                fileReader.onload = function (event) {
-                    //console.log(event);
-                    var mapImage = event.target.result;
-                    //alert(mapImage)
-
-                    //$("#MyImage").css("display", "block");
-                    //$("#MyImage").attr('src', mapImage);
-
-                };
-
-                fileReader.readAsDataURL(e.files[0].rawFile);
-            }
-        });
-
-    };
-
-    function onSuccess(e) {
-        // An array with information about the uploaded files
-        var files = e.files;
-
-        if (e.operation == "upload") {
-
-
-            OpenCropImage(@Model.Id);
-        }
-    }
-
-</script>*@
-
-
-@using (Html.BeginForm("Manage", "Movie", FormMethod.Post))
+@Html.ValidationSummary(true)
+@using (Ajax.BeginForm("Manage", "Movie",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "ajax_contentMain",
+    }, new { autocomplete = "off" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
@@ -105,25 +70,7 @@
         @Html.ValidationMessageFor(model => model.SelectedLanguageId, "", new { @class = "text-danger" })
     </div>
 
-    @*<div id="kendoImgUpload">
-        @(Html.Kendo().Upload()
-         .Name("uploadMovieImg")
-         .Multiple(false)
-         .Async(a => a
-        .Save("SaveImg", "Movie")
-        .Remove("RemoveImg", "Movie")
-    )
-        .Events(x => x.Select("File_onFileSelect"))
-                    //.Events(x => x.Remove("File_onRemove"))
-                    .Messages(x => x.Select("Browse"))
-                    .Events(x => x.Success("onSuccess"))
-         .Validation(validation => validation
-            .AllowedExtensions(new string[] { ".jpg", ".png", ".jpeg" })
-            .MaxFileSize(31457280)
-            .MinFileSize(30720)
-        )
-    )
-    </div>*@
+   
 
 
 

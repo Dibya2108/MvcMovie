@@ -22,7 +22,7 @@ namespace MvcMovie.Controllers
     
         public class MovieController : Controller
         {
-            MovieDalSql _movieDalSql = new MovieDalSql();
+        MovieDalSql _movieDalSql = new MovieDalSql();
         string photoPath = Path.Combine(HostingEnvironment.MapPath("~/Images/RawImage/"), "profile_photo.jpg");
         public ActionResult Index()
             {
@@ -39,66 +39,37 @@ namespace MvcMovie.Controllers
 
         public ActionResult Manage(int id = 0)
             {
-            //string defaultImage = "0.jpg";
-            var languages = _movieDalSql.GetLanguages();
-
-                if (id == 0)
+            MovieViewModel model = new MovieViewModel();
+            if (id != 0)
+            {
+                model = _movieDalSql.GetMovieViewModel(id);
+                if (model == null)
                 {
-                    var newMovieViewModel = new MovieViewModel
-                    {
-                        Languages = new SelectList(languages, "Value", "Text"),
-
-                    };
-
-               
-                    //string physicalPath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/" + defaultImage + "?id=" + Guid.NewGuid();
-                    //newMovieViewModel.MovieImage = physicalPath;
-                
-
-                return View(newMovieViewModel);
-
-                }
-                else
-                {
-
-                    MovieViewModel movie = _movieDalSql.GetMovieViewModel(id);
-                    if (movie == null)
-                    {
-                        return HttpNotFound();
-                    }
-
-                //if (!string.IsNullOrEmpty(movie.movieImageString))
-                //{
-                //    string physicalPath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/" + movie.movieImageString + "?id=" + Guid.NewGuid();
-                //    movie.MovieImage = physicalPath;
-                //}
-                //else
-                //{
-                //    string physicalPath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/" + defaultImage + "?id=" + Guid.NewGuid();
-                //    movie.MovieImage = physicalPath;
-                //}
-
-                return View(movie);
+                    return HttpNotFound();
                 }
             }
+
+            var languages = _movieDalSql.GetLanguages();
+            model.Languages = new SelectList(languages, "Value", "Text");
+            return View(model);
+
+        }
 
 
             [HttpPost]
             [ValidateAntiForgeryToken]
             public ActionResult Manage(MovieViewModel movieViewModel)
             {
-                if (ModelState.IsValid)
-                {
+                
                     if (!_movieDalSql.IsMovieNameUnique(movieViewModel.Id, movieViewModel.Title))
                     {
                         ViewBag.msg = "Duplicate Movie Name";
-                        movieViewModel.Languages = new SelectList(_movieDalSql.GetLanguages(), "Value", "Text");
-                        return View(movieViewModel);
+                                                
                     }
 
                     if (movieViewModel.Id == 0)
                     {
-                        //Movies newMovie = _movieDalSql.CreateMovie(movieViewModel);
+                        
                         movieViewModel.IsDeleted = false;
                         _movieDalSql.InsertMovie(movieViewModel);
 
@@ -109,73 +80,11 @@ namespace MvcMovie.Controllers
                         _movieDalSql.UpdateMovie(movieViewModel);
 
                     }
-                //return JavaScript("CloseManageMovie()");
-                TempData["ManageSuccess"] = true;
-                return RedirectToAction("Index");
-
-
-            }
             movieViewModel.Languages = new SelectList(_movieDalSql.GetLanguages(), "Value", "Text");
-                return View(movieViewModel);
+            return JavaScript("CloseManageMovie()");
+            
             }
-        //public ActionResult SaveImg(IEnumerable<HttpPostedFileBase> files)
-        //{
-        //    if (files != null)
-        //    {
-        //        var physicalPath = "";
-        //        var fileName = "";
-        //        foreach (var file in files)
-        //        {
-
-        //            //................original......................................//
-
-        //            fileName = Guid.NewGuid().ToString() + ".png"; ;
-        //            var rawPhysicalPath = ConfigurationManager.AppSettings["MovieImage"] + "/RawImage" + "/" + fileName;
-        //            file.SaveAs(Server.MapPath(rawPhysicalPath));
-
-        //            physicalPath = ConfigurationManager.AppSettings["MovieImage"] + "/TempImage/" + fileName;
-
-        //            ImageManipulate.ResizeImage(Server.MapPath(rawPhysicalPath), Server.MapPath(physicalPath), 400, 400);
-
-        //            //...................................................................................//
-
-        //            List<FileClass> allfiles = Files;
-
-
-        //            //remove old file
-        //            if (allfiles.Count != 0)
-        //            {
-        //                var oldFile = allfiles[0];
-        //                allfiles.Remove(oldFile);
-        //            }
-
-        //            //add new file
-        //            allfiles.Add(new FileClass() { FilePath = Server.MapPath(physicalPath), FileName = fileName });
-
-        //            Files = allfiles;
-        //        }
-
-        //    }
-
-        //    return Content("");
-        //}
-
-        //public ActionResult RemoveImage(string[] fileNames)  //Async remove                          
-        //{
-        //    List<FileClass> allfiles = Files;
-
-        //    if (fileNames != null)
-        //    {
-        //        //remove previous file
-        //        var file = allfiles[0];
-        //        allfiles.Remove(file);
-
-        //        Files = allfiles;
-        //        // await _userApiClient.RemoveProfileImage(CurrentUserViewModel.UserID);
-        //    }
-
-        //    return Content("");
-        //}
+        
 
 
         public ActionResult Details(int id)
