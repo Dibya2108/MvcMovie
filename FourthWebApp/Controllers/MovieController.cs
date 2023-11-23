@@ -60,8 +60,9 @@ namespace MvcMovie.Controllers
             [ValidateAntiForgeryToken]
             public ActionResult Manage(MovieViewModel movieViewModel)
             {
-                
-                    if (!_movieDalSql.IsMovieNameUnique(movieViewModel.Id, movieViewModel.Title))
+            int movId = movieViewModel.Id;
+
+            if (!_movieDalSql.IsMovieNameUnique(movieViewModel.Id, movieViewModel.Title))
                     {
                         ViewBag.msg = "Duplicate Movie Name";
                                                 
@@ -81,7 +82,7 @@ namespace MvcMovie.Controllers
 
                     }
             movieViewModel.Languages = new SelectList(_movieDalSql.GetLanguages(), "Value", "Text");
-            return JavaScript("CloseManageMovie()");
+            return JavaScript("CloseManageMovie(" + movId + @");");
             
             }
         
@@ -155,172 +156,7 @@ namespace MvcMovie.Controllers
                 return sb.ToString();
             }
 
-        //public class FileClass
-        //{
-        //    public int UploaderNumber { get; set; }
-        //    public string FilePath { get; set; }
-        //    public string FileName { get; set; }
-        //}
-        //public List<FileClass> Files
-        //{
-        //    get
-        //    {
-        //        if (Session["File"] == null)
-        //        {
-        //            Session["File"] = new List<FileClass>();
-        //        }
-
-        //        return (List<FileClass>)Session["File"];
-        //    }
-        //    set
-        //    {
-        //        Session["File"] = value;
-        //    }
-        //}
-
-        //public ActionResult ImageUpload(int movieId = 1)
-        //{
-        //    string defaultImage = "0.jpg";
-            
-        //    var movie = _movieDalSql.GetMovieViewModel(movieId);
-        //    if (!string.IsNullOrEmpty(movie.movieImageString))
-        //    {
-        //        string physicalPath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/" + movie.movieImageString + "?id=" + Guid.NewGuid();
-        //        movie.MovieImage = physicalPath;
-        //    }
-        //    else
-        //    {
-        //        string physicalPath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/" + defaultImage + "?id=" + Guid.NewGuid();
-        //        movie.MovieImage = physicalPath;
-        //    }
-        //    return View(movie);
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult ImageUpload(MovieViewModel movie, HttpPostedFileBase imageFile)
-        //{
-        //    if (imageFile != null && imageFile.ContentLength > 0)
-        //    {
-        //        // Get the file extension (without the dot)
-        //        string fileExtension = Path.GetExtension(imageFile.FileName).ToLower();
-
-        //        // Check if the file extension is valid
-        //        if (fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png")
-        //        {
-        //            // Generate a unique file name for the uploaded image
-        //            string uniqueFileName = Guid.NewGuid() + fileExtension;
-
-        //            // Set the relative path where you want to save the image
-        //            string relativePath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/";
-
-        //            // Combine the path and the unique file name to get the full physical path
-        //            string physicalPath = Server.MapPath(Path.Combine(relativePath, uniqueFileName));
-
-        //            // Save the uploaded image to the specified path
-        //            imageFile.SaveAs(physicalPath);
-
-        //            // Update the movie's image property with the new file path
-        //            movie.MovieImage = Path.Combine(relativePath, uniqueFileName);
-        //        }
-        //        else
-        //        {
-        //            // Handle the case where the uploaded file has an invalid extension
-        //            ModelState.AddModelError("imageFile", "Please upload a valid image file (jpg, jpeg, or png).");
-        //            return View(movie);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Handle the case where no file was uploaded
-        //        ModelState.AddModelError("imageFile", "Please select an image to upload.");
-        //        return View(movie);
-        //    }
-
-
-        //    return View(movie);
-        //}
-
-        //[HttpPost]
-        //public ActionResult UploadImage()
-        //{
-        //    try
-        //    {
-        //        var uploadedFile = Request.Files[0]; // Assuming you only expect one file in the request
-
-        //        if (uploadedFile != null && uploadedFile.ContentLength > 0)
-        //        {
-        //            // Check if the file extension is valid
-        //            string fileExtension = Path.GetExtension(uploadedFile.FileName).ToLower();
-        //            if (fileExtension == ".jpg" || fileExtension == ".jpeg" || fileExtension == ".png")
-        //            {
-        //                // Generate a unique file name for the uploaded image
-        //                string uniqueFileName = Guid.NewGuid() + fileExtension;
-
-        //                // Set the relative path where you want to save the image
-        //                string relativePath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/";
-
-        //                // Combine the path and the unique file name to get the full physical path
-        //                string physicalPath = Server.MapPath(Path.Combine(relativePath, uniqueFileName));
-
-        //                // Save the uploaded image to the specified path
-        //                uploadedFile.SaveAs(physicalPath);
-
-        //                // You can save the file path or other relevant information in your data store if needed
-        //                // Example: _movieDalSql.SaveImageFilePath(uniqueFileName);
-
-        //                // Return a JSON response to the client
-        //                return Json(new { success = true, fileName = uniqueFileName });
-        //            }
-        //            else
-        //            {
-        //                // Invalid file extension
-        //                return Json(new { success = false, errorMessage = "Please upload a valid image file (jpg, jpeg, or png)." });
-        //            }
-        //        }
-        //        else
-        //        {
-        //            // No file was uploaded
-        //            return Json(new { success = false, errorMessage = "Please select an image to upload." });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle any exceptions that may occur during the upload
-        //        return Json(new { success = false, errorMessage = "An error occurred during file upload." });
-        //    }
-        //}
-
-        //[HttpPost]
-        //public ActionResult RemoveImage(string fileName)
-        //{
-        //    try
-        //    {
-        //        // Delete the image file from your storage location
-        //        string imagePath = ConfigurationManager.AppSettings["MovieImage"] + "/Large/Movies/" + fileName;
-        //        string physicalPath = Server.MapPath(imagePath);
-
-        //        if (System.IO.File.Exists(physicalPath))
-        //        {
-        //            System.IO.File.Delete(physicalPath);
-
-        //            // Optionally, remove the file path from your data store
-        //            // Example: _movieDalSql.RemoveImageFilePath(fileName);
-
-        //            return Json(new { success = true });
-        //        }
-        //        else
-        //        {
-        //            // File not found
-        //            return Json(new { success = false, errorMessage = "File not found." });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle any exceptions that may occur during file removal
-        //        return Json(new { success = false, errorMessage = "An error occurred during file removal." });
-        //    }
-        //}
+        
 
         public ActionResult ImageUpload(int id)
         {
@@ -342,11 +178,7 @@ namespace MvcMovie.Controllers
 
         public ActionResult Save(HttpPostedFileBase Photo, int id)
         {
-            //if (Photo != null)
-            //{
-            //    Photo.SaveAs(photoPath);
-            //}
-            //return ImageUpload();
+            ;
 
             if (Photo != null)
             {

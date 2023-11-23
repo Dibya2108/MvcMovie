@@ -53,9 +53,9 @@
 
 <script>
     var LanguageWindow;
-    
+
     var LanguageWindowImg;
-   
+
 
     function ManageMovie(id) {
         var url = id == 0 ? '/Movie/Manage' : '/Movie/Manage?Id=' + id;
@@ -70,12 +70,13 @@
         }
     }
 
-    function CloseManageMovie() {
-        console.log('LanguageWindow before closing modal:', LanguageWindow);
-        
+    function CloseManageMovie(id) {
+
+
             LanguageWindow.close();
-            $('#grid').data('kendoGrid').dataSource.read();
-        
+        $('#grid').data('kendoGrid').dataSource.read();
+        AddImage(id)
+
     }
 
     function SortMovieTable() {

@@ -32,19 +32,14 @@ namespace MvcMovie.Controllers
 
         public ActionResult ManageLanguage(int LanguageID = 0)
         {
-            MovieViewModel model;
-            if (LanguageID == 0)
+            MovieViewModel model = new MovieViewModel();
+            if (LanguageID != 0)
             {
-                model = new MovieViewModel();
-                return View(model);
-            }
-            else
-
-            {
+                
                 model = _movieDalSql.GetLanguageViewModel(LanguageID);
-                return View(model);
+                
             }
-
+            return View(model);
         }
 
         [HttpPost]
@@ -55,9 +50,9 @@ namespace MvcMovie.Controllers
             {
                 if (!_movieDalSql.IsLanguageNameUnique(model.LanguageID, model.LanguageName))
                 {
-                    //return JavaScript("DuplicateName()");
+                    
                     TempData["DuplicateCheck"] = true;
-                    //return RedirectToAction("Index");
+                    
                 }
                 else
                 {
