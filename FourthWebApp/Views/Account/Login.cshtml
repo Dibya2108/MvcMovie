@@ -1,53 +1,176 @@
 ﻿
 @model ViewModel.UserViewModel
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<link href="~/Content/login-style.css" rel="stylesheet" />
-<style>
-
-    #errorMsgUser {
-        color: red;
-    }
-</style>
 @{
     ViewBag.Title = "Login";
+    Layout = null;
 }
+<!DOCTYPE html>
+<html lang="en">
 
-<h2>Login</h2>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title | BTTA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+    <meta content="Coderthemes" name="author" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-@using (Html.BeginForm("Login", "Account", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
 
-    <div class="form-group">
-        <label><strong>User Name</strong></label><br />
-        @*@Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })*@
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
-            <span style="color: red;">@Html.ValidationMessageFor(model => model.UserName)</span>
+    
+    @*<style>
+        .auth-fluid-right {
+            background-image: url('~assets/images/bg1.png');
+            background-size: cover; /* Adjust this property based on your image and layout preferences */
+            background-position: right top; /* Adjust this property to position the image */
+        }
+    </style>*@
+    <link href="~/assets/css/jquery-confirm.css" rel="stylesheet" />
+
+
+    <!-- Plugins css -->
+    <link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
+
+    <!-- Bootstrap css -->
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- App css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
+    <!-- icons -->
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Head js -->
+    <script src="~/assets/js/head.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    @*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
+    @*<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+    <script src="~/assets/js/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/assets/js/moment.js"></script>
+    <style>
+        #errorMsgUser {
+            color: red;
+        }
+    </style>
+</head>
+
+<body class="auth-fluid-pages pb-0">
+
+    <div class="auth-fluid">
+        <!--Auth fluid left content -->
+        <div class="auth-fluid-form-box">
+            <div class="align-items-center d-flex h-100">
+                <div class="p-3">
+
+                    <!-- Logo -->
+                    @*<div class="auth-brand text-center text-lg-start">
+                            <div class="auth-logo">
+                                <a href="index.html" class="logo logo-dark text-center">
+                                    <span class="logo-lg">
+                                        <img src="~/assets/images/logo_btta.png" alt="" height="60">
+                                    </span>
+                                </a>
+
+                                <a href="index.html" class="logo logo-light text-center">
+                                    <span class="logo-lg">
+                                        <img src="~/assets/images/logo_btta.png" alt="" height="60">
+                                    </span>
+                                </a>
+                            </div>
+                        </div>*@
+
+                    <!-- title-->
+                    <h4 class="mt-0">Sign In</h4>
+                    <p class="text-muted mb-4">Enter your email address and password to access account.</p>
+
+
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="form-group">
+                            <label><strong>User Name</strong></label><br />
+                            @*@Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })*@
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                                <span style="color: red;">@Html.ValidationMessageFor(model => model.UserName)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><strong>Password</strong></label><br />
+                            @*@Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })*@
+                            <div class="col-md-10">
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                                <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
+                            </div>
+                        </div>
+
+                        <span id="errorMsgUser">@ViewBag.ErrorMessage</span>
+
+                        <div style="margin-top: 10px;"></div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <button type="submit" class="btn btn-primary"> Login </button>
+
+                            </div>
+
+                            <p>Don't have an account? <a href="@Url.Action("Register", "Account")">Register</a></p>
+                        </div>
+
+                    }
+
+                </div> <!-- end .card-body -->
+            </div> <!-- end .align-items-center.d-flex.h-100-->
         </div>
-    </div>
-
-    <div class="form-group">
-        <label><strong>Password</strong></label><br />
-        @*@Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })*@
-        <div class="col-md-10">
-            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-            <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
+        <!-- end auth-fluid-form-box-->
+        <!-- Auth fluid right content -->
+        <div class="auth-fluid-right text-center">
+            <div class="auth-user-testimonial">
+                <div><img src="~/assets/images/logo_btta.png" alt="" height="100"></div>
+                <h2 class="mb-3 text-white">Bengal Traditional Taekwondo Association</h2>
+                <p class="lead">
+                    <i class="mdi mdi-format-quote-open"></i> I've been using your theme from the previous developer for our web app, once I knew new version is out, I immediately bought with no hesitation. Great themes, good documentation with lots of customization available and sample app that really fit our need. <i class="mdi mdi-format-quote-close"></i>
+                </p>
+                <h5 class="text-white">
+                    - Fadlisaad (Ubold Admin User)
+                </h5>
+            </div> <!-- end auth-user-testimonial-->
         </div>
+        <!-- end Auth fluid right content -->
     </div>
+    <!-- end auth-fluid-->
 
-    <span id="errorMsgUser">@ViewBag.ErrorMessage</span>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+    @*<script src="~/assets/libs/datatables.net/node_modules/jquery/jquery.min.js"></script>*@
+    <!-- Vendor js -->
+    <script src="~/assets/js/vendor.min.js"></script>
 
-    <div style="margin-top: 10px;"></div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-primary"> Login </button>
+    <!-- Plugins js-->
+    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
 
-        </div>
+    <script src="assets/libs/selectize/js/standalone/selectize.min.js"></script>
 
-        <p>Don't have an account? <a href="@Url.Action("Register", "Account")">Register</a></p>
-    </div>
+    <!-- Dashboar 1 init js-->
+    <script src="~/assets/js/pages/dashboard-1.init.js"></script>
 
-}
+    <!-- App js-->
+    <script src="~/assets/js/app.min.js"></script>
+    <script src="~/assets/js/jquery-confirm.js"></script>
+    <script src="~/assets/js/CommonUI.js"></script>
+
+    <script>
+        function ShowError(msg) {
+            alert(msg)
+        }
+    </script>
+
+</body>
+</html>

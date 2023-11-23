@@ -53,20 +53,16 @@
 
 <script>
     var LanguageWindow;
-
-    @if (TempData["ManageSuccess"] != null && (bool)TempData["ManageSuccess"])
-    {
-        <text>
-            CloseManageMovie();
-        </text>
-     }
+    
+    var LanguageWindowImg;
+   
 
     function ManageMovie(id) {
-        var url = id === 0 ? '/Movie/Manage' : '/Movie/Manage?Id=' + id;
-        var title = id === 0 ? "Add Movie" : "Edit Movie";
+        var url = id == 0 ? '/Movie/Manage' : '/Movie/Manage?Id=' + id;
+        var title = id == 0 ? "Add Movie" : "Edit Movie";
 
         try {
-            LanguageWindow = OpenConfirmWindowModal(url, title, 850);
+            LanguageWindow = OpenConfirmWindowModal(url, title, 900);
             console.log('LanguageWindow after opening modal:', LanguageWindow);
             return;
         } catch (e) {
@@ -76,11 +72,10 @@
 
     function CloseManageMovie() {
         console.log('LanguageWindow before closing modal:', LanguageWindow);
-
-        if (LanguageWindow) {
+        
             LanguageWindow.close();
             $('#grid').data('kendoGrid').dataSource.read();
-        }
+        
     }
 
     function SortMovieTable() {
@@ -114,7 +109,7 @@
         var title = "Upload Image";
 
         try {
-            LanguageWindow = OpenConfirmWindowModal(url, title, 600);
+            LanguageWindowImg = OpenConfirmWindowModal(url, title, 600);
             return;
         } catch (e) {
             alert(e);

@@ -1,6 +1,16 @@
 ﻿@using Kendo.Mvc.UI
 @model ViewModel.MovieViewModel
+@{
+    Layout = null;
+}
+<style>
 
+    #errorMsgSpan {
+        color: red;
+        display: inline-block;
+    }
+</style>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script>
 
     function onRemove(e) {
@@ -29,21 +39,21 @@
 
 
 <div class="row">
-     <div class="col-md-4" style="float:none;margin:auto;margin-top:10%;">
-         @using (Html.BeginForm("Save", "Movie", FormMethod.Post))
-         {
-             @Html.AntiForgeryToken()
-             @Html.HiddenFor(model => model.Id)
-             <div>
-                 <div class="col-md-12">
-                     <div class="card">
-                         <div class="card-body" style="text-align:center;">
-                             <img src=@ViewBag.Photo id="displayPhoto" class="imageDisplay img-thumbnail" />
-                         </div>
-                     </div>
-                 </div>
-                 <div class="col-md-12">
-                     @(Html.Kendo().Upload()
+    <div class="col-md-4" style="float:none;margin:auto;margin-top:10%;">
+        @using (Html.BeginForm("Save", "Movie", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            <div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center;">
+                            <img src=@ViewBag.Photo id="displayPhoto" class="imageDisplay img-thumbnail" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    @(Html.Kendo().Upload()
                                 .Name("Photo")
                                 .HtmlAttributes(new { aria_label = "files", @style = "width:300px;" })
                                 .Validation(validation =>
@@ -58,16 +68,23 @@
                                  .Remove("onRemove")
                                  )
                     )
-                 </div>
-                 <div class="col-md-12" style="margin-top:5px;">
-                     <button type="submit" class="btn btn-success w-100">Save</button>
-                 </div>
+                </div>
+                <div class="col-md-12" style="margin-top:5px;">
+                    <button type="submit" class="btn btn-success w-100">Save</button>
+                </div>
+                <a class="btn btn-default" id="img-cancel-button" onclick="CancelImgUpdate()">Cancel</a>
+            </div>
 
-             </div>
-
-         }
-     </div>
+        }
+    </div>
 </div>
+
+<script>
+    var LanguageWindowImg;
+    function CancelImgUpdate() {
+        LanguageWindowImg.close();
+    }
+</script>
 
 
 

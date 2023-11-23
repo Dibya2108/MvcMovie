@@ -2109,14 +2109,15 @@ body.authentication-bg-pattern {
   width: 140px; }
 
 .auth-fluid {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
-  flex-direction: row;
-  align-items: stretch;
-  background: url("../images/bg-auth.jpg") center;
-  background-size: cover; }
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: row;
+    align-items: stretch;
+    background: url("../images/bg1.png.jpg") center;
+    background-size: cover;
+}
   .auth-fluid .auth-fluid-form-box {
     max-width: 480px;
     border-radius: 0;

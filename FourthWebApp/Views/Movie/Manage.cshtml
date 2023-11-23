@@ -80,8 +80,8 @@
         <button type="submit" class="btn btn-primary">
             @(Model.Id == 0 ? "Create" : "Save Changes")
         </button>
-
-        @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+        <a class="btn btn-default" id="movie-cancel-button" onclick="CancelMovieUpdate()">Cancel</a>
+        @*@Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })*@
 
         <span id="errorMsgSpan">@ViewBag.msg</span>
     </div>
@@ -91,3 +91,9 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
+<script>
+    var LanguageWindow;;
+    function CancelMovieUpdate() {
+       LanguageWindow.close();
+    }
+</script>
