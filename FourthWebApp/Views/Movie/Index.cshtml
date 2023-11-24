@@ -92,18 +92,23 @@
             ]
         });
     }
-
     function DeleteMovie(id) {
-        var url = '/Movie/Delete?Id=' + id;
-        var title = "Delete Movie";
 
-        try {
-            LanguageWindow = OpenConfirmWindowModal(url, title, 450);
-            return;
-        } catch (e) {
-            alert(e);
+        if (confirm("Are you sure to delete?")) {
+
+            $.ajax({
+                /**/
+                url: "/Movie/Delete?Id=" + id,
+                /**/
+                type: "GET",
+                success: function (result) {
+                    $('#grid').data('kendoGrid').dataSource.read();
+                }
+            });
         }
+
     }
+    
 
     function AddImage(id) {
         var url = '/Movie/ImageUpload?Id=' + id;

@@ -43,7 +43,7 @@
     <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- Head js -->
     <script src="~/assets/js/head.js"></script>
-
+    
     @* Add the Kendo SASS Bootstrap theme: *@
     <link href="https://kendo.cdn.telerik.com/themes/6.7.0/bootstrap/bootstrap-main.css" rel="stylesheet" type="text/css" />
 
@@ -69,15 +69,245 @@
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
-<body>
+<body data-layout-mode="default" data-theme="light" data-layout-width="fluid" data-topbar-color="dark" data-menu-position="fixed" data-leftbar-color="light" data-leftbar-size='default' data-sidebar-user='false'>
+    <div id="wrapper">
 
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
+
+        <!-- Topbar Start -->
+        <div class="navbar-custom">
+            <div class="container-fluid">
+                <ul class="list-unstyled topnav-menu float-end mb-0">
+
+
+
+                    <li class="dropdown notification-list topbar-dropdown">
+                        <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                            <img src="~/assets/images/users/user-1.jpg" alt="user-image" class="rounded-circle">
+                            <span class="pro-user-name ms-1">
+                                Geneva <i class="mdi mdi-chevron-down"></i>
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
+                            <!-- item-->
+                            <div class="dropdown-header noti-title">
+                                <h6 class="text-overflow m-0">Welcome !</h6>
+                            </div>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-user"></i>
+                                <span>My Account</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-settings"></i>
+                                <span>Settings</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-lock"></i>
+                                <span>Lock Screen</span>
+                            </a>
+
+                            <div class="dropdown-divider"></div>
+
+                            <!-- item-->
+                            <a href="/Account/LogOut" class="dropdown-item notify-item">
+                                <i class="fe-log-out"></i>
+                                <span>Logout</span>
+                            </a>
+
+                        </div>
+                    </li>
+
+                    @*<li class="dropdown notification-list">
+                            <a href="javascript:void(0);" class="nav-link right-bar-toggle waves-effect waves-light">
+                                <i class="fe-settings noti-icon"></i>
+                            </a>
+                        </li>*@
+
+                </ul>
+
+                <!-- LOGO -->
+                <div class="logo-box">
+                    <a href="index.html" class="logo logo-dark text-center">
+                        <span class="logo-sm">
+                            <img src="~/assets/images/logo_tkd.png" alt="" height="40">
+                            <!-- <span class="logo-lg-text-light">UBold</span> -->
+                        </span>
+                        <span class="logo-lg">
+                            <img src="~/assets/images/logo_taekwondo_new.png" alt="" height="60">
+                            <!-- <span class="logo-lg-text-light">U</span> -->
+                        </span>
+                    </a>
+
+                    <a href="index.html" class="logo logo-light text-center">
+                        <span class="logo-sm">
+                            <img src="~/assets/images/logo_tkd.png" alt="" height="40">
+                        </span>
+                        <span class="logo-lg">
+                            <img src="~/assets/images/logo_taekwondo_new.png" alt="" height="60">
+                        </span>
+                    </a>
+                </div>
+
+                <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
+                    <li>
+                        <button class="button-menu-mobile waves-effect waves-light">
+                            <i class="fe-menu"></i>
+                        </button>
+                    </li>
+
+                    <li>
+                        <!-- Mobile menu toggle (Horizontal Layout)-->
+                        <a class="navbar-toggle nav-link" data-bs-toggle="collapse" data-bs-target="#topnav-menu-content">
+                            <div class="lines">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                        </a>
+                        <!-- End mobile menu toggle-->
+                    </li>
+
+
+                </ul>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+        <!-- end Topbar -->
+        <!-- ========== Left Sidebar Start ========== -->
+        <div class="left-side-menu">
+
+            <div class="h-100" data-simplebar>
+
+                <!-- User box -->
+                <div class="user-box text-center">
+                    <img src="assets/images/users/user-1.jpg" alt="user-img" title="Mat Helme"
+                         class="rounded-circle avatar-md">
+                    <div class="dropdown">
+                        <a href="javascript: void(0);" class="text-dark dropdown-toggle h5 mt-2 mb-1 d-block"
+                           data-bs-toggle="dropdown">Geneva Kennedy</a>
+                        <div class="dropdown-menu user-pro-dropdown">
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-user me-1"></i>
+                                <span>My Account</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-settings me-1"></i>
+                                <span>Settings</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-lock me-1"></i>
+                                <span>Lock Screen</span>
+                            </a>
+
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-log-out me-1"></i>
+                                <span>Logout</span>
+                            </a>
+
+                        </div>
+                    </div>
+                    <p class="text-muted">Admin Head</p>
+                </div>
+
+                <!--- Sidemenu -->
+
+
+                <div id="sidebar-menu">
+                    <ul id="side-menu">
+                        <li id="MainMenuMovie">
+                            <a href="#sidebarMovie" data-bs-toggle="collapse">
+                                <i class="fa fa-cube"></i>
+                                @*<span class="badge bg-success rounded-pill float-end">4</span>*@
+                            <span> Movie </span>
+                            </a>
+                            <div class="collapse" id="sidebarMovie">
+                                <ul class="nav-second-level">
+                                    <li id="MovieList">
+                                        <a href="/Movie/Index">MovieList</a>
+                                    </li>
+                                    <li id="ShowtimeList">
+                                        <a href="/ShowTime/Index">ShowTime</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li id="MainMenuTeam">
+                            <a href="#sidebarTeam" data-bs-toggle="collapse">
+                                <i class="fa fa-users"></i>
+                                @*<span class="badge bg-success rounded-pill float-end">4</span>*@
+                                <span> Team </span>
+                            </a>
+                            <div class="collapse" id="sidebarTeam">
+                                <ul class="nav-second-level">
+                                    <li>
+                                        <a href="/team/teamdetails">Details</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="clearfix"></div>
+
+            </div>
+            <!-- Sidebar -left -->
+
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- ============================================================== -->
+        <!-- Start Page Content here -->
+        <!-- ============================================================== -->
+
+        <div class="content-page">
+
+
+            <div class="content">
+
+                <!-- Start Content-->
+                <div class="container-fluid">
+
+                    @RenderBody()
+
+                </div> <!-- container -->
+
+            </div> <!-- content -->
+        </div>
+
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
+    <div class="rightbar-overlay"></div>
+
+    <script src="~/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
+
+    <script src="~/assets/libs/selectize/js/standalone/selectize.min.js"></script>
+
+    <!-- Dashboar 1 init js-->
+    <script src="~/assets/js/pages/dashboard-1.init.js"></script>
+
+    <script src="~/assets/libs/clockpicker/bootstrap-clockpicker.min.js"></script>
+    <script src="~/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <!-- Vendor js -->
+    @*<script src="~/assets/js/vendor.min.js"></script>*@
+    <!-- Init js-->
+    <script src="~/assets/js/pages/form-pickers.init.js"></script>
+    <script src="~/assets/js/app.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery-confirm.js"></script>
     <script src="~/Scripts/CommonUI.js"></script>
@@ -87,6 +317,20 @@
     @*@Scripts.Render("~/bundles/bootstrap")*@
     @Styles.Render("~/Kendo/styles")
     @*@RenderSection("scripts", required: false)*@
+
+
+    <script>
+        function ShowError(msg) {
+            alert(msg)
+        }
+        function OnlyNumericEntry(e) {
+            var keyCode = e.which ? e.which : e.keyCode;
+            //alert(keyCode);
+            var ret = ((keyCode == 09 || keyCode == 08 || (keyCode >= 48 && keyCode <= 57)));
+            //alert(ret)
+            return ret;
+        }
+    </script>
 
 </body>
 </html>

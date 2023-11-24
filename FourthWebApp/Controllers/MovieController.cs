@@ -85,8 +85,12 @@ namespace MvcMovie.Controllers
             return JavaScript("CloseManageMovie(" + movId + @");");
             
             }
-        
 
+        public JsonResult CheckDupMovie(int Id, string Title)
+        {
+            bool isExist = _movieDalSql.MovieExist(Id, Title);
+            return Json(isExist, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Details(int id)
             {
@@ -106,32 +110,36 @@ namespace MvcMovie.Controllers
 
             }
 
-            public ActionResult Delete(int? id)
+            public string Delete(int id)
             {
-                if (id == null)
-                {
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-                MovieViewModel movieViewModel = _movieDalSql.Delete(id.Value);
-                if (movieViewModel == null)
-                {
-                    return HttpNotFound();
-                }
-                return View(movieViewModel);
+            string msg = "";
+            try
+            {
+                _movieDalSql.DeleteConfirm(id);
+                msg = "Ok";
+            }
+            catch (Exception e)
+            {
+                msg = "ERROR : " + e.Message;
+            }
+            return msg;
+
+            
+
             }
 
-            [HttpPost, ActionName("Delete")]
-            [ValidateAntiForgeryToken]
-            public ActionResult DeleteConfirmed(int id)
-            {
-                var deleteResult = _movieDalSql.DeleteConfirm(id);
+            //[HttpPost, ActionName("Delete")]
+            //[ValidateAntiForgeryToken]
+            //public ActionResult DeleteConfirmed(int id)
+            //{
+            //    var deleteResult = _movieDalSql.DeleteConfirm(id);
 
-                if (!deleteResult)
-                {
-                    return HttpNotFound();
-                }
-                return RedirectToAction("Index");
-            }
+            //    if (!deleteResult)
+            //    {
+            //        return HttpNotFound();
+            //    }
+            //    return RedirectToAction("Index");
+            //}
 
             public string GetMoviesByLanguage(int? languageId)
             {

@@ -596,5 +596,42 @@ namespace Data_Access
             return imagePath;
         }
 
+        public bool MovieExist(int id, string title)
+        {
+            using (SqlConnection connection = new SqlConnection(strConString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT Id FROM [Movies] WHERE LOWER(Title) = LOWER(@Title) AND Id <> @Id", connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.Parameters.AddWithValue("@Title", title);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        return !reader.HasRows;
+                    }
+                }
+            }
+        }
+
+        
+
+        public bool LanguageExist(int languageId, string languageName)
+        {
+            using (SqlConnection connection = new SqlConnection(strConString))
+            {
+                connection.Open();
+                using (SqlCommand command = new SqlCommand("SELECT LanguageID FROM [Languages] WHERE LOWER(LanguageName) = LOWER(@LanguageName) AND LanguageID <> @LanguageID", connection))
+                {
+                    command.Parameters.AddWithValue("@LanguageID", languageId);
+                    command.Parameters.AddWithValue("@LanguageName", languageName);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        return !reader.HasRows;
+                    }
+                }
+            }
+        }
     }
 }

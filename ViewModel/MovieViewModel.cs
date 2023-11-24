@@ -14,6 +14,7 @@ namespace ViewModel
         public int Id { get; set; }
 
         [Required(ErrorMessage = "required")]
+        [Remote("CheckDupMovie", "Movie", AdditionalFields = "Id, Title", ErrorMessage = "The name already exist!")]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "required")]
@@ -36,6 +37,7 @@ namespace ViewModel
         //---------Language Table-----------//
 
         [Required(ErrorMessage = "required")]
+        [Remote("CheckDupLanguage", "Language", AdditionalFields = "LanguageID, LanguageName", ErrorMessage = "The name already exist!")]
         public string LanguageName { get; set; }        
         public int LanguageID { get; set; }
 

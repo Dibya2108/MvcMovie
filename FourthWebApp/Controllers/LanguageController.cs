@@ -66,11 +66,7 @@ namespace MvcMovie.Controllers
                     }
 
                 return JavaScript("CloseLanguage()");
-                //    TempData["ManageSuccess"] = true;
-                //    return RedirectToAction("Index");
-                ////}
-                //return View();
-
+                
             }
 
             catch
@@ -79,6 +75,12 @@ namespace MvcMovie.Controllers
                 return View(model);
 
             }
+        }
+
+        public JsonResult CheckDupLanguage(int LanguageID, string LanguageName)
+        {
+            bool isExist = _movieDalSql.LanguageExist(LanguageID, LanguageName);
+            return Json(isExist, JsonRequestBehavior.AllowGet);
         }
     }
 }
