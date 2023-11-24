@@ -95,10 +95,11 @@
                         <div class="form-group">
                             <label><strong>User Name</strong></label><br />
                             @*@Html.LabelFor(model => model.UserName, new { @class = "control-label col-md-2" })*@
-                            <div class="col-md-10">
-                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
-                                <span style="color: red;">@Html.ValidationMessageFor(model => model.UserName)</span>
-                            </div>
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+                            <span style="color: red;">@Html.ValidationMessageFor(model => model.UserName)</span>
+                            <small id="userHelp" class="form-text text-muted">We'll never share your details with anyone else.</small>
+                        </div>
                         </div>
 
                         <div class="form-group">

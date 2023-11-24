@@ -59,7 +59,7 @@
 
     function ManageMovie(id) {
         var url = id == 0 ? '/Movie/Manage' : '/Movie/Manage?Id=' + id;
-        var title = id == 0 ? "Add Movie" : "Edit Movie";
+        var title = id == 0 ? "Create New Movie" : "Edit Movie";
 
         try {
             LanguageWindow = OpenConfirmWindowModal(url, title, 900);

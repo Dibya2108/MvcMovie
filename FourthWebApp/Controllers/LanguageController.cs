@@ -48,14 +48,14 @@ namespace MvcMovie.Controllers
         {
             try
             {
-                if (!_movieDalSql.IsLanguageNameUnique(model.LanguageID, model.LanguageName))
-                {
+                //if (!_movieDalSql.IsLanguageNameUnique(model.LanguageID, model.LanguageName))
+                //{
                     
-                    TempData["DuplicateCheck"] = true;
+                //    TempData["DuplicateCheck"] = true;
                     
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     if (model.LanguageID == 0)
                     {
                         _movieDalSql.AddLanguage(model.LanguageName);
@@ -65,12 +65,12 @@ namespace MvcMovie.Controllers
                         _movieDalSql.UpdateLanguage(model);
                     }
 
-                    //return JavaScript("CloseLanguage()");
-                    TempData["ManageSuccess"] = true;
-                    return RedirectToAction("Index");
-                }
-                return View();
-                
+                return JavaScript("CloseLanguage()");
+                //    TempData["ManageSuccess"] = true;
+                //    return RedirectToAction("Index");
+                ////}
+                //return View();
+
             }
 
             catch

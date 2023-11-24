@@ -34,7 +34,7 @@
 </div>
 
 <script>
-    @if (TempData["ManageSuccess"] != null && (bool)TempData["ManageSuccess"])
+    @*@if (TempData["ManageSuccess"] != null && (bool)TempData["ManageSuccess"])
     {
         <text>
             CloseLanguage();
@@ -46,7 +46,7 @@
         <text>
             DuplicateName();
         </text>
-    }
+    }*@
 
     var LanguageWindow;
 
@@ -80,19 +80,19 @@
         }
     }
 
-    function DuplicateName() {
-        const errorSpan = document.getElementById("errorSpan");
-        if (errorSpan) {
-            errorSpan.innerHTML = "Duplicate language name detected. Please choose a different name.";
-            errorSpan.style.display = "block";
-        }
+    //function DuplicateName() {
+    //    const errorSpan = document.getElementById("errorSpan");
+    //    if (errorSpan) {
+    //        errorSpan.innerHTML = "Duplicate language name detected. Please choose a different name.";
+    //        errorSpan.style.display = "block";
+    //    }
 
-        const languageNameInput = document.getElementById("LanguageName");
-        if (languageNameInput) {
-            languageNameInput.value = "";
-            languageNameInput.focus();
-        }
-    }
+    //    const languageNameInput = document.getElementById("LanguageName");
+    //    if (languageNameInput) {
+    //        languageNameInput.value = "";
+    //        languageNameInput.focus();
+    //    }
+    //}
 
     function searchLanguage() {
         var searchText1 = $("#LanguageSearchText").val();

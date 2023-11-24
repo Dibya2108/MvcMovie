@@ -13,7 +13,7 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-<h2>@(Model.Id == 0 ? "Create New Movie" : "Edit Movie")</h2>
+<h2>@*@(Model.Id == 0 ? "Create New Movie" : "Edit Movie")*@</h2>
 
 
 @Html.ValidationSummary(true)
@@ -28,72 +28,80 @@
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Id)
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Title, new { @class = "control-label" })
-        @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+    <div class="popup-col" style="margin-right:12px!important">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+        </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Genre, new { @class = "control-label" })
-        @Html.EditorFor(model => model.Genre, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
+    <div class="popup-col-left" style="margin-right:12px!important">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Genre, new { @class = "control-label" })
+            @Html.EditorFor(model => model.Genre, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
+        </div>
     </div>
+    <div class="popup-col-right">
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReleaseDate, new { @class = "control-label" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ReleaseDate, new { @class = "control-label" })
+            <div class="input-group">
+                <span class="input-group-addon"></span>
+                @Html.TextBoxFor(model => model.ReleaseDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control" })
+            </div>
 
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-            @Html.TextBoxFor(model => model.ReleaseDate, "{0:yyyy-MM-dd}", new { @type = "date", @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
+        </div>
         </div>
 
-        @Html.ValidationMessageFor(model => model.ReleaseDate, "", new { @class = "text-danger" })
-    </div>
+        <div class="popup-col-left" style="margin-right:12px!important">
+            <div class="form-group">
+                <label>Rating</label>
+                @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="popup-col-right">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, new { @class = "control-label" })
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="popup-col-left" style="margin-right:12px!important">
+            <div class="form-group">
+                @Html.LabelFor(model => model.SelectedLanguageId, "Language", htmlAttributes: new { @class = "control-label" })
+                @Html.DropDownListFor(model => model.SelectedLanguageId, Model.Languages as SelectList, "-- Select Language --", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SelectedLanguageId, "", new { @class = "text-danger" })
+            </div>
+        </div>
 
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Rating, new { @class = "control-label" })
-        @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Price, new { @class = "control-label" })
-        @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.SelectedLanguageId, "Language", htmlAttributes: new { @class = "control-label" })
-        @Html.DropDownListFor(model => model.SelectedLanguageId, Model.Languages as SelectList, "-- Select Language --", htmlAttributes: new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.SelectedLanguageId, "", new { @class = "text-danger" })
-    </div>
-
-   
 
 
+        <div class="popup-col">
+            <div class="form-group" style="float:left; padding-top:8px">
 
-    <div class="form-group">
+                @*<button type="submit" value="@(Model.Id == 0 ? "Create" : "Save Changes")" class="btn btn-primary" />*@
+                <button type="submit" class="btn btn-success">
+                    @(Model.Id == 0 ? "Create" : "Save Changes")
+                </button>
+                <a class="btn btn-default" id="movie-cancel-button" onclick="CancelMovieUpdate()">Cancel</a>
+                @*@Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })*@
 
-        @*<button type="submit" value="@(Model.Id == 0 ? "Create" : "Save Changes")" class="btn btn-primary" />*@
-        <button type="submit" class="btn btn-primary">
-            @(Model.Id == 0 ? "Create" : "Save Changes")
-        </button>
-        <a class="btn btn-default" id="movie-cancel-button" onclick="CancelMovieUpdate()">Cancel</a>
-        @*@Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })*@
+                <span id="errorMsgSpan">@ViewBag.msg</span>
+            </div>
+            </div>
+            }
 
-        <span id="errorMsgSpan">@ViewBag.msg</span>
-    </div>
-}
+            @*<div>
+                @Html.ActionLink("Back to List", "Index")
+            </div>*@
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-<script>
-    var LanguageWindow;;
-    function CancelMovieUpdate() {
-       LanguageWindow.close();
-    }
-</script>
+            <script>
+                var LanguageWindow;;
+                function CancelMovieUpdate() {
+                    LanguageWindow.close();
+                }
+            </script>
