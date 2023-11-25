@@ -60,15 +60,16 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage(MovieViewModel movieViewModel)
         {
-            int movId = movieViewModel.Id;
+            //int movId = movieViewModel.Id;
 
-
+            int i = 0;
 
             if (movieViewModel.Id == 0)
             {
 
                 movieViewModel.IsDeleted = false;
-                _movieDalSql.InsertMovie(movieViewModel);
+                i = _movieDalSql.InsertMovie(movieViewModel);
+                return JavaScript("CloseManageMovie(1," + i + @")");
 
 
             }
@@ -78,7 +79,8 @@ namespace MvcMovie.Controllers
 
             }
             movieViewModel.Languages = new SelectList(_movieDalSql.GetLanguages(), "Value", "Text");
-            return JavaScript("CloseManageMovie(" + movId + @");");
+            //return JavaScript("CloseManageMovie(" + movId + @");");
+            return JavaScript("CloseManageMovie(0," + i + @")");
 
         }
 

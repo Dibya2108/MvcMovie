@@ -249,7 +249,7 @@ namespace Data_Access
         //    }
         //}
 
-        public void InsertMovie(MovieViewModel newMovie)
+        public int InsertMovie(MovieViewModel newMovie)
         {
             using (SqlConnection con = new SqlConnection(strConString))
             {
