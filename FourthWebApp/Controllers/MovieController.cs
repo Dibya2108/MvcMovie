@@ -56,35 +56,31 @@ namespace MvcMovie.Controllers
         }
 
 
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public ActionResult Manage(MovieViewModel movieViewModel)
-            {
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Manage(MovieViewModel movieViewModel)
+        {
             int movId = movieViewModel.Id;
 
-            if (!_movieDalSql.IsMovieNameUnique(movieViewModel.Id, movieViewModel.Title))
-                    {
-                        ViewBag.msg = "Duplicate Movie Name";
-                                                
-                    }
-
-                    if (movieViewModel.Id == 0)
-                    {
-                        
-                        movieViewModel.IsDeleted = false;
-                        _movieDalSql.InsertMovie(movieViewModel);
 
 
-                    }
-                    else
-                    {
-                        _movieDalSql.UpdateMovie(movieViewModel);
+            if (movieViewModel.Id == 0)
+            {
 
-                    }
+                movieViewModel.IsDeleted = false;
+                _movieDalSql.InsertMovie(movieViewModel);
+
+
+            }
+            else
+            {
+                _movieDalSql.UpdateMovie(movieViewModel);
+
+            }
             movieViewModel.Languages = new SelectList(_movieDalSql.GetLanguages(), "Value", "Text");
             return JavaScript("CloseManageMovie(" + movId + @");");
-            
-            }
+
+        }
 
         public JsonResult CheckDupMovie(int Id, string Title)
         {
