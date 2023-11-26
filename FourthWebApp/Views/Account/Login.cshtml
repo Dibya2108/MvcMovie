@@ -85,7 +85,7 @@
 
                     <!-- title-->
                     <h4 class="mt-0">Sign In</h4>
-                    <p class="text-muted mb-4">Enter your email address and password to access account.</p>
+                    <p class="text-muted mb-4">Enter your username and password to access account.</p>
 
 
                     @using (Html.BeginForm("Login", "Account", FormMethod.Post))
@@ -105,10 +105,11 @@
                         <div class="form-group">
                             <label><strong>Password</strong></label><br />
                             @*@Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })*@
-                            <div class="col-md-10">
-                                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                                <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
-                            </div>
+                        <div class="col-md-10">
+                            @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
+                            <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
+                            <span class="password-eye"></span>
+                        </div>
                         </div>
 
                         <span id="errorMsgUser">@ViewBag.ErrorMessage</span>
