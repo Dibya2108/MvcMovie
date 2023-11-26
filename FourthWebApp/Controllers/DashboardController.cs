@@ -12,14 +12,19 @@ namespace MvcMovie.Controllers
     public class DashboardController : Controller
     {
         MovieDalSql _movieDalSql = new MovieDalSql();
+        AccountDalSql _accountDalSql = new AccountDalSql();
        // GET: Dashboard
         public ActionResult Index()
+
         {
+            int loggedInUserId = (int)Session["UserId"];
             List<MovieViewModel> cards = _movieDalSql.GetMoviesForKendoGrid();
             StringBuilder sb = new StringBuilder();
 
 
-
+            UserViewModel user = new UserViewModel();
+            user.UserId = loggedInUserId;
+            user.UserTypeId =_accountDalSql.GetUserTypeByUserId(loggedInUserId);
             //sb.Append("<div style='display: flex;'>");
             sb.Append("<div class='row'>");
             
@@ -45,7 +50,7 @@ namespace MvcMovie.Controllers
 
             ViewBag.CardHtml = sb.ToString();
 
-            return View();
+            return View(user);
         }
 
 

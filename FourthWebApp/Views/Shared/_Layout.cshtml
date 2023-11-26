@@ -1,6 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@model ViewModel.UserViewModel
+<!DOCTYPE html>
 <html lang="en">
+@Html.HiddenFor(model => model.UserTypeId, new { id = "UserTypeId" })
 
+@Html.HiddenFor(model => model.UserId, new { id = "UserId" })
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,13 +70,10 @@
         <div class="navbar-custom">
             <div class="container-fluid">
                 <ul class="list-unstyled topnav-menu float-end mb-0">
-
-                   
-
                 </ul>
 
                 <!-- LOGO -->
-                
+
 
                 <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
                     <li>
@@ -82,7 +82,7 @@
                         </button>
                     </li>
 
-                    
+
 
                 </ul>
                 <div class="clearfix"></div>
@@ -93,40 +93,70 @@
         <div class="left-side-menu">
             <div class="h-100" data-simplebar>
 
-                
+
 
                 <!--- Sidemenu -->
                 <div id="sidebar-menu">
                     <ul id="side-menu">
                         <li id="MainMenuMovie">
                             <a href="#sidebarMovie" data-bs-toggle="collapse">
-                                <i class="fa fa-film" ></i>
+                                <i class="fa fa-film"></i>
                                 <span> Movie </span>
                             </a>
                             <div class="collapse" id="sidebarMovie">
                                 <ul class="nav-second-level">
-                                    @if (ViewBag.userType == 1)
+                                    <li id="MovieList">
+                                        <a href="/Dashboard/Index">Dashboard</a>
+                                    </li>
+                                    @if (Model.UserTypeId == 1)
                                     {
                                         <li id="MovieList">
-                                            <a href="/Movie/Index">MovieList</a>
+                                            <a href="/Movie/Index">Movies</a>
+                                        </li>
+
+                                        <li id="LanguageList">
+                                            <a href="~/Language/Index">Languages</a>
+                                        </li>
+
+                                        <li id="AllBookings">
+                                            <a href="/ShowTime/BookTicketIndex">All Bookings</a>
                                         </li>
                                     }
-                                        <li id="ShowtimeList">
-                                            <a href="/ShowTime/Index">ShowTime</a>
-                                        </li>
-                                    </ul>
+                                    <li id="WatchList">
+                                        <a href="/Account/WatchList">WatchList</a>
+                                    </li>
+                                    <li id="ShowTime">
+                                        <a href="/ShowTime/Index">ShowTime</a>
+                                    </li>
+
+                                </ul>
                             </div>
                         </li>
-                        <li id="MainMenuTeam">
-                            <a href="#sidebarTeam" data-bs-toggle="collapse">
-                                <i class="fa fa-users"></i>
-                                <span> Team </span>
+                        <li id="MainMenuSettings">
+                            <a href="#setting" data-bs-toggle="collapse">
+                                <i class="fa fa-user"></i>
+                                <span> Settings </span>
                             </a>
-                            <div class="collapse" id="sidebarTeam">
+                            <div class="collapse" id="setting">
                                 <ul class="nav-second-level">
+
                                     <li>
-                                        <a href="/team/teamdetails">Details</a>
+                                        <a href="/ShowTime/MyBookings">My Bookings</a>
                                     </li>
+
+                                    <li>
+                                        <a href="/Account/UserProfile">Profile</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">Logout</a>
+                                    </li>
+                                    @if (Model.UserTypeId == 1)
+                                    {
+                                        <li>
+                                            <a href="/Account/User">Edit User</a>
+                                        </li>
+                                    }
                                 </ul>
                             </div>
                         </li>
@@ -185,6 +215,9 @@
             var ret = ((keyCode == 09 || keyCode == 08 || (keyCode >= 48 && keyCode <= 57)));
             return ret;
         }
+
+        alert($("#UserId").val());
+        alert($("#UserTypeId").val());
     </script>
 
 </body>
