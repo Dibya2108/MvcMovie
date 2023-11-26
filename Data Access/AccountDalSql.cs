@@ -733,5 +733,32 @@ namespace Data_Access
                 return rowsAffected > 0;
             }
         }
+
+        public int GetUserTypeByUserId(int userId)
+        {
+            int userTypeId = -1; // Default value if the usertype is not found.
+
+            using (SqlConnection connection = new SqlConnection(strConString))
+            {
+                connection.Open();
+
+                string query = "SELECT UserTypeId FROM Users WHERE UserId = @UserId";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            userTypeId = Convert.ToInt32(reader["UserTypeId"]);
+                            
+                        }
+                    }
+                }
+            }
+
+            return userTypeId;
+        }
     }
 }

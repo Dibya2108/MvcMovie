@@ -70,8 +70,11 @@ namespace MvcMovie.Controllers
                 int userId = _accountDalSql.GetUserIdByUsername(model.UserName);
 
                 Session["UserId"] = userId;
+                int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
-                return RedirectToAction("WatchList", "Account", new { userId = userId });
+                ViewBag.userType = userType;
+
+                return RedirectToAction("Index", "Dashboard");
             }
             else
             {
