@@ -254,7 +254,9 @@ namespace Data_Access
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string insertQuery = "INSERT INTO Movies (Title, Genre, ReleaseDate, Rating, Price, SelectedLanguageID, IsDeleted, MovieImage) " +
+                string insertQuery = "INSERT INTO Movies (Title, Genre, ReleaseDate, Rating, Price, SelectedLanguageID, IsDeleted, MovieImage)" +
+                    "OUTPUT INSERTED.Id  " +
+
                                      "VALUES (@Title, @Genre, @ReleaseDate, @Rating, @Price, @SelectedLanguageID, @IsDeleted, '/Images/Large/Movies/movie.png');";
 
                 SqlCommand insertCmd = new SqlCommand(insertQuery, con);
@@ -266,7 +268,19 @@ namespace Data_Access
                 insertCmd.Parameters.AddWithValue("@SelectedLanguageID", newMovie.SelectedLanguageId);
                 insertCmd.Parameters.AddWithValue("@IsDeleted", newMovie.IsDeleted);
 
-                insertCmd.ExecuteNonQuery();
+                int insertedId = 0;
+                using (SqlDataReader reader = insertCmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        insertedId = Convert.ToInt32(reader["Id"]);
+                    }
+                }
+
+                return insertedId;
+            
+
+            //insertCmd.ExecuteNonQuery();
             }
         }
 

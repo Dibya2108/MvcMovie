@@ -37,9 +37,11 @@ namespace MvcMovie.Controllers
             return Json(movie.ToDataSourceResult(request));
         }
 
-        public ActionResult Manage(int id = 0)
+        public ActionResult Manage(int id, int fromEdit)
             {
             MovieViewModel model = new MovieViewModel();
+            bool isEditMode = (id != 0);
+            ViewBag.IsEditMode = isEditMode;
             if (id != 0)
             {
                 model = _movieDalSql.GetMovieViewModel(id);
@@ -51,6 +53,7 @@ namespace MvcMovie.Controllers
 
             var languages = _movieDalSql.GetLanguages();
             model.Languages = new SelectList(languages, "Value", "Text");
+            ViewBag.IsFromPencilIcon = fromEdit;
             return View(model);
 
         }
@@ -181,10 +184,11 @@ namespace MvcMovie.Controllers
             return View(movie);
         }
 
-
+        [HttpPost, ActionName("ImageUpload")]
+        [ValidateAntiForgeryToken]
         public ActionResult Save(HttpPostedFileBase Photo, int id)
         {
-            ;
+            
 
             if (Photo != null)
             {

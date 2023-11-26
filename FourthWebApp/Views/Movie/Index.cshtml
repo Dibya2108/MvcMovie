@@ -10,7 +10,7 @@
         <input style="width: 300px;" type="text" id="MovieSearchText" placeholder="Search Movie" onkeyup="SortMovieTable()" />
     </div>
     <div>
-        <button type="button" class="btn btn-primary" onclick="ManageMovie(0)">
+        <button type="button" class="btn btn-primary" onclick="ManageMovie(0,0)">
             <i class="fa fa-plus"></i>&nbsp;Add New Movie
         </button>
         <a href="/Language/Index" class="btn btn-primary">
@@ -39,7 +39,7 @@
                 .ClientTemplate("<img src='#=MovieImage#' style='width: 50px; height: 50px;' />")
                 .HeaderHtmlAttributes(new { style = "font-weight:bold;" });
 
-            columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='ManageMovie(#=Id#)' id='editAnchor_#=Id#'><i class='fa fa-pencil'></i></a>").Width(30).Sortable(false).Filterable(false);
+            columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='ManageMovie(#=Id#, 1)' id='editAnchor_#=Id#'><i class='fa fa-pencil'></i></a>").Width(30).Sortable(false).Filterable(false);
             columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Delete' onclick='DeleteMovie(#=Id#)'><i class='fa fa-trash-o'></i></a>").Width(30).Sortable(false).Filterable(false);
             columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Add Image' onclick='AddImage(#=Id#)'><i class='fa fa-image'></i></a>").Width(30).Sortable(false).Filterable(false);
         })
@@ -57,27 +57,48 @@
     var LanguageWindowImg;
 
 
-    function ManageMovie(id) {
-        var url = id == 0 ? '/Movie/Manage' : '/Movie/Manage?Id=' + id;
-        var title = id == 0 ? "Create New Movie" : "Edit Movie";
+    function ManageMovie(Id, fromEdit) {
 
+        var url = '';
+        var title = "";
         try {
+            if (Id == 0) {
+                title = "Add Movie";
+            }
+            else {
+
+                title = "Edit Movie";
+            }
+
+            url = '/Movie/Manage?Id=' + Id + '&fromEdit=' + fromEdit;
+        
             LanguageWindow = OpenConfirmWindowModal(url, title, 900);
-            console.log('LanguageWindow after opening modal:', LanguageWindow);
+            
             return;
         } catch (e) {
             alert(e);
         }
     }
 
-    function CloseManageMovie(id) {
+    
 
-
+    function CloseManageMovie(mode, id) {
+        try {
             LanguageWindow.close();
-        $('#grid').data('kendoGrid').dataSource.read();
-        AddImage(id)
+            if (mode == 1) {
+                AddImage(id);
+            }
+            $('#grid').data('kendoGrid').dataSource.read();
+        }
+        catch (e) {
+            alert("An error occurred: " + e);
+        }  
+           
+            
+        }
 
-    }
+
+    
 
     function SortMovieTable() {
         var searchText = $("#MovieSearchText").val().toLowerCase();
