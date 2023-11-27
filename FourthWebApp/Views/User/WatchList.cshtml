@@ -59,7 +59,7 @@
     .Sortable()
     .DataSource(dataSource => dataSource
         .Ajax()
-        .Read(read => read.Action("GetWatchlist", "Account"))
+        .Read(read => read.Action("GetWatchlist", "User"))
     )
 )
 
@@ -97,11 +97,11 @@
 
         try {
             if (WatchListId == 0) {
-                url = '/Account/ManageWatchList';
+                url = '/User/ManageWatchList';
                 title = "Add WatchList";
             }
             else {
-                url = '/Account/ManageWatchList?WatchListId=' + WatchListId;
+                url = '/User/ManageWatchList?WatchListId=' + WatchListId;
                 title = "Edit WatchList ";
             }
 
@@ -130,11 +130,11 @@
 
         try {
             if (WatchListId == 0) {
-                url = '/Account/ManageFavourites';
+                url = '/User/ManageFavourites';
                 title = "Add Favourites";
             }
             else {
-                url = '/Account/ManageFavourites?WatchListId=' + WatchListId;
+                url = '/User/ManageFavourites?WatchListId=' + WatchListId;
                 title = "Edit Favourites ";
             }
 
@@ -147,7 +147,7 @@
 
     function CloseFavMovieManagement() {
         LanguageWindow.close();
-        $.get("/Account/GetFavouritesTable", function (data) {
+        $.get("/User/GetFavouritesTable", function (data) {
             $("#FavBody").html(data);
         });
     }
@@ -157,7 +157,7 @@
         var title = "";
 
         try {
-            url = '/Account/DeleteWatchList?WatchListId=' + watchlistId;
+            url = '/User/DeleteWatchList?WatchListId=' + watchlistId;
             title = "Delete Movie ";
             LanguageWindow = OpenConfirmWindowModal(url, title, 450);
             return;

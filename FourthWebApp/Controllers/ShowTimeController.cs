@@ -1,4 +1,5 @@
 ﻿using Data_Access;
+using FourthWebApp.Controllers;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -12,7 +13,7 @@ using ViewModel;
 
 namespace MvcMovie.Controllers
 {
-    public class ShowTimeController : Controller
+    public class ShowTimeController : BaseController
     {
 
         ShowTimeDalSql _ShowTimeDalSql = new ShowTimeDalSql();
@@ -21,9 +22,9 @@ namespace MvcMovie.Controllers
         public ActionResult Index()
         {
             int userId = (int)Session["UserId"];
-            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+            //int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
-            ViewBag.UserType = userType;
+            //ViewBag.UserType = userType;
             return View();
         }
 
@@ -136,9 +137,9 @@ namespace MvcMovie.Controllers
             // showtime values as a list
             var showtimeList = showtimes.FirstOrDefault();
             int userId = (int)Session["UserId"];
-            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+            //int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
-            ViewBag.UserType = userType;
+            //ViewBag.UserType = userType;
             // list of SelectListItem with three options
             var showtimeOptions = new List<Kendo.Mvc.UI.DropDownListItem>
     {
@@ -251,9 +252,9 @@ namespace MvcMovie.Controllers
         public ActionResult BookTicketIndex()
         {
             int userId = (int)Session["UserId"];
-            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+            //int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
-            ViewBag.UserType = userType;
+            //ViewBag.UserType = userType;
             return View();
         }
 
@@ -267,9 +268,9 @@ namespace MvcMovie.Controllers
         public ActionResult MyBookings()
         {
             int userId = (int)Session["UserId"];
-            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+            //int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
-            ViewBag.UserType = userType;
+            //ViewBag.UserType = userType;
             //int userId = 1; 
             
             return View(userId);

@@ -40,8 +40,12 @@ namespace ViewModel
         [Display(Name = "Password"), MaxLength(50)]
         public string Password { get; set; }
         public int IsActive { get; set; }
+
+
         public DateTime Created { get; set; }
+        public int CreatedBy { get; set; }
         public bool IsDeleted { get; set; }
         public int UserTypeId { get; set; }
+        public string UserType { get; set; }
     }
 }

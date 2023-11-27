@@ -131,10 +131,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
     <Compile Include="Controllers\MovieController.cs" />
     <Compile Include="Controllers\ShowTimeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -8284,12 +8286,12 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\UserProfile.cshtml" />
-    <Content Include="Views\Account\WatchList.cshtml" />
-    <Content Include="Views\Account\ManageWatchList.cshtml" />
-    <Content Include="Views\Account\ManageFavourites.cshtml" />
+    <Content Include="Views\User\UserProfile.cshtml" />
+    <Content Include="Views\User\WatchList.cshtml" />
+    <Content Include="Views\User\ManageWatchList.cshtml" />
+    <Content Include="Views\User\ManageFavourites.cshtml" />
     <Content Include="Views\ShowTime\Index.cshtml" />
-    <Content Include="Views\Account\DeleteWatchList.cshtml" />
+    <Content Include="Views\User\DeleteWatchList.cshtml" />
     <Content Include="Views\ShowTime\Manage.cshtml" />
     <Content Include="Views\ShowTime\BookTicket.cshtml" />
     <Content Include="Views\ShowTime\BookTicketIndex.cshtml" />
@@ -8303,6 +8305,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Images\TempImage\" />
     <Folder Include="NewFolder1\" />
+    <Folder Include="Views\Abstract\" />
+    <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

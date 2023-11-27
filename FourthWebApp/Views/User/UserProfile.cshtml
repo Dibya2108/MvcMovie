@@ -17,7 +17,7 @@
 
 <div id="editableProfile" style="display: none;">
     <h2>Edit Profile</h2>
-    @using (Html.BeginForm("UserProfile", "Account", FormMethod.Post))
+    @using (Html.BeginForm("UserProfile", "User", FormMethod.Post))
     {
         @Html.HiddenFor(x => x.UserId)
         @Html.AntiForgeryToken()

@@ -27,7 +27,7 @@
 
 @Html.ValidationSummary(true)
 
-@using (Ajax.BeginForm("ManageWatchList", "Account",
+@using (Ajax.BeginForm("ManageWatchList", "User",
     new AjaxOptions
     {
         HttpMethod = "POST",
@@ -70,7 +70,7 @@
         {
             source.Read(read =>
             {
-                read.Action("GetAllMovies", "Account").Data("getWatchlistId");
+                read.Action("GetAllMovies", "User").Data("getWatchlistId");
             });
         })
     )

@@ -16,11 +16,12 @@ using System.Web;
 using System.Web.Mvc;
 using ViewModel;
 using System.Web.Hosting;
+using FourthWebApp.Controllers;
 
 namespace MvcMovie.Controllers
 {
     
-        public class MovieController : Controller
+        public class MovieController : BaseController
         {
         MovieDalSql _movieDalSql = new MovieDalSql();
         AccountDalSql _accountDalSql = new AccountDalSql();
@@ -30,11 +31,10 @@ namespace MvcMovie.Controllers
             {
 
             int loggedInUserId = (int)Session["UserId"];
-            ViewData["UserId"] = loggedInUserId;
-            ViewData["UserTypeId"] =_accountDalSql.GetUserTypeByUserId(loggedInUserId);
-            int userType = _accountDalSql.GetUserTypeByUserId(loggedInUserId);
+            
+            //int userType = _accountDalSql.GetUserTypeByUserId(loggedInUserId);
 
-            ViewBag.UserType = userType;
+            //ViewBag.UserType = userType;
             return View();
             }
 

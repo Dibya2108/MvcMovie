@@ -82,6 +82,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShowTime.cs" />
     <Compile Include="ShowTimeDalSql.cs" />
+    <Compile Include="UserDal.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="WatchList.cs" />
     <Compile Include="WatchListMovieAssociation.cs" />

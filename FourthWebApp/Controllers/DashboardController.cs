@@ -1,4 +1,5 @@
 ﻿using Data_Access;
+using FourthWebApp.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using ViewModel;
 
 namespace MvcMovie.Controllers
 {
-    public class DashboardController : Controller
+    public class DashboardController : BaseController
     {
         MovieDalSql _movieDalSql = new MovieDalSql();
         AccountDalSql _accountDalSql = new AccountDalSql();
@@ -20,9 +21,9 @@ namespace MvcMovie.Controllers
             int loggedInUserId = (int)Session["UserId"];
             List<MovieViewModel> cards = _movieDalSql.GetMoviesForKendoGrid();
             StringBuilder sb = new StringBuilder();
-            int userType = _accountDalSql.GetUserTypeByUserId(loggedInUserId);
+            //int userType = _accountDalSql.GetUserTypeByUserId(loggedInUserId);
 
-            ViewBag.UserType = userType;
+            //ViewBag.UserType = userType;
 
             UserViewModel user = new UserViewModel();
             user.UserId = loggedInUserId;

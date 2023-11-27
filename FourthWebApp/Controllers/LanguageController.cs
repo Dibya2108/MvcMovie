@@ -1,4 +1,5 @@
 ﻿using Data_Access;
+using FourthWebApp.Controllers;
 using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
@@ -11,19 +12,19 @@ using ViewModel;
 
 namespace MvcMovie.Controllers
 {
-    public class LanguageController : Controller
+    public class LanguageController : BaseController
     {
         // GET: Language
         MovieDalSql _movieDalSql = new MovieDalSql();
-        AccountDalSql _accountDalSql = new AccountDalSql();
+        //AccountDalSql _accountDalSql = new AccountDalSql();
 
         [ActionName("Index")]
         public ActionResult AllLanguages()
         {
             int userId = (int)Session["UserId"];
-            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+            //int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
-            ViewBag.UserType = userType;
+            //ViewBag.UserType = userType;
             return View();
 
         }

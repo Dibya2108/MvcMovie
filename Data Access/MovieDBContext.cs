@@ -15,6 +15,8 @@ namespace Data_Access
         public DbSet<Languages> Languages { get; set; }
         public DbSet<WatchListMovieAssociation> WatchListMovieAssociations { get; set; }
 
+        public DbSet<Users> Users { get; set; }
+
         public DbSet<WatchList> WatchList { get; set; }
 
         public DbSet<ShowTime> ShowTime { get; set; }

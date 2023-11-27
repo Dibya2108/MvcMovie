@@ -118,7 +118,7 @@
                                         </li>
 
                                         <li id="WatchList">
-                                            <a href="/Account/WatchList">WatchList</a>
+                                            <a href="/User/WatchList">WatchList</a>
                                         </li>
                                     }
                                     @if (UserType == 1)
@@ -158,7 +158,7 @@
 
                                     }
                                     <li>
-                                        <a href="/Account/UserProfile">Profile</a>
+                                        <a href="/User/UserProfile">Profile</a>
                                     </li>
 
 
@@ -232,8 +232,8 @@
             var ret = ((keyCode == 09 || keyCode == 08 || (keyCode >= 48 && keyCode <= 57)));
             return ret;
         }
-        var userTypeValue = @UserType; // Accessing the Razor variable in JavaScript
-        alert('UserType value: ' + userTypeValue);
+        @*var userTypeValue = @UserType; // Accessing the Razor variable in JavaScript
+        alert('UserType value: ' + userTypeValue);*@
 
 
                 //alert($("#UserId").val());
