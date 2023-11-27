@@ -18,6 +18,8 @@ namespace MvcMovie.Controllers
         private readonly AccountDalSql _accountDalSql = new AccountDalSql();
         private readonly MovieDalSql _movieDalSql = new MovieDalSql();
 
+        
+
         // GET: Account
         public ActionResult Index()
         {
@@ -72,11 +74,19 @@ namespace MvcMovie.Controllers
                 Session["UserId"] = userId;
                 int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
-                ViewBag.userType = userType;
+                ViewBag.UserType = userType;
 
-                ViewData["AnotherModel"] = model;
+                
 
-                return RedirectToAction("Index", "Dashboard", new { userId = userId, userType = userType });
+                if (userType == 2)
+                {
+                    return RedirectToAction("Index", "Dashboard",new { userId });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Movie");
+                }
+                
             }
             else
             {
@@ -85,8 +95,13 @@ namespace MvcMovie.Controllers
             }
         }
 
-        public ActionResult UserProfile(int userId)
+        public ActionResult UserProfile()
         {
+            int userId = (int)Session["UserId"];
+
+            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+
+            ViewBag.UserType = userType;
             UserViewModel user = _accountDalSql.GetUserById(userId);
 
             if (user == null)
@@ -107,6 +122,9 @@ namespace MvcMovie.Controllers
                 {
                     bool updateSuccess = _accountDalSql.UpdateUserProfile(model);
 
+                    int userType = _accountDalSql.GetUserTypeByUserId(model.UserId);
+
+                    ViewBag.UserType = userType;
                     if (updateSuccess)
                     {
                         return RedirectToAction("UserProfile", "Account", new { userId = model.UserId });
@@ -120,15 +138,19 @@ namespace MvcMovie.Controllers
             }
         }
 
-        public ActionResult WatchList(int userId)
+        public ActionResult WatchList()
         {
+            int userId = (int)Session["UserId"];
+            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+
+            ViewBag.UserType = userType;
             if (userId == 0)
             {
                 return RedirectToAction("Login");
             }
-            
 
-                return View();
+            
+            return View();
 
         }
 

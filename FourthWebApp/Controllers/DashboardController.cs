@@ -20,7 +20,9 @@ namespace MvcMovie.Controllers
             int loggedInUserId = (int)Session["UserId"];
             List<MovieViewModel> cards = _movieDalSql.GetMoviesForKendoGrid();
             StringBuilder sb = new StringBuilder();
+            int userType = _accountDalSql.GetUserTypeByUserId(loggedInUserId);
 
+            ViewBag.UserType = userType;
 
             UserViewModel user = new UserViewModel();
             user.UserId = loggedInUserId;

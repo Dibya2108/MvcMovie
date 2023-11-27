@@ -16,9 +16,14 @@ namespace MvcMovie.Controllers
     {
 
         ShowTimeDalSql _ShowTimeDalSql = new ShowTimeDalSql();
+        AccountDalSql _accountDalSql = new AccountDalSql();
         // GET: ShowTime
         public ActionResult Index()
         {
+            int userId = (int)Session["UserId"];
+            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+
+            ViewBag.UserType = userType;
             return View();
         }
 
@@ -130,7 +135,10 @@ namespace MvcMovie.Controllers
 
             // showtime values as a list
             var showtimeList = showtimes.FirstOrDefault();
+            int userId = (int)Session["UserId"];
+            int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
+            ViewBag.UserType = userType;
             // list of SelectListItem with three options
             var showtimeOptions = new List<Kendo.Mvc.UI.DropDownListItem>
     {
@@ -242,6 +250,10 @@ namespace MvcMovie.Controllers
 
         public ActionResult BookTicketIndex()
         {
+            int userId = (int)Session["UserId"];
+            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+
+            ViewBag.UserType = userType;
             return View();
         }
 
@@ -254,7 +266,11 @@ namespace MvcMovie.Controllers
 
         public ActionResult MyBookings()
         {
-            int userId = 1; 
+            int userId = (int)Session["UserId"];
+            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+
+            ViewBag.UserType = userType;
+            //int userId = 1; 
             
             return View(userId);
         }

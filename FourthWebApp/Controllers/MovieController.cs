@@ -32,6 +32,9 @@ namespace MvcMovie.Controllers
             int loggedInUserId = (int)Session["UserId"];
             ViewData["UserId"] = loggedInUserId;
             ViewData["UserTypeId"] =_accountDalSql.GetUserTypeByUserId(loggedInUserId);
+            int userType = _accountDalSql.GetUserTypeByUserId(loggedInUserId);
+
+            ViewBag.UserType = userType;
             return View();
             }
 

@@ -15,11 +15,15 @@ namespace MvcMovie.Controllers
     {
         // GET: Language
         MovieDalSql _movieDalSql = new MovieDalSql();
+        AccountDalSql _accountDalSql = new AccountDalSql();
 
         [ActionName("Index")]
         public ActionResult AllLanguages()
         {
-            
+            int userId = (int)Session["UserId"];
+            int userType = _accountDalSql.GetUserTypeByUserId(userId);
+
+            ViewBag.UserType = userType;
             return View();
 
         }
