@@ -73,8 +73,8 @@ namespace MvcMovie.Controllers
                 int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
                 ViewBag.userType = userType;
-                
 
+                ViewData["AnotherModel"] = model;
 
                 return RedirectToAction("Index", "Dashboard", new { userId = userId, userType = userType });
             }

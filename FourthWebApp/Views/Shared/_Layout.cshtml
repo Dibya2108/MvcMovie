@@ -122,9 +122,13 @@
                                             <a href="/ShowTime/BookTicketIndex">All Bookings</a>
                                         </li>
                                     }
-                                    <li id="WatchList">
-                                        <a href="/Account/WatchList">WatchList</a>
-                                    </li>
+                                    @if (Model.UserTypeId == 2)
+                                    {
+                                        <li id="WatchList">
+                                            <a href="/Account/WatchList">WatchList</a>
+                                        </li>
+                                    }
+
                                     <li id="ShowTime">
                                         <a href="/ShowTime/Index">ShowTime</a>
                                     </li>
@@ -139,25 +143,27 @@
                             </a>
                             <div class="collapse" id="setting">
                                 <ul class="nav-second-level">
-
-                                    <li>
-                                        <a href="/ShowTime/MyBookings">My Bookings</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="/Account/UserProfile">Profile</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">Logout</a>
-                                    </li>
-                                    @if (Model.UserTypeId == 1)
+                                    @if (Model.UserTypeId == 2)
                                     {
                                         <li>
-                                            <a href="/Account/User">Edit User</a>
+                                            <a href="/ShowTime/MyBookings">My Bookings</a>
                                         </li>
                                     }
-                                </ul>
+
+                                        <li>
+                                            <a href="/Account/UserProfile">Profile</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#">Logout</a>
+                                        </li>
+                                        @if (Model.UserTypeId == 1)
+                                        {
+                                            <li>
+                                                <a href="/Account/User">Edit User</a>
+                                            </li>
+                                        }
+                                    </ul>
                             </div>
                         </li>
                     </ul>

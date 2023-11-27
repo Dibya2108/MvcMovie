@@ -23,10 +23,15 @@ namespace MvcMovie.Controllers
         public class MovieController : Controller
         {
         MovieDalSql _movieDalSql = new MovieDalSql();
+        AccountDalSql _accountDalSql = new AccountDalSql();
+
         string photoPath = Path.Combine(HostingEnvironment.MapPath("~/Images/RawImage/"), "profile_photo.jpg");
         public ActionResult Index()
             {
-            
+
+            int loggedInUserId = (int)Session["UserId"];
+            ViewData["UserId"] = loggedInUserId;
+            ViewData["UserTypeId"] =_accountDalSql.GetUserTypeByUserId(loggedInUserId);
             return View();
             }
 

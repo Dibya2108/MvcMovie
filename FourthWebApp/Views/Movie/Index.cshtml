@@ -1,5 +1,10 @@
 ﻿@using Kendo.Mvc.UI
 @model ViewModel.MovieViewModel
+@{
+    ViewBag.Title = "Index";
+    int userTypeId = (int)ViewData["UserTypeId"];
+    int userId = (int)ViewData["UserId"];
+}
 
 <h2 class="text-center">Movie List</h2>
 
@@ -21,6 +26,7 @@
 
 @Html.AntiForgeryToken()
 @Html.HiddenFor(model => model.Id)
+
 <div id="movTable">
     @(Html.Kendo().Grid<ViewModel.MovieViewModel>()
         .Name("grid")
@@ -71,16 +77,16 @@
             }
 
             url = '/Movie/Manage?Id=' + Id + '&fromEdit=' + fromEdit;
-        
+
             LanguageWindow = OpenConfirmWindowModal(url, title, 900);
-            
+
             return;
         } catch (e) {
             alert(e);
         }
     }
 
-    
+
 
     function CloseManageMovie(mode, id) {
         try {
@@ -92,13 +98,13 @@
         }
         catch (e) {
             alert("An error occurred: " + e);
-        }  
-           
-            
         }
 
 
-    
+    }
+
+
+
 
     function SortMovieTable() {
         var searchText = $("#MovieSearchText").val().toLowerCase();
@@ -129,7 +135,7 @@
         }
 
     }
-    
+
 
     function AddImage(id) {
         var url = '/Movie/ImageUpload?Id=' + id;

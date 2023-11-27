@@ -41,10 +41,10 @@ namespace ViewModel
         public string LanguageName { get; set; }        
         public int LanguageID { get; set; }
 
+        //public int UserTypeId { get; set; }
 
 
-        
-        
+
         public bool IsChecked { get; set; }
         
         
