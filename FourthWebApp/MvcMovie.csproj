@@ -8300,6 +8300,8 @@
     <Content Include="Views\Movie\ImageUpload.cshtml" />
     <Content Include="Views\Movie\Home.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

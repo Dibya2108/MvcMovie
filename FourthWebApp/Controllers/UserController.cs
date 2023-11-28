@@ -16,6 +16,7 @@ namespace FourthWebApp.Controllers
     public class UserController : BaseController
     {
         private readonly AccountDalSql _accountDalSql = new AccountDalSql();
+        private readonly UserDal _UserDal = new UserDal();
         // GET: User
         public ActionResult Index()
         {
@@ -40,7 +41,7 @@ namespace FourthWebApp.Controllers
             sb.Append("<th>" + "&nbsp;" + "</th>");
             sb.Append("</tr></thead>");
 
-            List<UserView> users = _UserDal.GetAllUsers();
+            List<UserViewModel> users = _UserDal.GetAllUsers();
 
             int serialNumber = 1;
 
@@ -56,8 +57,8 @@ namespace FourthWebApp.Controllers
                 //string userType = _UserDal.GetUserTypeFromId(user.UserId);
                 sb.Append("<td>" + user.UserType + "</td>");
 
-                sb.Append("<td>" + user.CreatedOn + "</td>");
-                if (user.Active == true)
+                sb.Append("<td>" + user.Created + "</td>");
+                if (user.IsActive == true)
                 {
                     sb.Append("<td><i class='fa fa-check' style='color: green;'></i></td>");
                 }
@@ -80,7 +81,7 @@ namespace FourthWebApp.Controllers
 
         public ActionResult Manage(int UserId = 0)
         {
-            UserView model = new UserView();
+            UserViewModel model = new UserViewModel();
             if (UserId != 0)
             {
 
@@ -94,7 +95,7 @@ namespace FourthWebApp.Controllers
             }
             else
             {
-                model.Active = true;
+                model.IsActive = true;
 
             }
 
@@ -108,15 +109,15 @@ namespace FourthWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage(UserView user)
+        public ActionResult Manage(UserViewModel user)
         {
 
             if (ModelState.IsValid)
             {
                 if (user.UserId == 0)
                 {
-                    user.CreatedBy = SessionUser.UserId;
-                    user.CreatedOn = DateTime.Now;
+                    user.CreatedBy = (int)Session["UserId"];
+                    user.Created = DateTime.Now;
                     _UserDal.InsertUser(user);
                 }
                 else
@@ -167,7 +168,7 @@ namespace FourthWebApp.Controllers
 
                     if (updateSuccess)
                     {
-                        return RedirectToAction("UserProfile", "Account", new { userId = model.UserId });
+                        return RedirectToAction("UserProfile", "User", new { userId = model.UserId });
                     }
                     else
                     {

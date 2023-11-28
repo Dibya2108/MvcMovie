@@ -1,0 +1,127 @@
+﻿@model ViewModel.UserViewModel
+@{
+    ViewBag.Title = "ManageUser";
+    Layout = null;
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+@*<script src="~/Scripts/jquery.validate.min.js"></script>*@
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@Html.ValidationSummary(true)
+
+@using (Ajax.BeginForm("Manage", "User",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "ajax_contentMain",
+    }, new { autocomplete = "off" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.UserId, new { id = "UserId" })
+
+
+    <div class="popup-col-left">
+        <div class="form-group">
+            <label><strong>First Name</strong></label><br />
+            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", id = "FirstName" })
+            <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.FirstName)</span>
+        </div>
+    </div>
+
+    <div class="popup-col-right">
+        <div class="form-group">
+            <label><strong>Last Name</strong></label><br />
+            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", id = "LastName" })
+            <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.LastName)</span>
+        </div>
+    </div>
+
+    <div class="popup-col-left">
+        <div class="form-group">
+            <label><strong>Email</strong></label><br />
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "Email" })
+            <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.Email)</span>
+        </div>
+    </div>
+    <div class="popup-col-right">
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserTypeId, "User Type", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.UserTypeId, Model.UserTypes as SelectList, "-- Select UserType --", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.UserTypeId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    
+
+    <div class="popup-col-left">
+        <div class="form-group">
+            <label><strong>Password</strong></label><br />
+            @Html.TextBoxFor(model => model.Password, new { @class = "form-control-password", id = "Password1" })
+            <span class="validationError" style="font-size: 15px;">@Html.ValidationMessageFor(n => n.Password)</span>
+        </div>
+    </div>
+    <div class="popup-col-left">
+        <div class="form-group">
+            <div style="padding-top:10px">
+                @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-check-input" }) Active
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+   
+    <div class="popup-col-right">
+        <div class="form-group" style="text-align:right">
+            <button type="submit" class="btn btn-success" id="btn">
+                @(Model.UserId == 0 ? "Create" : "Save Changes")
+            </button>
+            <a href="javascript:void(0);" class="btn btn-default" id="cancel-button">Cancel</a>
+            <span id="errorMsgSpan">@ViewBag.msg</span>
+        </div>
+    </div>
+}
+
+<script>
+        $(document).ready(function () {
+            @*if (@Model.UserId != 0) {*@
+                $("#Password1").attr("type", "password");
+                $("#Password1").removeClass("fas fa-eye");
+                $("#Password1").addClass("fas fa-eye-slash");
+            /*}*/
+
+            $(".toggle-password").click(function () {
+                var passwordInput = $("#Password1");
+                var passwordIcon = $(this);
+
+                if (passwordInput.attr("type") === "password") {
+                    passwordInput.attr("type", "text");
+                    passwordIcon.removeClass("fas fa-eye");
+                    passwordIcon.addClass("fas fa-eye-slash");
+                } else {
+                    passwordInput.attr("type", "password");
+                    passwordIcon.removeClass("fas fa-eye-slash");
+                    passwordIcon.addClass("fas fa-eye");
+                }
+            });
+
+            // Handle the click event on the "Cancel" button
+            $("#cancel-button").click(function () {
+                CloseUser();
+            });
+        });
+
+        function CloseUser() {
+            try {
+                LanguageWindow.close();
+                $.get("/User/GetUserTable", function (data) {
+                    $("#userDetails").html(data);
+                });
+            } catch (e) {
+                alert("An error occurred: " + e);
+            }
+        }
+</script>
+
+
+

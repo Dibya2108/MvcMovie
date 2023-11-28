@@ -22,7 +22,7 @@ namespace Data_Access
             {
                 con.Open();
 
-                DataTable dt = GetDataTable("SELECT U.*, T.UserType FROM[User] U " +
+                DataTable dt = GetDataTable("SELECT U.*, T.UserType FROM[Users] U " +
                     "JOIN[UserType] T ON U.UserTypeId = T.UserTypeId ORDER BY U.FirstName");
                 List<UserViewModel> users = new List<UserViewModel>();
                 foreach (DataRow dr in dt.Rows)
@@ -44,7 +44,7 @@ namespace Data_Access
             userView.LastName = dr["LastName"].ToString();
             userView.Email = dr["Email"].ToString();
             userView.UserTypeId = int.Parse(dr["UserTypeId"].ToString()); ;
-            userView.IsActive = int.Parse(dr["IsActive"].ToString());
+            userView.IsActive = bool.Parse(dr["IsActive"].ToString());
             userView.Created = DateTime.Parse(dr["Created"].ToString());
             userView.CreatedBy = int.Parse(dr["CreatedBy"].ToString());
             userView.Password = dr["Password"].ToString();
@@ -108,12 +108,12 @@ namespace Data_Access
             }
         }
 
-        public void InsertUser(UserView user)
+        public void InsertUser(UserViewModel user)
         {
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string insertQuery = "INSERT INTO [User] (FirstName, LastName, Email, Password, Active, CreatedBy,CreatedOn, UserTypeId) " +
+                string insertQuery = "INSERT INTO [Users] (FirstName, LastName, Email, Password, IsActive, CreatedBy,CreatedOn, UserTypeId) " +
                                      "VALUES (@FirstName, @LastName, @Email, @Password, @Active, @CreatedBy,@CreatedOn, @UserTypeId);";
 
                 SqlCommand insertCmd = new SqlCommand(insertQuery, con);
@@ -121,23 +121,23 @@ namespace Data_Access
                 insertCmd.Parameters.AddWithValue("@LastName", user.LastName);
                 insertCmd.Parameters.AddWithValue("@Email", user.Email);
                 insertCmd.Parameters.AddWithValue("@Password", user.Password);
-                insertCmd.Parameters.AddWithValue("@Active", user.Active);
+                insertCmd.Parameters.AddWithValue("@Active", user.IsActive);
                 insertCmd.Parameters.AddWithValue("@CreatedBy", user.CreatedBy);
-                insertCmd.Parameters.AddWithValue("@CreatedOn", user.CreatedOn);
+                insertCmd.Parameters.AddWithValue("@CreatedOn", user.Created);
                 insertCmd.Parameters.AddWithValue("@UserTypeId", user.UserTypeId);
 
                 insertCmd.ExecuteNonQuery();
             }
         }
 
-        public void UpdateUser(UserView user)
+        public void UpdateUser(UserViewModel user)
         {
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string updateQuery = "UPDATE [User] " +
+                string updateQuery = "UPDATE [Users] " +
      "SET FirstName = @FirstName, LastName = @LastName, Email = @Email, " +
-                    "Password = @Password, Active = @Active, " +
+                    "Password = @Password, IsActive = @Active, " +
                     "UserTypeId = @UserTypeId " +
                     "WHERE UserId = @UserId;";
 
@@ -149,7 +149,7 @@ namespace Data_Access
                 updateCmd.Parameters.AddWithValue("@LastName", user.LastName);
                 updateCmd.Parameters.AddWithValue("@Email", user.Email);
                 updateCmd.Parameters.AddWithValue("@Password", user.Password);
-                updateCmd.Parameters.AddWithValue("@Active", user.Active);
+                updateCmd.Parameters.AddWithValue("@Active", user.IsActive);
                 updateCmd.Parameters.AddWithValue("@UserId", user.UserId);
                 updateCmd.Parameters.AddWithValue("@UserTypeId", user.UserTypeId);
 
@@ -157,48 +157,7 @@ namespace Data_Access
             }
         }
 
-        public UserView Delete(int UserId)
-        {
-            using (SqlConnection con = new SqlConnection(strConString))
-            {
-                con.Open();
-                string checkQuery = "SELECT U.* " +
-                   "FROM [User] U " +
-                   "WHERE U.UserId = @Id ";
-
-                SqlCommand checkCmd = new SqlCommand(checkQuery, con);
-                checkCmd.Parameters.AddWithValue("@Id", UserId);
-
-                SqlDataAdapter da = new SqlDataAdapter(checkCmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                if (dt.Rows.Count > 0)
-                {
-                    DataRow row = dt.Rows[0];
-                    return GetUserFromDataRow(row);
-                }
-
-            }
-            return null;
-        }
-
-        public bool DeleteConfirm(int UserId)
-        {
-            using (SqlConnection con = new SqlConnection(strConString))
-            {
-                con.Open();
-
-                string deleteQuery = "DELETE FROM [User] WHERE UserId = @Id";
-                SqlCommand deleteCmd = new SqlCommand(deleteQuery, con);
-                deleteCmd.Parameters.AddWithValue("@Id", UserId);
-
-                int rowsAffected = deleteCmd.ExecuteNonQuery();
-
-                return rowsAffected > 0;
-            }
-        }
-
+        
 
 
 
@@ -234,7 +193,7 @@ namespace Data_Access
             using (SqlConnection connection = new SqlConnection(strConString))
             {
                 connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT UserId FROM [User] WHERE Email = @Email AND UserId <> @UserId", connection))
+                using (SqlCommand command = new SqlCommand("SELECT UserId FROM [Users] WHERE Email = @Email AND UserId <> @UserId", connection))
                 {
                     command.Parameters.AddWithValue("@UserId", userId);
                     command.Parameters.AddWithValue("@Email", email);
@@ -248,4 +207,4 @@ namespace Data_Access
         }
     }
 }
-}
+

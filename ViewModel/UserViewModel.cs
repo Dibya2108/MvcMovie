@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace ViewModel
 {
@@ -39,7 +40,7 @@ namespace ViewModel
         //[DataType(DataType.Password)]
         [Display(Name = "Password"), MaxLength(50)]
         public string Password { get; set; }
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
 
 
         public DateTime Created { get; set; }
@@ -47,5 +48,7 @@ namespace ViewModel
         public bool IsDeleted { get; set; }
         public int UserTypeId { get; set; }
         public string UserType { get; set; }
+
+        public SelectList UserTypes { get; set; }
     }
 }

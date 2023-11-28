@@ -129,7 +129,7 @@ namespace Data_Access
                 Password = movieRow["Password"].ToString(),
                 Email = movieRow["Email"].ToString(),
                 Created = Convert.ToDateTime(movieRow["Created"]),
-                IsActive = Convert.ToInt32(movieRow["IsActive"]),
+                IsActive = Convert.ToBoolean(movieRow["IsActive"]),
                 FirstName = movieRow["FirstName"].ToString(),
                 LastName = movieRow["LastName"].ToString(),
                 Address = movieRow["Address"].ToString(),

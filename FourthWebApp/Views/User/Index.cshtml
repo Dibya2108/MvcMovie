@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <div class="page-title-right" id="AddUser">
+                <button type="button" class="btn btn-primary" onclick="AddUser(0)"><i class="fa fa-plus"></i>&nbsp;Add New User</button>
+            </div>
+            <h4 class="page-title">All Users</h4>
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="card">
+    <div class="card-body">
+        <div id="userDetails">
+            <div class="table-responsive">
+                @Html.Raw(ViewBag.UserTable)
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    var LanguageWindow;
+    function AddUser(UserId) {
+        var url = '';
+        var title = "";
+
+        try {
+            if (UserId == 0) {
+                url = '/User/Manage';
+                title = "Add User";
+            }
+            else {
+                url = '/User/Manage?UserId=' + UserId;
+                title = "Edit User ";
+            }
+
+            LanguageWindow = OpenConfirmWindowModal(url, title, 850);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+    }
+
+    function CloseUser() {
+
+        try {
+            //console.log("CloseUser function called");
+            LanguageWindow.close();
+            $.get("/User/GetUserTable", function (data) {
+                $("#userDetails").html(data);
+            });
+        } catch (e) {
+            alert("An error occurred: " + e);
+        }
+    }
+
+
+    function DeleteUser(UserId) {
+        var url = '';
+        var title = "";
+
+        try {
+            url = '/User/Delete?UserId=' + UserId;
+            title = "Delete User";
+            LanguageWindow = OpenConfirmWindowModal(url, title, 450);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+        LanguageWindow.close();
+        $.get("/User/GetUserTable", function (data) {
+            $("#userDetails").html(data);
+        });
+    }
+</script>
+<script>
+    //document.GetElementByid("MainMenuManagement").className = "menuitem-active";
+    $("#MainMenuTeam").removeClass("menuitem-active");
+    $("#MainMenuTeam").removeClass("show");
+    $("#MainMenuManagement").addClass("menuitem-active");
+    $("#sidebarManagement").addClass("show");
+    $("#MenuManagementUser").addClass("menuitem-active");
+</script>
+
