@@ -68,3 +68,27 @@ IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='MovieShowSeatAssociation'
 )ON [PRIMARY]
 END
 GO
+
+
+------------------------------
+----     28/11/2023       ----
+------------------------------
+
+IF NOT EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME ='UserType'
+                        AND XTYPE = 'U') 
+                        BEGIN 
+                        CREATE TABLE [UserType] (
+   UserTypeId int IDENTITY(1,1),
+   UserType varchar (50) NOT NULL
+);
+END
+GO
+
+INSERT INTO [dbo].[UserType] (UserType) VALUES ('Admin'), ('General');
+
+  Alter table [dbo].[Users] 
+ Add CreatedBy int Not null default 0 ;
+
+
+ Alter table [dbo].[Users] 
+ Add CreatedBy int Not null default 0 ;
