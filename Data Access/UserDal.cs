@@ -52,6 +52,7 @@ namespace Data_Access
             userView.UserName = dr["UserName"].ToString();
             userView.Address = dr["Address"].ToString();
             userView.IsDeleted = bool.Parse(dr["IsDeleted"].ToString());
+            userView.Phone = int.Parse(dr["Phone"].ToString());
 
             return userView;
         }
@@ -113,18 +114,21 @@ namespace Data_Access
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string insertQuery = "INSERT INTO [Users] (FirstName, LastName, Email, Password, IsActive, CreatedBy,CreatedOn, UserTypeId) " +
-                                     "VALUES (@FirstName, @LastName, @Email, @Password, @Active, @CreatedBy,@CreatedOn, @UserTypeId);";
+                string insertQuery = "INSERT INTO [Users] (FirstName, LastName, Email, UserName, Password, IsActive, CreatedBy,Created, UserTypeId, Phone, Address) " +
+                                     "VALUES (@FirstName, @LastName, @Email, @UserName, @Password, @Active, @CreatedBy,@CreatedOn, @UserTypeId, @Phone, @Address);";
 
                 SqlCommand insertCmd = new SqlCommand(insertQuery, con);
                 insertCmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                 insertCmd.Parameters.AddWithValue("@LastName", user.LastName);
                 insertCmd.Parameters.AddWithValue("@Email", user.Email);
+                insertCmd.Parameters.AddWithValue("@UserName", user.UserName);
                 insertCmd.Parameters.AddWithValue("@Password", user.Password);
+                insertCmd.Parameters.AddWithValue("@Phone", user.Phone);
                 insertCmd.Parameters.AddWithValue("@Active", user.IsActive);
                 insertCmd.Parameters.AddWithValue("@CreatedBy", user.CreatedBy);
                 insertCmd.Parameters.AddWithValue("@CreatedOn", user.Created);
                 insertCmd.Parameters.AddWithValue("@UserTypeId", user.UserTypeId);
+                insertCmd.Parameters.Add(new SqlParameter("@Address", SqlDbType.NVarChar) { Value = (object)user.Address ?? DBNull.Value });
 
                 insertCmd.ExecuteNonQuery();
             }
@@ -137,8 +141,10 @@ namespace Data_Access
                 con.Open();
                 string updateQuery = "UPDATE [Users] " +
      "SET FirstName = @FirstName, LastName = @LastName, Email = @Email, " +
-                    "Password = @Password, IsActive = @Active, " +
-                    "UserTypeId = @UserTypeId " +
+                    "UserName = @UserName, Password = @Password, IsActive = @Active, " +
+                    "UserTypeId = @UserTypeId, " +
+                    "Phone = @Phone, " +
+                    "Address = @Address " +
                     "WHERE UserId = @UserId;";
 
 
@@ -148,10 +154,14 @@ namespace Data_Access
                 updateCmd.Parameters.AddWithValue("@FirstName", user.FirstName);
                 updateCmd.Parameters.AddWithValue("@LastName", user.LastName);
                 updateCmd.Parameters.AddWithValue("@Email", user.Email);
+                updateCmd.Parameters.AddWithValue("@UserName", user.UserName);
                 updateCmd.Parameters.AddWithValue("@Password", user.Password);
+                updateCmd.Parameters.AddWithValue("@Phone", user.Phone);
                 updateCmd.Parameters.AddWithValue("@Active", user.IsActive);
                 updateCmd.Parameters.AddWithValue("@UserId", user.UserId);
                 updateCmd.Parameters.AddWithValue("@UserTypeId", user.UserTypeId);
+
+                updateCmd.Parameters.Add(new SqlParameter("@Address", SqlDbType.NVarChar) { Value = (object)user.Address ?? DBNull.Value });
 
                 int i = updateCmd.ExecuteNonQuery();
             }

@@ -90,5 +90,4 @@ INSERT INTO [dbo].[UserType] (UserType) VALUES ('Admin'), ('General');
  Add CreatedBy int Not null default 0 ;
 
 
- Alter table [dbo].[Users] 
- Add CreatedBy int Not null default 0 ;
+ 

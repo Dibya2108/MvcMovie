@@ -32,8 +32,9 @@ namespace FourthWebApp.Controllers
             sb.Append("<table class='table mb-0'><thead class='table-light'>");
             sb.Append("<tr>");
             sb.Append("<th>" + "No." + "</th>");
-            sb.Append("<th>" + "First Name" + "</th>");
-            sb.Append("<th>" + "Last Name" + "</th>");
+            sb.Append("<th>" + "Name" + "</th>");
+            //sb.Append("<th>" + "Last Name" + "</th>");
+            sb.Append("<th>" + "User Name" + "</th>");
             sb.Append("<th>" + "Email" + "</th>");
             sb.Append("<th>" + "User Type" + "</th>");
             sb.Append("<th>" + "Created On" + "</th>");
@@ -50,14 +51,15 @@ namespace FourthWebApp.Controllers
                 sb.Append("<tbody>");
                 sb.Append("<tr>");
                 sb.Append("<td>" + serialNumber + "</td>");
-                sb.Append("<td>" + user.FirstName + "</td>");
-                sb.Append("<td>" + user.LastName + "</td>");
+                sb.Append("<td>" + user.FirstName + " " + user.LastName + "</td>");
+                //sb.Append("<td>" + user.LastName + "</td>");
+                sb.Append("<td>" + user.UserName + "</td>");
                 sb.Append("<td>" + user.Email + "</td>");
 
                 //string userType = _UserDal.GetUserTypeFromId(user.UserId);
                 sb.Append("<td>" + user.UserType + "</td>");
 
-                sb.Append("<td>" + user.Created + "</td>");
+                sb.Append("<td>" + user.Created.ToString("dd-MMM-yyyy") + "</td>");
                 if (user.IsActive == true)
                 {
                     sb.Append("<td><i class='fa fa-check' style='color: green;'></i></td>");
@@ -112,8 +114,7 @@ namespace FourthWebApp.Controllers
         public ActionResult Manage(UserViewModel user)
         {
 
-            if (ModelState.IsValid)
-            {
+            
                 if (user.UserId == 0)
                 {
                     user.CreatedBy = (int)Session["UserId"];
@@ -124,13 +125,14 @@ namespace FourthWebApp.Controllers
                 {
                     _UserDal.UpdateUser(user);
                 }
-
-                return JavaScript("CloseUser()");
-
-            }
-
             user.UserTypes = new SelectList(_UserDal.GetUserTypes(), "Value", "Text");
-            return View(user);
+
+            return JavaScript("CloseUser()");
+
+            
+
+            
+            
 
         }
 
