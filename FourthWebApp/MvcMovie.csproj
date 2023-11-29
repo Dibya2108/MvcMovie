@@ -8296,7 +8296,6 @@
     <Content Include="Views\ShowTime\BookTicket.cshtml" />
     <Content Include="Views\ShowTime\BookTicketIndex.cshtml" />
     <Content Include="Views\ShowTime\MyBookings.cshtml" />
-    <Content Include="Views\ShowTime\Delete.cshtml" />
     <Content Include="Views\Movie\ImageUpload.cshtml" />
     <Content Include="Views\Movie\Home.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />

@@ -11,21 +11,36 @@ namespace ViewModel
     public class ShowTimeViewModel
     {
         public int ShowTimeId { get; set; }
+
+        [Required(ErrorMessage = "required")]
         public int MovieId { get; set; }
 
+        [Required(ErrorMessage = "required")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
+        [Required(ErrorMessage = "required")]
         [DisplayFormat(DataFormatString = "{0:MM-dd-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime EndDate { get; set; }
+
+        [Required(ErrorMessage = "required")]
         public string FirstShowTime { get; set; }
+
+        [Required(ErrorMessage = "required")]
         public string SecondShowTime { get; set; }
+
+        [Required(ErrorMessage = "required")]
         public string ThirdShowTime { get; set; }
+
+
+        public int CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
 
         public string StartDateString { get; set; }
         public string EndDateString { get; set; }
         public bool IsHousefull { get; set; }
         public int MovieShowSeatAssociationId { get; set; }
+        [Required(ErrorMessage = "required")]
         public int FirstShowSeatCount { get; set; }
         public int SecondShowSeatCount { get; set; }
         public int ThirdShowSeatCount { get; set; }
@@ -33,6 +48,7 @@ namespace ViewModel
         public int UserId { get; set; }
         public int UserTypeId { get; set; }
 
+        [Required(ErrorMessage = "required")]
         public string SelectedShowtime { get; set; } // Property for the selected showtime
         public string SelectedSeatType { get; set; }
 

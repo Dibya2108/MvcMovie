@@ -90,4 +90,16 @@ INSERT INTO [dbo].[UserType] (UserType) VALUES ('Admin'), ('General');
  Add CreatedBy int Not null default 0 ;
 
 
+
+ Alter table [dbo].[ShowTime]
+Add CreatedBy int not null default 0;
+
+
+ALTER TABLE [dbo].[ShowTime]
+ADD CreatedOn DATETIME NOT NULL DEFAULT GETDATE();
+
+GO
+
+
+
  

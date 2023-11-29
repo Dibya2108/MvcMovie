@@ -90,7 +90,8 @@ namespace Data_Access
                         ShowTimeId = Convert.ToInt32(row["ShowTimeId"]),
                         MovieId = Convert.ToInt32(row["MovieId"]),
                         StartDate = Convert.ToDateTime(row["StartDate"]),
-                        EndDate = Convert.ToDateTime(row["EndDate"])
+                        EndDate = Convert.ToDateTime(row["EndDate"]),
+                        CreatedBy = Convert.ToInt32(row["CreatedBy"])
                     };
 
                     return showTime;
@@ -104,8 +105,8 @@ namespace Data_Access
             using (SqlConnection connection = new SqlConnection(strConString))
             {
                 connection.Open();
-                using (SqlCommand cmd = new SqlCommand("INSERT INTO ShowTime (MovieId, StartDate, EndDate, FirstShowTime, SecondShowTime, ThirdShowTime) " +
-                    "VALUES (@MovieId, @StartDate, @EndDate, @FirstShowTime, @SecondShowTime, @ThirdShowTime); ", connection))
+                using (SqlCommand cmd = new SqlCommand("INSERT INTO ShowTime (MovieId, StartDate, EndDate, FirstShowTime, SecondShowTime, ThirdShowTime, CreatedBy) " +
+                    "VALUES (@MovieId, @StartDate, @EndDate, @FirstShowTime, @SecondShowTime, @ThirdShowTime, @CreatedBy); ", connection))
                 {
                     cmd.Parameters.AddWithValue("@MovieId", showTime.MovieId);
                     cmd.Parameters.AddWithValue("@StartDate", showTime.StartDateString);
@@ -113,6 +114,7 @@ namespace Data_Access
                     cmd.Parameters.AddWithValue("@FirstShowTime", showTime.FirstShowTime);
                     cmd.Parameters.AddWithValue("@SecondShowTime", showTime.SecondShowTime);
                     cmd.Parameters.AddWithValue("@ThirdShowTime", showTime.ThirdShowTime);
+                    cmd.Parameters.AddWithValue("@CreatedBy", showTime.CreatedBy);
 
                     // Execute the query and get the newly created ShowTimeId
                     int showTimeId = Convert.ToInt32(cmd.ExecuteScalar());

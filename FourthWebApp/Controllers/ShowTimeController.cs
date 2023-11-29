@@ -17,11 +17,11 @@ namespace MvcMovie.Controllers
     {
 
         ShowTimeDalSql _ShowTimeDalSql = new ShowTimeDalSql();
-        AccountDalSql _accountDalSql = new AccountDalSql();
+        //AccountDalSql _accountDalSql = new AccountDalSql();
         // GET: ShowTime
         public ActionResult Index()
         {
-            int userId = (int)Session["UserId"];
+            //int userId = (int)Session["UserId"];
             //int userType = _accountDalSql.GetUserTypeByUserId(userId);
 
             //ViewBag.UserType = userType;
@@ -47,34 +47,34 @@ namespace MvcMovie.Controllers
 
         public ActionResult Manage(int showTimeId = 0)
         {
+            ShowTimeViewModel show = new ShowTimeViewModel();
+            
 
                 if(showTimeId != 0)
                 {
-                    var existingShowTime = _ShowTimeDalSql.GetShowViewModel(showTimeId); 
+                     show = _ShowTimeDalSql.GetShowViewModel(showTimeId); 
+                     
 
-                    if (existingShowTime == null)
+                    if (show == null)
                     {
                         return HttpNotFound();
                     }
-                    
-                if (existingShowTime.StartDate != null)
-                {
-                    existingShowTime.StartDateString = existingShowTime.StartDate.ToString("MM/dd/yyyy");
-                }
-                if (existingShowTime.EndDate != null)
-                {
-                    existingShowTime.EndDateString = existingShowTime.EndDate.ToString("MM/dd/yyyy");
-                }
-
-                return View(existingShowTime);
+                    else
+                    {
+                    show.StartDateString = show.StartDate.ToString("MM/dd/yyyy");
+                    show.EndDateString = show.EndDate.ToString("MM/dd/yyyy");
+                    }
+                
                 }
 
                 else
                 {
-                    var model = new ShowTimeViewModel();
-                    return View(model);
+                
+                show.StartDateString = show.StartDate.ToString("MM/dd/yyyy");
+                show.EndDateString = show.EndDate.ToString("MM/dd/yyyy");
                 }
-            
+            return View(show);
+
         }
 
         [HttpPost]
@@ -82,51 +82,18 @@ namespace MvcMovie.Controllers
         public ActionResult Manage(ShowTimeViewModel model)
         {
             
-                if (model.ShowTimeId == 0)
+            if (model.ShowTimeId == 0)
                 {
-                    // This is a new ShowTime
-                    var newShowTime = new ShowTimeViewModel
-                    {
-                        MovieId = model.MovieId,
-                        Title = model.Title,
-                        StartDateString = model.StartDateString,
-                        EndDateString = model.EndDateString,
-                        FirstShowTime = model.FirstShowTime,
-                        SecondShowTime = model.SecondShowTime,
-                        ThirdShowTime = model.ThirdShowTime
-                    };
-
-                    
-                     _ShowTimeDalSql.CreateShowTime(newShowTime);
-                {
-
-                }
-                    
-                    return RedirectToAction("Index");
+                model.CreatedBy = (int)Session["UserId"];
+                _ShowTimeDalSql.CreateShowTime(model);
+                 
                 }
                 else
                 {
-                    // This is an existing ShowTime, so update it
-                    var existingShowTime = _ShowTimeDalSql.GetShowViewModel(model.ShowTimeId);
-                    if (existingShowTime == null)
-                    {
-                        return HttpNotFound();
-                    }
-
-                    // Update the properties of the existing ShowTime
-                    existingShowTime.MovieId = model.MovieId;
-                    existingShowTime.Title = model.Title;
-                    existingShowTime.StartDateString = model.StartDateString;
-                    existingShowTime.EndDateString = model.EndDateString;
-                    existingShowTime.FirstShowTime = model.FirstShowTime;
-                    existingShowTime.SecondShowTime = model.SecondShowTime;
-                    existingShowTime.ThirdShowTime = model.ThirdShowTime;
-
-                     _ShowTimeDalSql.UpdateShowTime(existingShowTime);
-
-                    // Redirect to a success or index page
-                    return RedirectToAction("Index");
+                  _ShowTimeDalSql.UpdateShowTime(model);
+                   
                 }
+            return JavaScript("CloseManageShowTime()");
         }
 
         public ActionResult BookTicket(int showTimeId)
@@ -220,34 +187,21 @@ namespace MvcMovie.Controllers
             return View(model);
         }
 
-
-        public ActionResult Delete(int ShowTimeId)
+        public string DeleteShow(int showTimeId)
         {
-            if (ShowTimeId == 0)
+            string msg = "";
+            try
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                _ShowTimeDalSql.DeleteConfirm(showTimeId);
+                msg = "Ok";
             }
-            ShowTimeViewModel view = _ShowTimeDalSql.Delete(ShowTimeId);
-
-            if (view == null)
+            catch (Exception e)
             {
-                return HttpNotFound();
+                msg = "ERROR : " + e.Message;
             }
-            return View(view);
+            return msg;
         }
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int ShowTimeId)
-        {
-            //int loggedInUserId = (int)Session["UserId"];
-            var deleteResult = _ShowTimeDalSql.DeleteConfirm(ShowTimeId);
 
-            if (!deleteResult)
-            {
-                return HttpNotFound();
-            }
-            return RedirectToAction("Index"/*, new { userId = loggedInUserId }*/);
-        }
 
         public ActionResult BookTicketIndex()
         {
@@ -280,7 +234,7 @@ namespace MvcMovie.Controllers
         public ActionResult GetMyBookings([DataSourceRequest] DataSourceRequest request)
         {
             //int loggedInUserId = (int)Session["UserId"];
-            int loggedInUserId = 1;
+            int loggedInUserId = (int)Session["UserId"];
             List<ShowTimeViewModel> watch = _ShowTimeDalSql.GetMyBookings(loggedInUserId);
 
             return Json(watch.ToDataSourceResult(request));

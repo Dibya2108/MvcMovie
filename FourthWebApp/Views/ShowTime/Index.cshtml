@@ -1,5 +1,8 @@
 ﻿@using Kendo.Mvc.UI
+@{
+    int UserType = ViewBag.UserType != null ? (int)ViewBag.UserType : 0;
 
+}
 @{
     ViewBag.Title = "Index";
 }
@@ -49,23 +52,26 @@
 </div>
 
 <div style="padding-top: 50px">
+    @if (UserType == 1)
+    {
+        <a href="/ShowTime/BookTicketIndex" class="btn btn-primary">
+            <i class="fa fa-arrow-right"></i>&nbsp;Go to Bookings
+        </a>
 
-    <a href="/ShowTime/BookTicketIndex" class="btn btn-primary">
-        <i class="fa fa-arrow-right"></i>&nbsp;Go to Bookings
-    </a>
+    }
 
-
-
-    <div style="float: right; ">
+<div style="float: right; ">
+    @if (UserType == 2)
+    {
         <a href="/ShowTime/MyBookings" class="btn btn-primary">
             <i class="fa fa-arrow-right"></i>&nbsp;My Bookings
         </a>
-
+    }
     </div>
-</div>
+    </div>
 
 
-    <script>
+<script>
 
 
     @*@if (TempData["ManageSuccessShow"] != null && (bool)TempData["ManageSuccessShow"])
@@ -126,19 +132,32 @@
         }
     }
 
-    function DeleteShowTime(ShowTimeId) {
-        var url = '';
-        var title = "";
+        function DeleteShowTime(showTimeId) {
 
-        try {
-            url = '/ShowTime/Delete?ShowTimeId=' + ShowTimeId;
-            title = "Delete ShowTime";
-            LanguageWindow = OpenConfirmWindowModal(url, title, 450);
-            return;
-        } catch (e) {
-            alert(e);
-        }
-        $('#showGrid').data('kendoGrid').dataSource.read();
+            if (confirm("Are you sure to delete?")) {
+
+                $.ajax({
+                    /**/
+                    url: '/ShowTime/DeleteShow?showTimeId=' + showTimeId,
+                    /**/
+                    type: "GET",
+                    success: function (result) {
+                        $('#showGrid').data('kendoGrid').dataSource.read();
+                    }
+                });
+            }
+        //var url = '';
+        //var title = "";
+
+        //try {
+        //    url = '/ShowTime/Delete?ShowTimeId=' + ShowTimeId;
+        //    title = "Delete ShowTime";
+        //    LanguageWindow = OpenConfirmWindowModal(url, title, 450);
+        //    return;
+        //} catch (e) {
+        //    alert(e);
+        //}
+
     }
 
     function BookShow(ShowTimeId) {
@@ -163,4 +182,4 @@
 
 
 
-    </script>
+</script>

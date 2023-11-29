@@ -2,13 +2,14 @@
 @using Kendo.Mvc.UI
 @using System.Web.Mvc
 @{
+    Layout = null;
     ViewBag.Title = "ManageShowTime";
 }
 <link href="~/assets4.1/libs/clockpicker/bootstrap-clockpicker.min.css" rel="stylesheet" type="text/css" />
 <link href="~/assets4.1/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<h2>Manage ShowTime</h2>
+
 <script>
 
     $(document).ready(function () {
@@ -113,10 +114,8 @@
 
 
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-
+    <div class="row">
+        <div class="popup-col" id="dropTitle">
             @Html.HiddenFor(model => model.MovieId, new { id = "MovieId" })
             @Html.LabelFor(model => model.Title, new { @class = "control-label" })
 
@@ -128,99 +127,101 @@
             else
             {
                 @(Html.Kendo().DropDownList()
-            .Name("titleDrop")
-            .Label(label => label.Content("Select a movie"))
-            .DataTextField("Title")
-            .DataValueField("Id")
-            .DataSource(source =>
-            {
-                source.Read(read =>
+                .Name("titleDrop")
+                .OptionLabel("Select a movie")
+                .DataTextField("Title")
+                .DataValueField("Id")
+                .DataSource(source =>
                 {
-                    read.Action("GetMovies", "ShowTime");
-                });
-            })
+                    source.Read(read =>
+                    {
+                        read.Action("GetMovies", "ShowTime");
+                    });
+                })
             )
             }
 
-
             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            <span id="errorMsgTitle">@ViewBag.msg</span>
         </div>
-    </div>
-
-
-    <div style="overflow:hidden">
-        <div data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; float:left; padding-right:10px">
-            <label><strong>Select Start Date</strong></label><br />
-            @(Html.Kendo().DatePicker()
-              .Name("datepickerStartGrid")
-
-              //.Value(Model.StartDate)
-              .Format("MM/dd/yyyy")
-              .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
-        )
-        </div>
-    </div>
-
-    <div style="overflow:hidden">
-        <div data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; float:left; padding-right:10px">
-            <label><strong>Select End Date</strong></label><br />
-            @(Html.Kendo().DatePicker()
-            .Name("datepickerEndGrid")
-            //.Value(Model.EndDate)
-            .Format("MM/dd/yyyy")
-            .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
-        )
-        </div>
-    </div>
-
-
-
-
-    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; padding-right:5px;  float: left ">
-        <label><strong>Select First ShowTime</strong></label><br />
-        @(Html.Kendo().TimePicker()
-                .Name("timepickerFirst")
-                .Format("hh:mm tt")
-                //.Value(Model.FirstShowTime)
-                .HtmlAttributes(new { style = "width: 100%", title = "timepicker1"})
+        <div>
+            <div class="popup-col-left">
+                <div data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; float: left; padding-right: 5px; padding-top: 20px;">
+                    <label><strong>Select Start Date</strong></label><br />
+                    @(Html.Kendo().DatePicker()
+                .Name("datepickerStartGrid")
+                .Format("MM/dd/yyyy")
+                .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
             )
+                </div>
+                <span id="errorMsgDate1">@ViewBag.msg</span>
+            </div>
+
+            <div class="popup-col-right">
+                <div data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; padding-left: 5px; padding-top: 20px; float: right">
+                    <label><strong>Select End Date</strong></label><br />
+                    @(Html.Kendo().DatePicker()
+                .Name("datepickerEndGrid")
+                .Format("MM/dd/yyyy")
+                .HtmlAttributes(new { style = "width: 100%", title = "datepicker" })
+            )
+                </div>
+                <span id="errorMsgDate2">@ViewBag.msg</span>
+            </div>
+        </div>
+
+
+        <div class="popup-col-left">
+
+            <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 33%; padding-left: 5px; float: right; padding-top: 30px">
+                <label><strong>Select Third ShowTime</strong></label><br />
+                @(Html.Kendo().TimePicker()
+    .Name("timepickerThird")
+    .Format("hh:mm tt")
+    .HtmlAttributes(new { style = "width: 100%", title = "timepicker3" })
+)
+            </div>
+            <span id="errorMsgTime1">@ViewBag.msg</span>
+
+            <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 33%; padding-left: 5px; float: right; padding-top: 30px">
+                <label><strong>Select Second ShowTime</strong></label><br />
+                @(Html.Kendo().TimePicker()
+                .Name("timepickerSecond")
+                .Format("hh:mm tt")
+                .HtmlAttributes(new { style = "width: 100%", title = "timepicker2" })
+            )
+            </div>
+            <span id="errorMsgTime2">@ViewBag.msg</span>
+            <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 33%; padding-left: 5px; float: right; padding-top: 30px">
+                <label><strong>Select First ShowTime</strong></label><br />
+                @(Html.Kendo().TimePicker()
+    .Name("timepickerFirst")
+    .Format("hh:mm tt")
+    .HtmlAttributes(new { style = "width: 100%", title = "timepicker1" })
+)
+            </div>
+            <span id="errorMsgTime3">@ViewBag.msg</span>
+
+        </div>
     </div>
 
-    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; padding-right:5px;  float: left ">
-        <label><strong>Select Second ShowTime</strong></label><br />
-        @(Html.Kendo().TimePicker()
-            .Name("timepickerSecond")
-
-            .Format("hh:mm tt")  // Specify the time format
-                                 //.Value(Model.SecondShowTime)
-            .HtmlAttributes(new { style = "width: 100%", title = "timepicker2"})
-        )
+    <div class="popup-col-left">
+        
     </div>
-
-    <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true" style="width: 300px; padding-right:5px;  float: left ">
-        <label><strong>Select Third ShowTime</strong></label><br />
-        @(Html.Kendo().TimePicker()
-            .Name("timepickerThird")
-            .Format("hh:mm tt")  // Specify the time format
-                                 //.Value(Model.ThirdShowTime)
-            .HtmlAttributes(new { style = "width: 100%", title = "timepicker3" })
-        )
-    </div>
+    <div class="popup-col-right" style="padding-top:45px; float: right; padding-right:2px">
+        <div class="form-group">
+            <span id="errorMsgSpan">@ViewBag.msg</span>
+            @*<input type="submit" value="Save" class="btn btn-primary" onclick="ShowTimeAlert()" />*@
+            <button type="submit" class="btn btn-success" id="btn" onclick="return ShowTimeAlert()">
+                @(Model.ShowTimeId == 0 ? "Create" : "Save Changes")
+            </button>
+        </div>
 </div>
+        }
 
-    <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" onclick="ShowTimeAlert()" />
-    </div>
-}
-
-<script>
+        <script>
     function ShowTimeAlert() {
-        //var startDate = $('datepickerStartGrid').val();
-        //var endDate = $('datepickerEndGrid').val();
-        //var firstShow = $('timepickerFirst').val();
-        //var secondShow = $('timepickerSecond').val();
-        //var thirdShow = $('timepickerThird').val();
-
+        
         var startDate = $('#datepickerStartGrid').val();
         var endDate = $('#datepickerEndGrid').val();
         var firstShow = $('#timepickerFirst').val();
@@ -229,20 +230,46 @@
 
         var title = $('#titleDrop').val();
 
-
         
 
-        @*var movieId = '@Model.MovieId'; // Retrieve the MovieId from your model
-        var titleDropdown = $("#titleDrop").data("kendoDropDownList");
-        titleDropdown.value(movieId); // Set the selected value in the dropdown
+        clearErrorMessages();
 
-        alert(titleDropdown);*@
-        //var startDateFormatted = moment(startDate, 'MM/DD/YYYY').format('YYYY-MM-DD');
-        //var endDateFormatted = moment(endDate, 'MM/DD/YYYY').format('YYYY-MM-DD');
+        if (title == '') {
+            displayErrorMessage('Please choose a show', 'errorMsgTitle')
+            return false;
+        }
 
-        //$("#StartDateString").val(startDateFormatted);
-        //$("#EndDateString").val(endDateFormatted);
+        if (!isValidDate(startDate)) {
+            displayErrorMessage('Please enter valid start date.', 'errorMsgDate1');
+            return false;
+        }
+        if (!isValidDate(endDate)) {
+            displayErrorMessage('Please enter valid end date.', 'errorMsgDate2');
+            return false;
+        }
+        if (new Date(startDate) > new Date(endDate)) {
+            displayErrorMessage('Start date must be less than end date.', 'errorMsgSpan');
+            return false;
+        }
 
+        if (!isValidTime(firstShow)) {
+            displayErrorMessage('Please enter a valid first show time.', 'errorMsgTime1');
+            return false;
+        }
+
+        if (!isValidTime(secondShow)) {
+            displayErrorMessage('Please enter a valid second show time.', 'errorMsgTime2');
+            return false;
+        }
+
+        if (!isValidTime(thirdShow)) {
+            displayErrorMessage('Please enter a valid third show time.', 'errorMsgTime3');
+            return false;
+        }
+
+       
+
+        clearErrorMessages();
         $("#StartDateString").val(startDate);
         $("#EndDateString").val(endDate);
         $("#FirstShowTime").val(firstShow);
@@ -250,10 +277,42 @@
         $("#ThirdShowTime").val(thirdShow);
         $("#MovieId").val(title);
 
+        return true;
+
 
     }
 
-</script>
+            function clearErrorMessages() {
+                // Clear all error messages
+                $('#errorMsgSpan').text('');
+                $('#errorMsgTitle').text('');
+                $('#errorMsgDate1').text('');
+                $('#errorMsgDate2').text('');
+                $('#errorMsgTime1').text('');
+                $('#errorMsgTime2').text('');
+                $('#errorMsgTime3').text('');
+
+            }
+
+            function isValidDate(dateString) {
+                // Check if the date string is in MM/DD/YYYY format
+                var regex = /^\d{2}\/\d{2}\/\d{4}$/;
+                return regex.test(dateString);
+            }
+
+            function isValidTime(timeString) {
+                // Check if the time string is in "hh:mm tt" format
+                var regex = /^(1[0-2]|0?[1-9]):[0-5][0-9] [APap][mM]$/;
+                return regex.test(timeString);
+            }
+
+            function displayErrorMessage(message, elementId) {
+                // Display error message in red below the specified element
+                $('#' + elementId).text(message).css('color', 'red');
+            }
+
+
+        </script>
 
 
 
