@@ -240,11 +240,11 @@
         }
 
         if (!isValidDate(startDate)) {
-            displayErrorMessage('Please enter valid start date.', 'errorMsgDate1');
+            displayErrorMessage('Please enter valid start date.', 'errorMsgSpan');
             return false;
         }
         if (!isValidDate(endDate)) {
-            displayErrorMessage('Please enter valid end date.', 'errorMsgDate2');
+            displayErrorMessage('Please enter valid end date.', 'errorMsgSpan');
             return false;
         }
         if (new Date(startDate) > new Date(endDate)) {
@@ -253,19 +253,29 @@
         }
 
         if (!isValidTime(firstShow)) {
-            displayErrorMessage('Please enter a valid first show time.', 'errorMsgTime1');
+            displayErrorMessage('Please enter a valid first show time.', 'errorMsgSpan');
             return false;
         }
 
         if (!isValidTime(secondShow)) {
-            displayErrorMessage('Please enter a valid second show time.', 'errorMsgTime2');
+            displayErrorMessage('Please enter a valid second show time.', 'errorMsgSpan');
             return false;
         }
 
         if (!isValidTime(thirdShow)) {
-            displayErrorMessage('Please enter a valid third show time.', 'errorMsgTime3');
+            displayErrorMessage('Please enter a valid third show time.', 'errorMsgSpan');
             return false;
         }
+
+        //if (firstShow >= secondShow || firstShow >= thirdShow) {
+        //    displayErrorMessage('Firstshow time should be less than second and third show', 'errorMsgSpan');
+        //    return false;
+        //}
+
+        //if (secondShow >= thirdShow) {
+        //    displayErrorMessage('Secondshow time should be less than third show', 'errorMsgSpan');
+        //    return false;
+        //}
 
        
 

@@ -21,16 +21,26 @@ namespace MvcMovie.Controllers
         // GET: ShowTime
         public ActionResult Index()
         {
-            //int userId = (int)Session["UserId"];
-            //int userType = _accountDalSql.GetUserTypeByUserId(userId);
-
-            //ViewBag.UserType = userType;
+            
             return View();
         }
 
-        public ActionResult GetShowTime([DataSourceRequest] DataSourceRequest request)
+        public ActionResult GetShowTime([DataSourceRequest] DataSourceRequest request, bool showAll = false)
         {
-            List<ShowTimeViewModel> movie = _ShowTimeDalSql.GetShowTimeForKendoGrid();
+            DateTime currentDate = DateTime.Now;
+            List<ShowTimeViewModel> movie;
+
+            if (showAll)
+            {
+                movie = _ShowTimeDalSql.GetShowTimeForKendoGrid();
+            }
+            else
+            {
+                movie = _ShowTimeDalSql.GetShowTimeForKendoGrid()
+                    .Where(c => c.EndDate < currentDate)
+                     .ToList() ;
+            }
+
 
             return Json(movie.ToDataSourceResult(request));
         }

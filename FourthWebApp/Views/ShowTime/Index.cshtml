@@ -25,13 +25,16 @@
 
 
 <div id="showKendoGrid">
+
+    <input type="checkbox" id="showAllCheckbox" onchange="updateGridData()" /> Show All
+
     @(Html.Kendo().Grid<ViewModel.ShowTimeViewModel>()
      .Name("showGrid")
      .Columns(columns =>
      {
          columns.Bound(c => c.Title).Title("Movie").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         columns.Bound(c => c.StartDate).Title("Start Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         columns.Bound(c => c.EndDate).Title("End Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.StartDate).Format("{0:dd-MMM-yyyy}").Title("Start Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.EndDate).Title("End Date").Format("{0:dd-MMM-yyyy}").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.FirstShowTime).Title("First Show Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.SecondShowTime).Title("Second Show Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.ThirdShowTime).Title("Third Show Time ").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
@@ -46,9 +49,9 @@
      .Sortable()
      .DataSource(dataSource => dataSource
          .Ajax()
-         .Read(read => read.Action("GetShowTime", "ShowTime"))
+         .Read(read => read.Action("GetShowTime", "ShowTime").Data("additionalData"))
      )
- )
+    )
 </div>
 
 <div style="padding-top: 50px">
@@ -58,7 +61,7 @@
             <i class="fa fa-arrow-right"></i>&nbsp;Go to Bookings
         </a>
 
-    }
+        }
 
 <div style="float: right; ">
     @if (UserType == 2)
@@ -74,13 +77,17 @@
 <script>
 
 
-    @*@if (TempData["ManageSuccessShow"] != null && (bool)TempData["ManageSuccessShow"])
-    {
-        <text>
-            CloseManageShowTime();
-        </text>
-    }*@
+    function updateGridData() {
+        var showAll = $("#showAllCheckbox").prop("checked");
+        var grid = $("#showGrid").data("kendoGrid");
 
+        // Reload the grid with the updated showAll parameter
+        grid.dataSource.read({ showAll: showAll });
+    }
+
+    function additionalData() {
+        return { showAll: true }; // Set this to false if you don't want to show all.
+    }
 
     var LanguageWindow;
     var searchString = "";
