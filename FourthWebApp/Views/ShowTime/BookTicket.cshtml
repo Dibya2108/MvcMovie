@@ -1,5 +1,7 @@
 ﻿@model ViewModel.ShowTimeViewModel
 @using Kendo.Mvc.UI
+
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 @{
     Layout = null;
     ViewBag.Title = "BookTicket";
@@ -19,6 +21,7 @@
     @Html.HiddenFor(model => model.ShowTimeId, new { id = "ShowTimeId" })
     @Html.HiddenFor(model => model.MovieId, new { id = "MovieId" })
     @Html.HiddenFor(model => model.StartDate, new { id = "StartDate" })
+    @Html.HiddenFor(model => model.ShowDateString, new { id = "ShowDateString" })
     @Html.HiddenFor(model => model.SelectedDate, new { id = "SelectedDate" })
     @Html.HiddenFor(model => model.SelectedTime, new { id = "SelectedTime" })
     @Html.HiddenFor(model => model.SelectedSeat, new { id = "ShowTimeId" })
@@ -134,12 +137,13 @@
         var ticketSeat = $('input[name="SelectedSeatType"]:checked').val();
         var ticketCount = $('#countTicket').val();
 
-        //alert(ticketDate);
+        alert(ticketDate);
         //alert(ticketTime);
         //alert(ticketSeat);
         //alert(ticketCount);
 
         $("#TicketCount").val(ticketCount);
+        $("#ShowDateString").val(ticketDate);
     }
 
 </script>

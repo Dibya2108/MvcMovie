@@ -37,7 +37,7 @@ namespace MvcMovie.Controllers
             else
             {
                 movie = _ShowTimeDalSql.GetShowTimeForKendoGrid()
-                    .Where(c => c.EndDate < currentDate)
+                    .Where(c => c.EndDate > currentDate)
                      .ToList() ;
             }
 
@@ -166,36 +166,34 @@ namespace MvcMovie.Controllers
         public ActionResult BookTicket(ShowTimeViewModel model)
         {
            
-                try
-                {
+                
                     var seatTypesId = _ShowTimeDalSql.GetSeatTypesId(model.SelectedSeatType);
 
                     // Update the properties of the existing model
                     model.MovieId = model.MovieId;
-                    model.ShowDate = model.StartDate;
+                    //model.ShowDate = model.SelectedDate;
+                    
                     model.ShowTime = model.SelectedShowtime;
                     model.TypeName = model.SelectedSeatType;
                     model.SeatTypeId = seatTypesId;
                     model.PaymentStatus = 1;
                     model.PaymentAmount = _ShowTimeDalSql.CalculatePaymentAmount(seatTypesId, model.TicketCount);
                     model.NoOfTicket = model.TicketCount;
-                    model.UserId = 1;
+                    model.UserId = (int)Session["UserId"];
+            
 
-                    var seatTypes = _ShowTimeDalSql.GetSeatTypes();
+            var seatTypes = _ShowTimeDalSql.GetSeatTypes();
                     var radioGroupOptions = seatTypes.Select(seatType => $"{seatType.TypeName} - Rs {seatType.Price}").ToArray();
                     ViewBag.SeatTypeOptions = radioGroupOptions;
 
                     _ShowTimeDalSql.SaveBookTicket(model);
 
-                    return RedirectToAction("Index");
-                }
-                catch (Exception)
-                {
-                    ModelState.AddModelError("", "An error occurred while saving the ticket.");
-                }
-           
-            return View(model);
+                    //return RedirectToAction("Index");
+
+
+            return JavaScript("CloseBookShow()");
         }
+    
 
         public string DeleteShow(int showTimeId)
         {

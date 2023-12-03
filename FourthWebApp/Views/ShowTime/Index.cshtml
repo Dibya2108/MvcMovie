@@ -61,17 +61,17 @@
             <i class="fa fa-arrow-right"></i>&nbsp;Go to Bookings
         </a>
 
-        }
-
-<div style="float: right; ">
-    @if (UserType == 2)
-    {
-        <a href="/ShowTime/MyBookings" class="btn btn-primary">
-            <i class="fa fa-arrow-right"></i>&nbsp;My Bookings
-        </a>
     }
+
+    <div style="float: right; ">
+        @if (UserType == 2)
+        {
+            <a href="/ShowTime/MyBookings" class="btn btn-primary">
+                <i class="fa fa-arrow-right"></i>&nbsp;My Bookings
+            </a>
+        }
     </div>
-    </div>
+</div>
 
 
 <script>
@@ -86,7 +86,7 @@
     }
 
     function additionalData() {
-        return { showAll: true }; // Set this to false if you don't want to show all.
+        return { showAll: false }; // Set this to false if you don't want to show all.
     }
 
     var LanguageWindow;
@@ -139,31 +139,21 @@
         }
     }
 
-        function DeleteShowTime(showTimeId) {
+    function DeleteShowTime(showTimeId) {
 
-            if (confirm("Are you sure to delete?")) {
+        if (confirm("Are you sure to delete?")) {
 
-                $.ajax({
-                    /**/
-                    url: '/ShowTime/DeleteShow?showTimeId=' + showTimeId,
-                    /**/
-                    type: "GET",
-                    success: function (result) {
-                        $('#showGrid').data('kendoGrid').dataSource.read();
-                    }
-                });
-            }
-        //var url = '';
-        //var title = "";
-
-        //try {
-        //    url = '/ShowTime/Delete?ShowTimeId=' + ShowTimeId;
-        //    title = "Delete ShowTime";
-        //    LanguageWindow = OpenConfirmWindowModal(url, title, 450);
-        //    return;
-        //} catch (e) {
-        //    alert(e);
-        //}
+            $.ajax({
+                /**/
+                url: '/ShowTime/DeleteShow?showTimeId=' + showTimeId,
+                /**/
+                type: "GET",
+                success: function (result) {
+                    $('#showGrid').data('kendoGrid').dataSource.read();
+                }
+            });
+        }
+        
 
     }
 
@@ -182,7 +172,7 @@
             alert(e);
         }
     }
-    function CloseManageShowTime() {
+    function CloseBookShow() {
         LanguageWindow.close();
         $('#showGrid').data('kendoGrid').dataSource.read();
     }

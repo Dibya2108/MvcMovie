@@ -270,7 +270,7 @@ namespace Data_Access
 
                     // Set the parameters for the query.
                     command.Parameters.AddWithValue("@MovieId", bookTicket.MovieId);
-                    command.Parameters.AddWithValue("@ShowDate", bookTicket.ShowDate);
+                    command.Parameters.AddWithValue("@ShowDate", bookTicket.ShowDateString);
                     command.Parameters.AddWithValue("@ShowTime", bookTicket.ShowTime);
                     command.Parameters.AddWithValue("@SeatTypeId", bookTicket.SeatTypeId);
                     command.Parameters.AddWithValue("@PaymentStatus", bookTicket.PaymentStatus);
@@ -510,7 +510,7 @@ namespace Data_Access
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string query = "Select M.Title, B.MovieId " +
+                string query = "Select distinct M.Title, B.MovieId " +
                     "From Movies M Inner Join " +
                     "BookTicket B On M.Id = B.MovieId ";
 
@@ -544,7 +544,7 @@ namespace Data_Access
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string query = "Select B.BookTicketId, B.ShowTime " +
+                string query = "Select distinct B.ShowTime, B.BookTicketId " +
                     "From BookTicket B ";
 
                 SqlCommand cmd = new SqlCommand(query, con);
