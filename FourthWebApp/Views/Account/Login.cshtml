@@ -1,33 +1,15 @@
-﻿
-@model ViewModel.UserViewModel
+﻿@model ViewModel.UserViewModel
 
 @{
     ViewBag.Title = "Login";
     Layout = null;
 }
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
-    <title>@ViewBag.Title | BTTA</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-    <meta content="Coderthemes" name="author" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <script src="~/Scripts/jquery-3.4.1.min.js"></script>
     <!-- App favicon -->
     <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-
-    
-    @*<style>
-        .auth-fluid-right {
-            background-image: url('~assets/images/bg1.png');
-            background-size: cover; /* Adjust this property based on your image and layout preferences */
-            background-position: right top; /* Adjust this property to position the image */
-        }
-    </style>*@
     <link href="~/assets/css/jquery-confirm.css" rel="stylesheet" />
 
 
@@ -46,112 +28,161 @@
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    @*<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>*@
-    @*<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+
     <script src="~/assets/js/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/assets/js/moment.js"></script>
-    <style>
-        #errorMsgUser {
-            color: red;
-        }
-    </style>
 </head>
-
 <body class="auth-fluid-pages pb-0">
+    <!-- Section: Design Block -->
+    <section class="background-radial-gradient overflow-hidden">
+        <style>
+            .background-radial-gradient {
+                background-color: hsl(218, 41%, 15%);
+                /*background-image: radial-gradient(650px circle at 0% 0%, hsl(218, 41%, 35%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%), radial-gradient(1250px circle at 100% 100%, hsl(218, 41%, 45%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%);*/
+                background-image: url('/assets/images/bg-auth.jpg');
+                }
 
-    <div class="auth-fluid">
-        <!--Auth fluid left content -->
-        <div class="auth-fluid-form-box">
-            <div class="align-items-center d-flex h-100">
-                <div class="p-3">
+            /*#radius-shape-1 {
+                height: 220px;
+                width: 220px;
+                top: -60px;
+                left: -130px;
+                background: radial-gradient(#44006b, #ad1fff);
+                overflow: hidden;
+            }
 
-                    
+            #radius-shape-2 {
+                border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+                bottom: -60px;
+                right: -110px;
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(#44006b, #ad1fff);
+                overflow: hidden;
+            }*/
 
-                    <!-- title-->
-                    <h4 class="mt-0">Sign In</h4>
-                    <p class="text-muted mb-4">Enter your username and password to access account.</p>
+            .bg-glass {
+                background-color: hsla(0, 0%, 100%, 0.9) !important;
+                backdrop-filter: saturate(200%) blur(25px);
+            }
+        </style>
+
+        <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+            <div class="row gx-lg-5 align-items-center mb-5">
+                <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+                    @*<h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+                        The best offer <br />
+                        <span style="color: hsl(218, 81%, 75%)">for your business</span>
+                    </h1>
+                    <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                        Temporibus, expedita iusto veniam atque, magni tempora mollitia
+                        dolorum consequatur nulla, neque debitis eos reprehenderit quasi
+                        ab ipsum nisi dolorem modi. Quos?
+                    </p>*@
+                </div>
+
+                <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                    <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                    <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+                    <div class="card bg-glass">
+                        <div class="card-body px-4 py-5 px-md-5">
+                            @*<form>*@
+                                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
 
 
-                    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        @*@Html.HiddenFor(model => model.UserTypeId)
-            @Html.HiddenFor(model => model.UserId)*@
-                        
-                        <div class="mb-3">
-                            <label for="username" class="form-label"><strong>User Name</strong></label><br />
-                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "Enter your username" })
-                            <span style="color: red;">@Html.ValidationMessageFor(model => model.UserName)</span>
-                        </div>
-                        <div class="mb-3">
-                            <label for="password" class="form-label"><strong>Password</strong></label><br />
-                            <div class="input-group input-group-merge">
-                                @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Enter your password" })
-                                <div class="input-group-text" data-password="false">
-                                    <span class="password-eye"></span>
-                                </div>
+
+                                    <!-- Email input -->
+                                    <div class="form-outline mb-4">
+                                        <label for="username" class="form-label"><strong>User Name</strong></label><br />
+                                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", placeholder = "Enter your username" })
+                                        <span style="color: red;">@Html.ValidationMessageFor(model => model.UserName)</span>
+                                    </div>
+
+                                    <!-- Password input -->
+                                    <div class="form-outline mb-4">
+                                        <label for="password" class="form-label"><strong>Password</strong></label><br />
+                                        <div class="input-group input-group-merge">
+                                            @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Enter your password" })
+                                            <div class="input-group-text" data-password="false">
+                                                <span class="password-eye"></span>
+                                            </div>
+                                        </div>
+
+                                        <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
+                                    </div>
+                                    <span id="errorMsgUser">@ViewBag.ErrorMessage</span>
+
+                                    <!-- Checkbox -->
+                                    @*<div class="form-check d-flex justify-content-center mb-4">
+                                        <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
+                                        <label class="form-check-label" for="form2Example33">
+                                            Subscribe to our newsletter
+                                        </label>
+                                    </div>*@
+
+                                    <!-- Submit button -->
+                            <div class="text-center d-grid">
+                                <button class="btn btn-success" type="submit">Log In </button>
                             </div>
 
-                            <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
+                                    <!-- Register buttons -->
+                                    @*<div class="text-center">
+                                        <p>or sign up with:</p>
+                                        <button type="button" class="btn btn-link btn-floating mx-1">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-link btn-floating mx-1">
+                                            <i class="fab fa-google"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-link btn-floating mx-1">
+                                            <i class="fab fa-twitter"></i>
+                                        </button>
+
+                                        <button type="button" class="btn btn-link btn-floating mx-1">
+                                            <i class="fab fa-github"></i>
+                                        </button>
+                                    </div>*@
+                                }
+                            @*</form>*@
                         </div>
-
-                        <span id="errorMsgUser">@ViewBag.ErrorMessage</span>
-
-                        <div class="text-center d-grid">
-                            <button class="btn btn-success" type="submit">Log In </button>
-                        </div>
-
-                       
-
-                    }
-
-                </div> <!-- end .card-body -->
-            </div> <!-- end .align-items-center.d-flex.h-100-->
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- end auth-fluid-form-box-->
-        <!-- Auth fluid right content -->
-        <div class="auth-fluid-right text-center">
-            <div class="auth-user-testimonial">
-                <div><img src="~/assets/images/logo_btta.png" alt="" height="100"></div>
-                <h2 class="mb-3 text-white">Mvc Movie Project</h2>
-                @*<p class="lead">
-                    <i class="mdi mdi-format-quote-open"></i> I've been using your theme from the previous developer for our web app, once I knew new version is out, I immediately bought with no hesitation. Great themes, good documentation with lots of customization available and sample app that really fit our need. <i class="mdi mdi-format-quote-close"></i>
-                </p>
-                <h5 class="text-white">
-                    - Fadlisaad (Ubold Admin User)
-                </h5>*@
-            </div> <!-- end auth-user-testimonial-->
-        </div>
-        <!-- end Auth fluid right content -->
-    </div>
-    <!-- end auth-fluid-->
-
-    <script src="~/assets/libs/bootstrap/js/bootstrap.min.js"></script>
-    @*<script src="~/assets/libs/datatables.net/node_modules/jquery/jquery.min.js"></script>*@
-    <!-- Vendor js -->
-    <script src="~/assets/js/vendor.min.js"></script>
+    </section>
+        <script src="~/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+        @*<script src="~/assets/libs/datatables.net/node_modules/jquery/jquery.min.js"></script>*@
+        <!-- Vendor js -->
+        <script src="~/assets/js/vendor.min.js"></script>
 
 
-    <!-- Plugins js-->
-    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
-    <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
+        <!-- Plugins js-->
+        <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+        <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
 
-    <script src="assets/libs/selectize/js/standalone/selectize.min.js"></script>
+        <script src="assets/libs/selectize/js/standalone/selectize.min.js"></script>
 
-    <!-- Dashboar 1 init js-->
-    <script src="~/assets/js/pages/dashboard-1.init.js"></script>
+        <!-- Dashboar 1 init js-->
+        <script src="~/assets/js/pages/dashboard-1.init.js"></script>
 
-    <!-- App js-->
-    <script src="~/assets/js/app.min.js"></script>
-    <script src="~/assets/js/jquery-confirm.js"></script>
-    <script src="~/assets/js/CommonUI.js"></script>
+        <!-- App js-->
+        <script src="~/assets/js/app.min.js"></script>
+        <script src="~/assets/js/jquery-confirm.js"></script>
+        <script src="~/assets/js/CommonUI.js"></script>
 
-    <script>
-        function ShowError(msg) {
-            alert(msg)
-        }
-    </script>
-
-</body>
+        <script>
+            function ShowError(msg) {
+                alert(msg)
+            }
+        </script>
+    </body>
+    
+    <!-- Section: Design Block -->
 </html>
