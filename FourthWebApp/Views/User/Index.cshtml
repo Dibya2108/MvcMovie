@@ -40,16 +40,13 @@
 
         try {
             if (UserId == 0) {
-                url = '/User/Manage';
-                title = "Add User";
+                window.location.href = '/User/Manage';
             }
             else {
-                url = '/User/Manage?UserId=' + UserId;
-                title = "Edit User ";
+                window.location.href = '/User/Manage?UserId=' + UserId;
             }
 
-            LanguageWindow = OpenConfirmWindowModal(url, title, 850);
-            return;
+            
         } catch (e) {
             alert(e);
         }

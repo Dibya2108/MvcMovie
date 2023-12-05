@@ -50,5 +50,6 @@ namespace ViewModel
         public string UserType { get; set; }
 
         public SelectList UserTypes { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

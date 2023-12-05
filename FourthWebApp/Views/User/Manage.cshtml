@@ -1,177 +1,200 @@
-﻿@model ViewModel.UserViewModel
+﻿
+@model ViewModel.UserViewModel
 @{
-    ViewBag.Title = "ManageUser";
+    ViewBag.Title = "Register";
     Layout = null;
 }
+<html lang="en">
+<head>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico">
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-
-@*<script src="~/Scripts/jquery.validate.min.js"></script>*@
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-
-@Html.ValidationSummary(true)
-
-@using (Ajax.BeginForm("Manage", "User",
-    new AjaxOptions
-    {
-        HttpMethod = "POST",
-        InsertionMode = InsertionMode.Replace,
-        UpdateTargetId = "ajax_contentMain",
-    }, new { autocomplete = "off" }))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.UserId, new { id = "UserId" })
+    <link href="~/assets/css/jquery-confirm.css" rel="stylesheet" />
 
 
-    <div class="popup-col-left">
-        <div class="form-group">
-            <label><strong>First Name</strong></label><br />
-            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", id = "FirstName" })
-            <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.FirstName)</span>
-        </div>
-    </div>
+    <!-- Plugins css -->
+    <link href="~/assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
 
-    <div class="popup-col-right">
-        <div class="form-group">
-            <label><strong>Last Name</strong></label><br />
-            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", id = "LastName" })
-            <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.LastName)</span>
-        </div>
-    </div>
-    <div class="popup-col-left">
-        <div class="form-group">
-            <label><strong>User Name</strong></label><br />
-            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control-password", id = "UserName" })
-            <span class="validationError" style="font-size: 15px;">@Html.ValidationMessageFor(n => n.UserName)</span>
-        </div>
-    </div>
-    <div class="popup-col-right">
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserTypeId, "User Type", htmlAttributes: new { @class = "control-label" })
-            @Html.DropDownListFor(model => model.UserTypeId, Model.UserTypes as SelectList, "-- Select UserType --", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.UserTypeId, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    <!-- Bootstrap css -->
+    <link href="~/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <!-- App css -->
+    <link href="~/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
+    <!-- icons -->
+    <link href="~/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <!-- Head js -->
+    <script src="~/assets/js/head.js"></script>
 
-    <div class="popup-col-left">
-        <div class="form-group">
-            <label><strong>Email</strong></label><br />
-            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", id = "Email" })
-            <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.Email)</span>
-        </div>
-    </div>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    @*<div class="popup-col-right">
-        <div class="form-group">
-            <label><strong>Password</strong></label><br />
-            @Html.TextBoxFor(model => model.Password, new { @class = "form-control-password", id = "Password1" })
-            <span id="pass"></span>
-            <span class="validationError" style="font-size: 15px;">@Html.ValidationMessageFor(n => n.Password)</span>
-        </div>
-    </div>*@
-    <div class="popup-col-right">
-        <label for="password" class="form-label"><strong>Password</strong></label><br />
-        <div class="input-group input-group-merge">
-            @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
-            <div class="input-group-text" data-password="false">
-                <span class="password-eye"></span>
+    <script src="~/assets/js/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/assets/js/moment.js"></script>
+</head>
+<body class="auth-fluid-pages pb-0">
+
+    <section class="vh-100" style="background-color: #eee;">
+        <div class="container h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-lg-12 col-xl-11">
+                    <div class="card text-black" style="border-radius: 25px;">
+                        <div class="card-body p-md-5">
+                            <div class="row justify-content-center">
+                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+
+                                    @*<form class="mx-1 mx-md-4">*@
+                                    @using (Html.BeginForm("Manage", "User", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(model => model.UserId, new { id = "UserId" })
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
+                                                <label class="form-label" for="form3Example1c">First Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+
+                                                <label class="form-label" for="form3Example1c">Last Name</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+
+                                                <label class="form-label" for="form3Example3c">Your Email</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+
+                                                <label class="form-label" for="form3Example4c">Password</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+
+                                                <label class="form-label" for="form3Example4cd">User Name</label>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.TextAreaFor(model => model.Address, new { @class = "form-control" })
+
+                                                <label class="form-label" for="form3Example4cd">Address</label>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+
+                                                <label class="form-label" for="form3Example4cd">Phone Number</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                            <div class="form-outline flex-fill mb-0">
+                                                @Html.LabelFor(model => model.UserTypeId, "User Type", htmlAttributes: new { @class = "control-label" })
+                                                @Html.DropDownListFor(model => model.UserTypeId, Model.UserTypes as SelectList, "-- Select UserType --", htmlAttributes: new { @class = "form-control" })
+                                                @Html.ValidationMessageFor(model => model.UserTypeId, "", new { @class = "text-danger" })
+
+                                                <label class="form-label" for="form3Example4cd">Phone Number</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="d-flex flex-row align-items-center mb-4">
+                                            <div class="form-check">
+                                                @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-check-input" }) Active
+                                                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-check d-flex justify-content-center mb-5">
+                                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
+                                            <label class="form-check-label" for="form2Example3">
+                                                I agree all statements in <a href="#!">Terms of service</a>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <button type="submit" class="btn btn-primary"> Register </button>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <p>
+                                                    <a href="/User/Index" class="text-primary m-l-5">Go back</a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+                                    @*</form>*@
+
+                                </div>
+                                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+
+                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                                         class="img-fluid" alt="Sample image">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <span style="color: red;">@Html.ValidationMessageFor(model => model.Password)</span>
         </div>
-
-        </div>
-        <div class="popup-col-left">
-            <div class="form-group">
-                <label>Address</label><br />
-                @Html.TextAreaFor(model => model.Address, new { @class = "form-control", id = "Address" })
-                <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.Address)</span>
-            </div>
-        </div>
-
-        <div class="popup-col-right">
-            <div class="form-group">
-                <label><strong>Phone</strong></label><br />
-                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control-password", id = "phone", @onkeypress = "return OnlyNumericEntry(event)" })
-                <span class="validationError" style="font-size: 15px;">@Html.ValidationMessageFor(n => n.Phone)</span>
-            </div>
-        
+    </section>
+    <script src="~/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+    @*<script src="~/assets/libs/datatables.net/node_modules/jquery/jquery.min.js"></script>*@
+    <!-- Vendor js -->
+    <script src="~/assets/js/vendor.min.js"></script>
 
 
+    <!-- Plugins js-->
+    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
 
-        
-    </div>
-    
+    <script src="assets/libs/selectize/js/standalone/selectize.min.js"></script>
 
-    <div class="popup-col">
-        <div class="form-check">
-            @Html.CheckBoxFor(model => model.IsActive, new { @class = "form-check-input" }) Active
-            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
-        </div>
-    </div>
+    <!-- Dashboar 1 init js-->
+    <script src="~/assets/js/pages/dashboard-1.init.js"></script>
 
+    <!-- App js-->
+    <script src="~/assets/js/app.min.js"></script>
+    <script src="~/assets/js/jquery-confirm.js"></script>
+    <script src="~/assets/js/CommonUI.js"></script>
 
-    <div class="popup-col-right">
-        <div class="form-group" style="text-align:right">
-            <button type="submit" class="btn btn-success" id="btn">
-                @(Model.UserId == 0 ? "Create" : "Save Changes")
-            </button>
-            <a href="javascript:void(0);" class="btn btn-default" id="cancel-button">Cancel</a>
-            <span id="errorMsgSpan">@ViewBag.msg</span>
-        </div>
-    </div>
-}
-
-<script>
-    $(document).ready(function () {
-        $(".password-eye").each(function () {
-            var passwordInput = $(this).closest(".input-group").find("input");
-            passwordInput.attr("type", "password");
-        });
-        $(".password-eye").click(function () {
-            var passwordInput = $(this).closest(".input-group").find("input");
-            var icon = $(this);
-
-            if (passwordInput.attr("type") === "password") {
-                passwordInput.attr("type", "text");
-                icon.removeClass("bi-eye");
-                icon.addClass("bi-eye-slash");
-            } else {
-                passwordInput.attr("type", "password");
-                icon.removeClass("bi-eye-slash");
-                icon.addClass("bi-eye");
-            }
-        });
-
-
-        $("#cancel-button").click(function () {
-            CloseUser();
-        });
-    });
-
-    function CloseUser() {
-        try {
-            LanguageWindow.close();
-            $.get("/User/GetUserTable", function (data) {
-                $("#userDetails").html(data);
-            });
-        } catch (e) {
-            alert("An error occurred: " + e);
+    <script>
+        function ShowError(msg) {
+            alert(msg)
         }
-    }
+    </script>
+</body>
 
-
-    function CloseUser() {
-        try {
-            LanguageWindow.close();
-            $.get("/User/GetUserTable", function (data) {
-                $("#userDetails").html(data);
-            });
-        } catch (e) {
-            alert("An error occurred: " + e);
-        }
-    }
-</script>
-
+<!-- Section: Design Block -->
+</html>
 
 

@@ -135,7 +135,8 @@ namespace Data_Access
                 Address = movieRow["Address"].ToString(),
                 Phone = Convert.ToInt32(movieRow["Phone"]),
                 IsDeleted = Convert.ToBoolean(movieRow["IsDeleted"]),
-                UserTypeId = Convert.ToInt32(movieRow["UserTypeId"])
+                UserTypeId = Convert.ToInt32(movieRow["UserTypeId"]),
+                ImageUrl = string.IsNullOrEmpty(movieRow["ImageUrl"].ToString()) ? null : movieRow["ImageUrl"].ToString()
             };
         }
 
@@ -179,7 +180,8 @@ namespace Data_Access
         "LastName = @LastName, " +
         "Address = @Address, " +
         "Password = @Password, " +
-        "Phone = @Phone " +
+        "Phone = @Phone, " +
+        "ImageUrl = @ImageUrl " +
         "WHERE UserId = @UserId";
 
 
@@ -193,6 +195,7 @@ namespace Data_Access
                         command.Parameters.AddWithValue("@Address", user.Address);
                         command.Parameters.AddWithValue("@Password", user.Password);
                         command.Parameters.AddWithValue("@Phone", user.Phone);
+                        command.Parameters.AddWithValue("@ImageUrl", user.ImageUrl);
                         command.Parameters.AddWithValue("@UserId", user.UserId);
 
                         int rowsAffected = command.ExecuteNonQuery();

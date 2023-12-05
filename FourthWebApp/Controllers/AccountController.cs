@@ -36,8 +36,7 @@ namespace MvcMovie.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(UserViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            
                 bool registrationSuccess = _accountDalSql.RegisterUser(model);
 
                 if (registrationSuccess)
@@ -48,7 +47,7 @@ namespace MvcMovie.Controllers
                 {
                     ModelState.AddModelError("", "Registration failed. Please try again.");
                 }
-            }
+            
             return View(model);
         }
         public ActionResult RegisterSuccess()

@@ -101,5 +101,12 @@ ADD CreatedOn DATETIME NOT NULL DEFAULT GETDATE();
 GO
 
 
+------------------------------
+----     05/12/2023       ----
+------------------------------
+
+Alter table [dbo].[Users]
+  Add ImageUrl varchar (Max) Not Null default '' ;
+
 
  

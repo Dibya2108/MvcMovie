@@ -3,6 +3,7 @@ using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -127,7 +128,8 @@ namespace FourthWebApp.Controllers
                 }
             user.UserTypes = new SelectList(_UserDal.GetUserTypes(), "Value", "Text");
 
-            return JavaScript("CloseUser()");
+            //return JavaScript("CloseUser()");
+            return RedirectToAction("Index");
 
             
 
@@ -160,13 +162,41 @@ namespace FourthWebApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult UserProfile(UserViewModel model)
+        public ActionResult UserProfile(UserViewModel model, FormCollection fc, HttpPostedFileBase file)
         {
             {
                 if (ModelState.IsValid)
                 {
-                    bool updateSuccess = _accountDalSql.UpdateUserProfile(model);
+                    
 
+                    if (file != null && file.ContentLength > 0)
+                    {
+                        
+                        
+                        var allowedExtensions = new[] { ".Jpg", ".png", ".jpg", "jpeg" };
+                        //model.ImageUrl = file.ToString();
+                        var fileName = Path.GetFileName(file.FileName);
+                        var ext = Path.GetExtension(file.FileName);
+
+                        if (allowedExtensions.Contains(ext))
+                        {
+                            string name = Path.GetFileNameWithoutExtension(fileName);
+                            string myfile = name + "_" + model.UserId + ext;
+                            string relativePath = "/Images/Large/User/";
+
+                            var path = Path.Combine(Server.MapPath("~/Images/Large/User"), myfile);
+                            var savePath = Path.Combine(relativePath, myfile);
+                            model.ImageUrl = savePath;
+                            file.SaveAs(path);
+
+                        }
+                        else
+                        {
+                            ViewBag.message = "Please choose only Image file";
+                            return View(model);
+                        }
+                    }
+                    bool updateSuccess = _accountDalSql.UpdateUserProfile(model);
 
                     if (updateSuccess)
                     {
