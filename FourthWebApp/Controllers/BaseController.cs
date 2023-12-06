@@ -1,9 +1,11 @@
 ﻿using Data_Access;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ViewModel;
 
 namespace FourthWebApp.Controllers
 {
@@ -21,5 +23,38 @@ namespace FourthWebApp.Controllers
 
             base.OnActionExecuting(filterContext);
         }
+
+        public UserViewModel SessionUser
+        {
+            get
+            {
+                if (((SessionContext)Session["MvcMovie"]) == null)
+                    Response.Redirect(ConfigurationManager.AppSettings["BaseUrl"] + "Account/Login");
+                else
+                {
+                    return ((SessionContext)Session["MvcMovie"]).SessionUser;
+                }
+
+                return null;
+
+                
+            }
+        }
+
+        public bool IsAdmin
+        {
+            get
+            {
+
+                if (SessionUser.UserTypeId == 1) //1=>admin, //|| SessionUser.UserTypeId == 4 || SessionUser.UserTypeId == 7
+
+                    return true;
+
+                return false;
+
+            }
+
+        }
+
     }
 }

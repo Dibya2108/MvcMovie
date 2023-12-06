@@ -97,7 +97,9 @@ namespace MvcMovie.Controllers
 
         public ActionResult Logout()
         {
-            return View();
+            Session.Remove("WorkFlowPerfection");
+            Session.Abandon();
+            return Redirect("/Account/Login");
         }
 
         //public ActionResult UserProfile()

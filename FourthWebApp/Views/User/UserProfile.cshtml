@@ -71,6 +71,7 @@
                                 <div class="col-md-4 gradient-custom text-center text-white"
                                      style="border-top-left-radius: .9rem; border-bottom-left-radius: .9rem;">
                                     <img src="@Model.ImageUrl" 
+                                         id="user_img"
                                          alt="Avatar" class="img-fluid my-5" style="width: 200px;" />
                                     <h5 style="font-size:25px">@Model.FirstName @Model.LastName</h5>
                                     <p>Username - @Model.UserName</p>
@@ -211,17 +212,19 @@
 
 function show(input) {
     if (input.files && input.files[0]) {
-        var filerdr = new FileReader();
-        filerdr.onload = function (e) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            console.log("In the uploader")
             $('#user_img').attr('src', e.target.result);
-        }
-        filerdr.readAsDataURL(input.files[0]);
+            console.log(e.target.result)
+        };
+        reader.readAsDataURL(input.files[0]);
     } else {
         // If no file is selected, use the existing image path
-        @*$('#user_img').attr('src', '@Model.ImageUrl');*@
-        $('#user_img').attr('src', $('#ImageUrl').val());
+        $('#user_img').attr('src', '@Model.ImageUrl');
     }
 }
+
 
     </script>
 </body>

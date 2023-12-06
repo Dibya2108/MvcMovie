@@ -165,8 +165,7 @@ namespace FourthWebApp.Controllers
         public ActionResult UserProfile(UserViewModel model, FormCollection fc, HttpPostedFileBase file)
         {
             {
-                if (ModelState.IsValid)
-                {
+                
                     
 
                     if (file != null && file.ContentLength > 0)
@@ -206,7 +205,7 @@ namespace FourthWebApp.Controllers
                     {
                         ModelState.AddModelError("", "Profile update failed. Please try again.");
                     }
-                }
+                
                 return View(model);
             }
         }
