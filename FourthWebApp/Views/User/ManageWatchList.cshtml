@@ -2,10 +2,13 @@
 @using Kendo.Mvc.UI
 @{
     ViewBag.Title = "ManageWatchList";
+    Layout = null;
 }
-<script src="~/Scripts/jquery-confirm.js"></script>
+@*<script src="~/Scripts/jquery-confirm.js"></script>*@
+@*<link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+<script src="~/Scripts/chosen.jquery.min.js"></script>*@
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-<h2>Manage WatchList</h2>
 
 <script>
     function getWatchlistId() {
@@ -98,7 +101,7 @@
     function MovieIdAlert() {
         var movie = $("#multiselectWatchGrid").val();
         $("#MovieIdString").val(movie);
-       /* alert($("#MovieIdString").val());*/
+        /* alert($("#MovieIdString").val());*/
     }
 
 

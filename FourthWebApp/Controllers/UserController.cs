@@ -287,9 +287,9 @@ namespace FourthWebApp.Controllers
                         _accountDalSql.UpdateWatchList(model);
                     }
 
-                    //return JavaScript("CloseWatchList()");
-                    TempData["WatchSuccess"] = true;
-                    return RedirectToAction("WatchList", new { userId = loggedInUserId });
+                    return JavaScript("CloseWatchList()");
+                    //TempData["WatchSuccess"] = true;
+                    //return RedirectToAction("WatchList", new { userId = loggedInUserId });
 
                 }
 

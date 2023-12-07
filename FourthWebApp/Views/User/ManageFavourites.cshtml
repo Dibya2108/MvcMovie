@@ -1,7 +1,120 @@
-﻿
+﻿@model ViewModel.WatchViewModel
 @{
     ViewBag.Title = "ManageFavourites";
+    Layout = null;
+}
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+@Html.ValidationSummary(true)
+
+@using (Ajax.BeginForm("ManageFavourites", "Account",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "ajax_contentMain",
+
+    }, new { autocomplete = "off", onsubmit = "CheckMovies(); return false;" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.WatchListId, new { id = "WatchListId" })
+    @Html.HiddenFor(model => model.CheckedMovieIds, new { id = "CheckedMovieIds" })
+
+    <div style="width:100%!important; min-height:250px">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label><strong>WatchList Name</strong></label><br />
+                @*@Html.TextBoxFor(model => model.Name, new { @class = "form-control", maxlength = "200", id = "WatchListName" })*@
+                @if (Model.WatchListId == 0)
+                {
+                    @Html.DropDownListFor(model => model.Name, new SelectList(Model.WatchListCollection, "WatchListId", "Name"), "Select a WatchList", new { @class = "form-control", id = "WatchListName" })
+
+                    <div id="checkboxes-container"></div>
+                }
+                else
+                {
+                    <div>
+                        @Html.DisplayFor(model => model.Name)
+                        @Html.HiddenFor(model => model.Name)
+                    </div>
+                    <div>
+                        @Html.HiddenFor(model => model.WatchListId)
+                    </div>
+                    <div>
+                        @Html.Raw(ViewBag.CheckboxesHtml)
+                    </div>
+                }
+                <span class="validationError" style="font-size: 12px;">@Html.ValidationMessageFor(n => n.Name)</span>
+                <div class="modal-footer">
+                    <span id="errorSpan"></span>
+                    <button type="submit" class="btn btn-primary" onclick="CheckMovies()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
-<h2>ManageFavourites</h2>
+
+<script>
+    $(document).ready(function () {
+
+        $('#WatchListName').change(function () {
+            var selectedWatchlistId = $(this).val();
+            if (selectedWatchlistId !== '') {
+                $("#WatchListId").val(selectedWatchlistId);
+                $.ajax({
+                    url: '/User/GetMoviesForWatchlist',
+                    type: 'GET',
+                    data: { WatchListId: selectedWatchlistId },
+                    success: function (data) {
+                        $('#checkboxes-container').html(data);
+                    },
+                    error: function () {
+                        alert('Error loading movie checkboxes.');
+                    }
+
+                });
+            } else {
+
+                $('#checkboxes-container').empty();
+            }
+        });
+    });
+
+
+    function CheckMovies() {
+
+        var selectedIdString = "";
+
+
+        $('.MovieList').each(function () {
+            //alert(this.id)
+            var controlId = this.id;
+            var id = controlId.split("_")[1];
+            var curr_id = id;
+            //alert(curr_id)
+            //var checkbox = document.getElementById('MovieCollection_' + curr_id);
+            //var checkbox = document.getElementById('MovieCollection_' + curr_id).checked;
+
+            //    alert(checkbox)
+            //    if (checkbox) {
+            //        alert()
+            //        selectedIdString += curr_id + ",";
+            //}
+
+            if ($('#MovieCollection_' + curr_id).is(':checked')) {
+                //alert()
+                selectedIdString += curr_id + "," + "true" + "~;~";
+            }
+            else {
+
+                selectedIdString += curr_id + "," + "false" + "~;~";
+            }
+        });
+
+        $("#CheckedMovieIds").val(selectedIdString);
+    }
+</script>
+
+
 

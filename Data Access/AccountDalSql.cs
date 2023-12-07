@@ -298,7 +298,8 @@ namespace Data_Access
                 using (SqlCommand watchListCmd = new SqlCommand(watchListQuery, con))
                 {
                     watchListCmd.Parameters.AddWithValue("@WatchListName", watchListName);
-                    watchListCmd.Parameters.AddWithValue("@Description", description);
+                    watchListCmd.Parameters.Add(new SqlParameter("@Description", SqlDbType.NVarChar) { Value = string.IsNullOrEmpty(description) ? (object)DBNull.Value : (object)description });
+
                     watchListCmd.Parameters.AddWithValue("@CreatedBy", createdByUserId);
 
                     int watchListId = Convert.ToInt32(watchListCmd.ExecuteScalar());
@@ -553,8 +554,9 @@ namespace Data_Access
                 using (SqlCommand cmd = new SqlCommand(query, con))
                 {
                     cmd.Parameters.AddWithValue("@WatchListId", model.WatchListId);
+                    cmd.Parameters.Add(new SqlParameter("@Description", SqlDbType.NVarChar) { Value = string.IsNullOrEmpty(model.Description) ? (object)DBNull.Value : (object)model.Description });
                     cmd.Parameters.AddWithValue("@WatchListName", model.Name);
-                    cmd.Parameters.AddWithValue("@Description", model.Description);
+                    
                     cmd.ExecuteNonQuery();
                 }
 

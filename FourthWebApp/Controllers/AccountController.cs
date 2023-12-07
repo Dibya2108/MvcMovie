@@ -18,8 +18,9 @@ namespace MvcMovie.Controllers
         // GET: Account
         private readonly AccountDalSql _accountDalSql = new AccountDalSql();
         private readonly MovieDalSql _movieDalSql = new MovieDalSql();
+        private UserDal _UserDal = new UserDal();
 
-        
+
 
         // GET: Account
         public ActionResult Index()
@@ -73,31 +74,44 @@ namespace MvcMovie.Controllers
 
                 Session["UserId"] = userId;
                 int userType = _accountDalSql.GetUserTypeByUserId(userId);
-
-                ViewBag.UserType = userType;
-
-                
-
-                if (userType == 2)
+                UserViewModel user = _UserDal.GetUsers(userId);
+                if(user.IsActive != true)
                 {
-                    return RedirectToAction("Index", "Dashboard",new { userId });
+                    ViewBag.ErrorMessage = "Sorry ! Not an Active User";
                 }
+
                 else
                 {
-                    return RedirectToAction("Index", "Movie");
+                    SessionContext sessionContext = new SessionContext();
+                    sessionContext.SessionUser = user;
+                    Session["MvcMovie"] = sessionContext;
+
+
+                    ViewBag.UserType = userType;
+                    if (userType == 2)
+                    {
+                        return RedirectToAction("Index", "Dashboard"/*, new { userId }*/);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Movie");
+                    }
                 }
                 
+
+                             
             }
             else
             {
                 ViewBag.ErrorMessage = "Invalid username or password.";
-                return View(model);
+                
             }
+            return View(model);
         }
 
         public ActionResult Logout()
         {
-            Session.Remove("WorkFlowPerfection");
+            Session.Remove("MvcMovie");
             Session.Abandon();
             return Redirect("/Account/Login");
         }

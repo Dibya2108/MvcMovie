@@ -47,7 +47,12 @@
     .Name("watchGrid")
     .Columns(columns =>
     {
-        columns.Bound(c => c.Name).Title("WatchList Name").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+        //columns.Bound(c => c.Name).Title("WatchList Name").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+        columns.Bound(c => c.Name).Title("WatchList Name")
+                .ClientTemplate(@"<a href='#' onclick='WatchlistDetails(#=WatchListId#)'>#=Name#</a>")
+                .Width(100)
+                .Sortable(true)
+                .HeaderHtmlAttributes(new { style = "font-weight:bold;" });
         columns.Bound(c => c.Description).Title("Description").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
         columns.Bound(c => c.Count).Title("Count").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
         columns.Bound(c => c.CreatedOn).Title("Created On").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
@@ -82,12 +87,6 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script>
-@if (TempData["WatchSuccess"] != null && (bool)TempData["WatchSuccess"])
-{
-    <text>
-        CloseWatchList();
-    </text>
-}
 
     var LanguageWindow;
 
