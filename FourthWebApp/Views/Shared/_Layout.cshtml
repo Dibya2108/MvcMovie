@@ -4,7 +4,7 @@
 
 @{
     int UserType = ViewBag.UserType != null ? (int)ViewBag.UserType : 0;
-    
+
 }
 
 
@@ -30,6 +30,27 @@
     <link href="~/assets/libs/selectize/css/selectize.bootstrap3.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/clockpicker/bootstrap-clockpicker.min.css" rel="stylesheet" type="text/css" />
     <link href="~/assets/libs/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500&display=swap">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="assets/css/animate.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/media-queries.css">
+
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+
+</head>
+
+<body>
+
 
     <!-- Plugins css -->
     <link href="~/assets/libs/mohithg-switchery/switchery.min.css" rel="stylesheet" type="text/css" />
@@ -65,165 +86,165 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-</head>
+    </head>
 
-<body data-layout-mode="default" data-theme="light" data-layout-width="fluid" data-topbar-color="dark" data-menu-position="fixed" data-leftbar-color="light" data-leftbar-size='default' data-sidebar-user='false'>
-    <div id="wrapper">
+    <body data-layout-mode="default" data-theme="light" data-layout-width="fluid" data-topbar-color="dark" data-menu-position="fixed" data-leftbar-color="light" data-leftbar-size='default' data-sidebar-user='false'>
+        <div id="wrapper">
 
-        <!-- Topbar Start -->
-        <div class="navbar-custom">
-            <div class="container-fluid">
-                <ul class="list-unstyled topnav-menu float-end mb-0">
-                </ul>
+            <!-- Topbar Start -->
+            <div class="navbar-custom">
+                <div class="container-fluid">
+                    <ul class="list-unstyled topnav-menu float-end mb-0">
+                    </ul>
 
-                <!-- LOGO -->
-
-
-                <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
-                    <li>
-                        <button class="button-menu-mobile waves-effect waves-light">
-                            <i class="fe-menu"></i>
-                        </button>
-                    </li>
+                    <!-- LOGO -->
 
 
+                    <ul class="list-unstyled topnav-menu topnav-menu-left m-0">
+                        <li>
+                            <button class="button-menu-mobile waves-effect waves-light">
+                                <i class="fe-menu"></i>
+                            </button>
+                        </li>
 
-                </ul>
-                <div class="clearfix"></div>
+
+
+                    </ul>
+                    <div class="clearfix"></div>
+                </div>
             </div>
-        </div>
-        <!-- end Topbar -->
-        <!-- ========== Left Sidebar Start ========== -->
-        <div class="left-side-menu">
-            <div class="h-100" data-simplebar>
+            <!-- end Topbar -->
+            <!-- ========== Left Sidebar Start ========== -->
+            <div class="left-side-menu">
+                <div class="h-100" data-simplebar>
 
 
 
-                <!--- Sidemenu -->
-                <div id="sidebar-menu">
-                    <ul id="side-menu">
-                        <li id="MainMenuMovie">
-                            <a href="#sidebarMovie" data-bs-toggle="collapse">
-                                <i class="fa fa-film"></i>
-                                <span> Movie </span>
-                            </a>
+                    <!--- Sidemenu -->
+                    <div id="sidebar-menu">
+                        <ul id="side-menu">
+                            <li id="MainMenuMovie">
+                                <a href="#sidebarMovie" data-bs-toggle="collapse">
+                                    <i class="fa fa-film"></i>
+                                    <span> Movie </span>
+                                </a>
 
 
-                            <div class="collapse" id="sidebarMovie">
-                                <ul class="nav-second-level">
-                                    @if (UserType == 2)
-                                    {
-                                        <li id="MovieList">
-                                            <a href="/Dashboard/Index">Dashboard</a>
-                                        </li>
+                                <div class="collapse" id="sidebarMovie">
+                                    <ul class="nav-second-level">
+                                        @if (UserType == 2)
+                                        {
+                                            <li id="MovieList">
+                                                <a href="/Dashboard/Index">Dashboard</a>
+                                            </li>
 
-                                        <li id="WatchList">
-                                            <a href="/User/WatchList">WatchList</a>
-                                        </li>
-                                    }
-                                    @if (UserType == 1)
-                                    {
-                                        <li id="MovieList">
-                                            <a href="/Movie/Index">Movies</a>
-                                        </li>
+                                            <li id="WatchList">
+                                                <a href="/User/WatchList">WatchList</a>
+                                            </li>
+                                        }
+                                        @if (UserType == 1)
+                                        {
+                                            <li id="MovieList">
+                                                <a href="/Movie/Index">Movies</a>
+                                            </li>
 
-                                        <li id="LanguageList">
-                                            <a href="~/Language/Index">Languages</a>
-                                        </li>
+                                            <li id="LanguageList">
+                                                <a href="~/Language/Index">Languages</a>
+                                            </li>
 
-                                        <li id="AllBookings">
-                                            <a href="/ShowTime/BookTicketIndex">All Bookings</a>
-                                        </li>
-                                    }
+                                            <li id="AllBookings">
+                                                <a href="/ShowTime/BookTicketIndex">All Bookings</a>
+                                            </li>
+                                        }
 
                                         <li id="ShowTime">
                                             <a href="/ShowTime/Index">ShowTime</a>
                                         </li>
 
                                     </ul>
-                            </div>
-                        </li>
-                        <li id="MainMenuSettings">
-                            <a href="#setting" data-bs-toggle="collapse">
-                                <i class="fa fa-user"></i>
-                                <span> Settings </span>
-                            </a>
-                            <div class="collapse" id="setting">
-                                <ul class="nav-second-level">
-                                    @if (UserType == 2)
-                                    {
+                                </div>
+                            </li>
+                            <li id="MainMenuSettings">
+                                <a href="#setting" data-bs-toggle="collapse">
+                                    <i class="fa fa-user"></i>
+                                    <span> Settings </span>
+                                </a>
+                                <div class="collapse" id="setting">
+                                    <ul class="nav-second-level">
+                                        @if (UserType == 2)
+                                        {
+                                            <li>
+                                                <a href="/ShowTime/MyBookings">My Bookings</a>
+                                            </li>
+
+                                        }
                                         <li>
-                                            <a href="/ShowTime/MyBookings">My Bookings</a>
+                                            <a href="/User/UserProfile">Profile</a>
                                         </li>
 
-                                    }
-                                    <li>
-                                        <a href="/User/UserProfile">Profile</a>
-                                    </li>
 
 
+                                        @if (UserType == 1)
+                                        {
+                                            <li>
+                                                <a href="/User/Index">Edit User</a>
+                                            </li>
+                                        }
 
-                                    @if (UserType == 1)
-                                    {
                                         <li>
-                                            <a href="/User/Index">Edit User</a>
+                                            <a href="/Account/Logout">Logout</a>
                                         </li>
-                                    }
 
-                                    <li>
-                                        <a href="/Account/Logout">Logout</a>
-                                    </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
 
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+                    <div class="clearfix"></div>
+
                 </div>
-
-                <div class="clearfix"></div>
-
+                <!-- Sidebar -left -->
             </div>
-            <!-- Sidebar -left -->
+            <!-- Left Sidebar End -->
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        @RenderBody()
+                    </div> <!-- container -->
+                </div> <!-- content -->
+            </div>
+
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
         </div>
-        <!-- Left Sidebar End -->
-        <!-- ============================================================== -->
-        <!-- Start Page Content here -->
-        <!-- ============================================================== -->
+        <div class="rightbar-overlay"></div>
 
-        <div class="content-page">
-            <div class="content">
-                <!-- Start Content-->
-                <div class="container-fluid">
-                    @RenderBody()
-                </div> <!-- container -->
-            </div> <!-- content -->
-        </div>
+        <script src="~/assets/libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
+        <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
+        <script src="~/assets/libs/selectize/js/standalone/selectize.min.js"></script>
 
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
-    <div class="rightbar-overlay"></div>
+        <!-- Dashboard 1 init js-->
+        <script src="~/assets/js/pages/dashboard-1.init.js"></script>
+        <script src="~/assets/libs/clockpicker/bootstrap-clockpicker.min.js"></script>
+        <script src="~/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+        <!-- Vendor js -->
+        <script src="~/assets/js/app.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+        <script src="~/Scripts/jquery-confirm.js"></script>
+        <script src="~/Scripts/CommonUI.js"></script>
+        <script src="~/Scripts/moment.js"></script>
 
-    <script src="~/assets/libs/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/assets/libs/flatpickr/flatpickr.min.js"></script>
-    <script src="~/assets/libs/apexcharts/apexcharts.min.js"></script>
-    <script src="~/assets/libs/selectize/js/standalone/selectize.min.js"></script>
+        @Styles.Render("~/Kendo/styles")
 
-    <!-- Dashboard 1 init js-->
-    <script src="~/assets/js/pages/dashboard-1.init.js"></script>
-    <script src="~/assets/libs/clockpicker/bootstrap-clockpicker.min.js"></script>
-    <script src="~/assets/libs/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
-    <!-- Vendor js -->
-    <script src="~/assets/js/app.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery-confirm.js"></script>
-    <script src="~/Scripts/CommonUI.js"></script>
-    <script src="~/Scripts/moment.js"></script>
-
-    @Styles.Render("~/Kendo/styles")
-
-<script>
+        <script>
         function ShowError(msg) {
             alert(msg)
         }
@@ -238,8 +259,8 @@
 
                 //alert($("#UserId").val());
                 //alert($("#UserTypeId").val());
-</script>
+        </script>
 
-</body>
+    </body>
 
 </html>
