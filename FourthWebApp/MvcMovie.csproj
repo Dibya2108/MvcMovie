@@ -8435,6 +8435,7 @@
     <Content Include="sidebar\sidebar-01\scss\bootstrap\utilities\.__text.scss" />
     <Content Include="sidebar\sidebar-01\scss\bootstrap\utilities\.__visibility.scss" />
     <Content Include="sidebar\sidebar-01\scss\bootstrap\vendor\.__rfs.scss" />
+    <Content Include="Views\ShowTime\BookingSuccessfull.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

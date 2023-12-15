@@ -16,62 +16,72 @@
     <div style="float: left; ">
         <input style="width: 300px;" type="text" id="ShowSearchText" placeholder="Search Show" onkeyup="SortShowTable()" />
     </div>
+    @if(UserType == 1) { 
     <div>
         <button type="button" class="btn btn-primary" onclick="ManageShow(0)"><i class="fa fa-plus"></i>&nbsp;Add New Show</button>
     </div>
-
+}
 </div>
+
 
 
 
 <div id="showKendoGrid">
-
-    <input type="checkbox" id="showAllCheckbox" onchange="updateGridData()" /> Show All
+    @if (UserType == 1)
+    {
+        <div>
+            <input type="checkbox" id="showAllCheckbox" onchange="updateGridData()" />Show All
+        </div>
+    }
 
     @(Html.Kendo().Grid<ViewModel.ShowTimeViewModel>()
-     .Name("showGrid")
-     .Columns(columns =>
-     {
-         columns.Bound(c => c.Title).Title("Movie").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         columns.Bound(c => c.StartDate).Format("{0:dd-MMM-yyyy}").Title("Start Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         columns.Bound(c => c.EndDate).Title("End Date").Format("{0:dd-MMM-yyyy}").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         columns.Bound(c => c.FirstShowTime).Title("First Show Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         columns.Bound(c => c.SecondShowTime).Title("Second Show Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         columns.Bound(c => c.ThirdShowTime).Title("Third Show Time ").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+        .Name("showGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.Title).Title("Movie").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.StartDate).Format("{0:dd-MMM-yyyy}").Title("Start Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.EndDate).Title("End Date").Format("{0:dd-MMM-yyyy}").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.FirstShowTime).Title("First Show Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.SecondShowTime).Title("Second Show Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+            columns.Bound(c => c.ThirdShowTime).Title("Third Show Time ").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
 
-         columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Book Ticket' onclick='BookShow(#=ShowTimeId#)'><i class='fa fa-ticket'></i></a>").Width(30).Sortable(false).Filterable(false);
-         columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='ManageShow(#=ShowTimeId#)' id='editAnchor_#=ShowTimeId#'><i class='fa fa-pencil'></i></a>").Width(30).Sortable(false).Filterable(false);
-         columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Delete' onclick='DeleteShowTime(#=ShowTimeId#)'><i class='fa fa-trash'></i></a>").Width(30).Sortable(false).Filterable(false);
+            columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Book Ticket' onclick='BookShow(#=ShowTimeId#)'><i class='fa fa-ticket'></i></a>").Width(30).Sortable(false).Filterable(false);
 
-
-
-     })
-     .Sortable()
-     .DataSource(dataSource => dataSource
-         .Ajax()
-         .Read(read => read.Action("GetShowTime", "ShowTime").Data("additionalData"))
-     )
+            
+                if (UserType == 1)
+                {
+                    columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='ManageShow(#=ShowTimeId#)' id='editAnchor_#=ShowTimeId#'><i class='fa fa-pencil'></i></a>").Width(30).Sortable(false).Filterable(false);
+                    columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Delete' onclick='DeleteShowTime(#=ShowTimeId#)'><i class='fa fa-trash'></i></a>").Width(30).Sortable(false).Filterable(false);
+                }
+            
+        })
+        .Sortable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Read(read => read.Action("GetShowTime", "ShowTime").Data("additionalData"))
+        )
     )
 </div>
 
-<div style="padding-top: 50px">
-    @if (UserType == 1)
-    {
-        <a href="/ShowTime/BookTicketIndex" class="btn btn-primary">
-            <i class="fa fa-arrow-right"></i>&nbsp;Go to Bookings
-        </a>
 
-    }
-
-    <div style="float: right; ">
-        @if (UserType == 2)
+@*<div style="padding-top: 50px">
+        @if (UserType == 1)
         {
-            <a href="/ShowTime/MyBookings" class="btn btn-primary">
-                <i class="fa fa-arrow-right"></i>&nbsp;My Bookings
+            <a href="/ShowTime/BookTicketIndex" class="btn btn-primary">
+                <i class="fa fa-arrow-right"></i>&nbsp;Go to Bookings
             </a>
+
         }
-    </div>
-</div>
+
+        <div style="float: right; ">
+            @if (UserType == 2)
+            {
+                <a href="/ShowTime/MyBookings" class="btn btn-primary">
+                    <i class="fa fa-arrow-right"></i>&nbsp;My Bookings
+                </a>
+            }
+        </div>
+    </div>*@
 
 
 <script>
@@ -91,6 +101,7 @@
 
     var LanguageWindow;
     var searchString = "";
+    var printWindow;
     function ManageShow(ShowTimeId) {
         var url = '';
         var title = "";
@@ -153,7 +164,7 @@
                 }
             });
         }
-        
+
 
     }
 
@@ -172,9 +183,28 @@
             alert(e);
         }
     }
-    function CloseBookShow() {
+    function CloseBookShow(id) {
         LanguageWindow.close();
+        
         $('#showGrid').data('kendoGrid').dataSource.read();
+        OpenTicketPrint(id);
+    }
+
+    function OpenTicketPrint(id) {
+        var url = '';
+        var title = "";
+
+        try {
+
+            url = '/ShowTime/BookingSuccessfull?id=' + id;
+            title = "Booking Confirmed ";
+
+            printWindow = OpenConfirmWindowModal(url, title, 850);
+            return;
+        } catch (e) {
+            alert(e);
+        }
+
     }
 
 

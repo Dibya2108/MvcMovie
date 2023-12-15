@@ -180,7 +180,7 @@ namespace MvcMovie.Controllers
                     model.PaymentAmount = _ShowTimeDalSql.CalculatePaymentAmount(seatTypesId, model.TicketCount);
                     model.NoOfTicket = model.TicketCount;
                     model.UserId = (int)Session["UserId"];
-            
+            int id = model.MovieId;
 
             var seatTypes = _ShowTimeDalSql.GetSeatTypes();
                     var radioGroupOptions = seatTypes.Select(seatType => $"{seatType.TypeName} - Rs {seatType.Price}").ToArray();
@@ -188,12 +188,18 @@ namespace MvcMovie.Controllers
 
                     _ShowTimeDalSql.SaveBookTicket(model);
 
-                    //return RedirectToAction("Index");
+            
 
 
-            return JavaScript("CloseBookShow()");
+            return JavaScript($"CloseBookShow({id})");
         }
-    
+        public ActionResult BookingSuccessfull(int id)
+        {
+            ViewBag.PrintId = id;
+            return View();
+        }
+
+
 
         public string DeleteShow(int showTimeId)
         {
@@ -230,10 +236,7 @@ namespace MvcMovie.Controllers
         public ActionResult MyBookings()
         {
             int userId = (int)Session["UserId"];
-            //int userType = _accountDalSql.GetUserTypeByUserId(userId);
-
-            //ViewBag.UserType = userType;
-            //int userId = 1; 
+             
             
             return View(userId);
         }
