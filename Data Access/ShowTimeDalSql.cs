@@ -254,7 +254,7 @@ namespace Data_Access
             return seatTypes;
         }
 
-        public void SaveBookTicket(ShowTimeViewModel bookTicket)
+        public int SaveBookTicket(ShowTimeViewModel bookTicket)
         {
             using (SqlConnection connection = new SqlConnection(strConString))
             {
@@ -264,6 +264,7 @@ namespace Data_Access
                 {
                     // Define the SQL query to insert the data into the BookTicket table.
                     string insertQuery = "INSERT INTO BookTicket (MovieId, ShowDate, ShowTime, SeatTypeId, PaymentStatus, PaymentAmount, NoOfTicket, UserId) " +
+                        "OUTPUT INSERTED.BookTicketId " +
                                          "VALUES (@MovieId, @ShowDate, @ShowTime, @SeatTypeId, @PaymentStatus, @PaymentAmount, @NoOfTicket, @UserId)";
 
                     command.CommandText = insertQuery;
@@ -278,9 +279,19 @@ namespace Data_Access
                     command.Parameters.AddWithValue("@NoOfTicket", bookTicket.NoOfTicket);
                     command.Parameters.AddWithValue("@UserId", bookTicket.UserId);
 
-                    // Execute the query to insert the data into the BookTicket table.
-                    command.ExecuteNonQuery();
+
+                    int insertedId = 0;
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            insertedId = Convert.ToInt32(reader["BookTicketId"]);
+                        }
+                    }
+
+                    return insertedId;
                 }
+               
             }
         }
 
@@ -566,6 +577,60 @@ namespace Data_Access
             }
 
             return showList;
+        }
+
+        public ShowTimeViewModel GetBookingsInfo(int id)
+        {
+            using (SqlConnection con = new SqlConnection(strConString))
+            {
+                con.Open();
+                string query = "Select B.* , M.Title " +
+                    "From BookTicket B Join Movies M on B.MovieId = M.ID " +
+                    "where B.MovieId=" +id;
+
+                DataTable dt = GetDataTable(query);
+                ShowTimeViewModel show = new ShowTimeViewModel();
+                show = GetShowBookingInfo(dt.Rows[0]);
+                return show;
+            }
+        }
+
+        private ShowTimeViewModel GetShowBookingInfo(DataRow dr)
+        {
+            ShowTimeViewModel show = new ShowTimeViewModel();
+            show.BookticketId = int.Parse(dr["BookticketId"].ToString());
+            show.MovieId = int.Parse(dr["BookticketId"].ToString());
+            show.ShowDate = DateTime.Parse(dr["ShowDate"].ToString());
+            show.ShowTime = dr["ShowTime"].ToString();
+            show.SeatTypeId = int.Parse(dr["SeatTypeId"].ToString());
+            show.PaymentStatus = int.Parse(dr["PaymentStatus"].ToString());
+            show.PaymentAmount = int.Parse(dr["PaymentAmount"].ToString());
+            show.NoOfTicket = int.Parse(dr["NoOfTicket"].ToString());
+            show.UserId= int.Parse(dr["UserId"].ToString());
+            show.InsertedAt = DateTime.Parse(dr["InsertedAt"].ToString());
+            show.Title = dr["Title"].ToString();
+
+            return show;
+        }
+
+        private DataTable GetDataTable(string query)
+        {
+            DataTable dataTable = new DataTable();
+
+            using (SqlConnection con = new SqlConnection(strConString))
+            {
+                con.Open();
+
+                using (SqlCommand cmd = new SqlCommand(query, con))
+                {
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dataTable);
+                    }
+                }
+            }
+
+            return dataTable;
         }
     }
 }

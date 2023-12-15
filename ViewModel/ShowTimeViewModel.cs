@@ -62,5 +62,7 @@ namespace ViewModel
 
         public List<SelectListItem> SeatTypeOptions { get; set; }
         public int CreatedBy { get; set; }
+
+        public DateTime InsertedAt { get; set; }
     }
 }

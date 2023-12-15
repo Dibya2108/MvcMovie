@@ -7,9 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Mvc;
 using ViewModel;
+using static Kendo.Mvc.UI.UIPrimitives;
 
 namespace MvcMovie.Controllers
 {
@@ -180,26 +182,57 @@ namespace MvcMovie.Controllers
                     model.PaymentAmount = _ShowTimeDalSql.CalculatePaymentAmount(seatTypesId, model.TicketCount);
                     model.NoOfTicket = model.TicketCount;
                     model.UserId = (int)Session["UserId"];
-            int id = model.MovieId;
+            //int id = model.MovieId;
+            //int userId = model.UserId;
+            //var seatTypeName = model.TypeName;
+            //var payment = model.PaymentStatus;
+            //var amount = model.PaymentAmount;
+            //var NoOfTicket = model.NoOfTicket; 
 
             var seatTypes = _ShowTimeDalSql.GetSeatTypes();
                     var radioGroupOptions = seatTypes.Select(seatType => $"{seatType.TypeName} - Rs {seatType.Price}").ToArray();
                     ViewBag.SeatTypeOptions = radioGroupOptions;
 
-                    _ShowTimeDalSql.SaveBookTicket(model);
+                    int id =_ShowTimeDalSql.SaveBookTicket(model);
 
-            
+
 
 
             return JavaScript($"CloseBookShow({id})");
+
         }
         public ActionResult BookingSuccessfull(int id)
         {
             ViewBag.PrintId = id;
             return View();
+
         }
 
 
+        public void PrintTictetToPdf(int id)
+        {
+            
+
+            string htmlString = GetPrintTicketPdf(id);
+            var generator = new NReco.PdfGenerator.HtmlToPdfConverter();
+            
+            var pdfBytes = generator.GeneratePdf(htmlString);
+            Response.ContentType = "application/pdf";
+            Response.ContentEncoding = System.Text.Encoding.UTF8;
+            Response.AddHeader("Content-Disposition", "Inline; filename=" + "PrintTicket.pdf");
+            Response.BinaryWrite(pdfBytes);
+            Response.Flush();
+            Response.End();
+        }
+
+        private string GetPrintTicketPdf(int id)
+        {
+            ShowTimeViewModel view = new ShowTimeViewModel();
+            view = _ShowTimeDalSql.GetBookingsInfo(id);
+            throw new NotImplementedException();
+        }
+
+        
 
         public string DeleteShow(int showTimeId)
         {

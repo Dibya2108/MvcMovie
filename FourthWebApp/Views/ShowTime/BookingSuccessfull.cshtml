@@ -4,10 +4,27 @@
     Layout = null;
 }
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<h2>BookingSuccessful @ViewBag.PrintId</h2>
+<div> <p> yay! Your Booking is successful</p></div>
 
+<div style="float:right; padding-top:15px; padding-bottom:5px"><button class="btn btn-sm btn-primary" onclick="PrintTicket()">Print Ticket</button></div>
 <script>
+
+    //alert(id);
+
+
+    function PrintTicket() {
+
+
+        
     var id = '@ViewBag.PrintId';
-    alert(id);
+
+
+    url = "/ShowTime/PrintTictetToPdf?id=" + id;
+    window.open(url, '_blank');
+}
+
+
+
+
 </script>
 
