@@ -64,5 +64,9 @@ namespace ViewModel
         public int CreatedBy { get; set; }
 
         public DateTime InsertedAt { get; set; }
+        public string MovieImage { get; set; }
+        public int LanguageID { get; set; }
+        public string LanguageName { get; set; }
+        public int SelectedLanguageId { get; set; }
     }
 }

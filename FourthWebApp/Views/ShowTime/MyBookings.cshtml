@@ -4,20 +4,22 @@
 }
 
 <h2>MyBookings</h2>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div id="myBookingKendoGrid">
     @(Html.Kendo().Grid<ViewModel.ShowTimeViewModel>()
      .Name("myBookingGrid")
      .Columns(columns =>
      {
-         columns.Bound(c => c.Title).Title("Show Name").ClientTemplate("<div class='text-center' style='width:110px'><span id='spanName_#=MovieId#'>#=Title# </span></div>").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
+         columns.Bound(c => c.Title).Title("Show Name")/*.ClientTemplate("<div class='text-center' style='width:110px'><span id='spanName_#=MovieId#'>#=Title# </span></div>")*/.Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.SelectedDate).Title("Selected Date").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.SelectedTime).Title("Selected Time").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.SelectedSeat).Title("Selected Seat").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.NoOfTicket).Title("No Of Ticket").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
          columns.Bound(c => c.PaymentAmount).Title("Payment Amount").Width(100).Sortable(true).HeaderHtmlAttributes(new { style = "font-weight:bold;" });
-         
-         //columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Book Ticket' onclick='BookShow(#=ShowTimeId#)'><i class='fa fa-ticket'></i></a>").Width(30).Sortable(false).Filterable(false);
+
+         columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Print Ticket' onclick='PrintTicket(#=BookticketId#)'><i class='fa fa-print'></i></a>").Width(30).Sortable(false).Filterable(false);
+
          //columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Edit' onclick='ManageShow(#=BookTicketId#)' id='editAnchor_#=BookTicketId#'><i class='fa fa-pencil'></i></a>").Width(30).Sortable(false).Filterable(false);
          //columns.Bound("").ClientTemplate(@"<a style='cursor: pointer' title='Delete' onclick='DeleteShowTime(#=ShowTimeId#)'><i class='fa fa-trash'></i></a>").Width(30).Sortable(false).Filterable(false);
 
@@ -31,3 +33,12 @@
      )
  )
 </div>
+
+<script>
+    function PrintTicket(BookTicketId) {
+
+    @*var id = '@ViewBag.PrintId';*@
+        url = "/ShowTime/PrintTictetToPdf?id=" + BookTicketId;
+    window.open(url, '_blank');
+}
+</script>

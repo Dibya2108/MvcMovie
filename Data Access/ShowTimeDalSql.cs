@@ -584,14 +584,24 @@ namespace Data_Access
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string query = "Select B.* , M.Title " +
+                string query = "Select B.* , M.Title, MovieImage, L.LanguageName " +
                     "From BookTicket B Join Movies M on B.MovieId = M.ID " +
-                    "where B.MovieId=" +id;
+                    "Join Languages L on L.LanguageID = M.SelectedLanguageID " +
+                    "where B.BookTicketId=" + id;
 
                 DataTable dt = GetDataTable(query);
-                ShowTimeViewModel show = new ShowTimeViewModel();
-                show = GetShowBookingInfo(dt.Rows[0]);
-                return show;
+
+                // Check if there are rows in the DataTable
+                if (dt.Rows.Count > 0)
+                {
+                    ShowTimeViewModel show = GetShowBookingInfo(dt.Rows[0]);
+                    return show;
+                }
+                else
+                {
+                    // Handle the case where no rows were returned, for example by returning null
+                    return null;
+                }
             }
         }
 
@@ -599,19 +609,42 @@ namespace Data_Access
         {
             ShowTimeViewModel show = new ShowTimeViewModel();
             show.BookticketId = int.Parse(dr["BookticketId"].ToString());
-            show.MovieId = int.Parse(dr["BookticketId"].ToString());
+            show.MovieId = int.Parse(dr["MovieId"].ToString()); // Fix: use "MovieId" instead of "BookticketId"
             show.ShowDate = DateTime.Parse(dr["ShowDate"].ToString());
             show.ShowTime = dr["ShowTime"].ToString();
             show.SeatTypeId = int.Parse(dr["SeatTypeId"].ToString());
             show.PaymentStatus = int.Parse(dr["PaymentStatus"].ToString());
             show.PaymentAmount = int.Parse(dr["PaymentAmount"].ToString());
             show.NoOfTicket = int.Parse(dr["NoOfTicket"].ToString());
-            show.UserId= int.Parse(dr["UserId"].ToString());
+            show.UserId = int.Parse(dr["UserId"].ToString());
             show.InsertedAt = DateTime.Parse(dr["InsertedAt"].ToString());
             show.Title = dr["Title"].ToString();
+            show.MovieImage = dr["MovieImage"].ToString();
+            show.LanguageName = dr["LanguageName"].ToString();
 
             return show;
         }
+
+
+        //private ShowTimeViewModel GetShowBookingInfo(DataRow dr)
+        //{
+        //    ShowTimeViewModel show = new ShowTimeViewModel();
+        //    show.BookticketId = int.Parse(dr["BookticketId"].ToString());
+        //    show.MovieId = int.Parse(dr["BookticketId"].ToString());
+        //    show.ShowDate = DateTime.Parse(dr["ShowDate"].ToString());
+        //    show.ShowTime = dr["ShowTime"].ToString();
+        //    show.SeatTypeId = int.Parse(dr["SeatTypeId"].ToString());
+        //    show.PaymentStatus = int.Parse(dr["PaymentStatus"].ToString());
+        //    show.PaymentAmount = int.Parse(dr["PaymentAmount"].ToString());
+        //    show.NoOfTicket = int.Parse(dr["NoOfTicket"].ToString());
+        //    show.UserId= int.Parse(dr["UserId"].ToString());
+        //    show.InsertedAt = DateTime.Parse(dr["InsertedAt"].ToString());
+        //    show.Title = dr["Title"].ToString();
+        //    show.MovieImage = dr["MovieImage"].ToString();
+        //   show.LanguageName = dr["LanguageName"].ToString();
+
+        //    return show;
+        //}
 
         private DataTable GetDataTable(string query)
         {
