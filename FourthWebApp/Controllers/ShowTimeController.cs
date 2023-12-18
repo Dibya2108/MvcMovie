@@ -245,7 +245,8 @@ namespace MvcMovie.Controllers
             //sb.Append("<div><b>" + view.ShowTime + "</b></div>");
             sb.Append("-------------------------------------------------------------------------------------------------------------------------------");
 
-            sb.Append("<div>" + "Seats" + "</div>");
+            sb.Append("<table style='width:100%'><tr><td style='text-align:left; font-size:18px;'>" + "Seats" + "</td><td style='text-align:center; font-size:18px;'>" + "No. ofTicket" + "</td></tr></table>");
+            sb.Append("<table style='width:100%'><tr><td style='text-align:left; font-size:18px; font-weight:bold;'>" + view.TypeName + "</td><td style='text-align:center; font-size:18px; font-weight:bold;'>" + view.NoOfTicket + "</td></tr></table>");
 
             //sb.Append("<div><b>" + view.ShowTime + "</b></div>");
 

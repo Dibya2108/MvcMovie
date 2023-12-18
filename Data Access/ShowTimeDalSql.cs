@@ -584,9 +584,10 @@ namespace Data_Access
             using (SqlConnection con = new SqlConnection(strConString))
             {
                 con.Open();
-                string query = "Select B.* , M.Title, MovieImage, L.LanguageName " +
+                string query = "Select B.* , M.Title, MovieImage, L.LanguageName, S.TypeName " +
                     "From BookTicket B Join Movies M on B.MovieId = M.ID " +
                     "Join Languages L on L.LanguageID = M.SelectedLanguageID " +
+                    "Join SeatType S on S.SeatTypeId = B.SeatTypeId " +
                     "where B.BookTicketId=" + id;
 
                 DataTable dt = GetDataTable(query);
@@ -621,7 +622,7 @@ namespace Data_Access
             show.Title = dr["Title"].ToString();
             show.MovieImage = dr["MovieImage"].ToString();
             show.LanguageName = dr["LanguageName"].ToString();
-
+            show.TypeName = dr["TypeName"].ToString();
             return show;
         }
 
