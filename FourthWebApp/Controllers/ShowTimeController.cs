@@ -4,6 +4,7 @@ using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -233,20 +234,21 @@ namespace MvcMovie.Controllers
 
             StringBuilder sb = new StringBuilder();
 
+
+            sb.Append("<div><img src='" + view.MovieImage + "' style='width: 100px; height: 100px;'/></div>");
+
+            sb.Append("-------------------------------------------------------------------------------------------------------------------------------");
+
             sb.Append("<div style='text-align:left; font-size:30px;'><b>" + view.Title + "</b></div>");
             sb.Append("<div>"+ "( " + view.LanguageName + " )"+ "</div>");
             sb.Append("-------------------------------------------------------------------------------------------------------------------------------");
             sb.Append("<table style='width:100%'><tr><td style='text-align:left; font-size:18px;'>" + "Date" + "</td><td style='text-align:center; font-size:18px;'>" + "Time" + "</td></tr></table>");
             sb.Append("<table style='width:100%'><tr><td style='text-align:left; font-size:18px; font-weight:bold;'>" + view.ShowDate.ToString("ddd, dd MMM, yyyy") + "</td><td style='text-align:center; font-size:18px; font-weight:bold;'>" + view.ShowTime + "</td></tr></table>");
-            //sb.Append("<div><b>" + view.ShowDate.ToString("ddd, dd MMM, yyyy") + "</b></div>");
-
-            //sb.Append("<div>" + "Time" + "</div>");
-
-            //sb.Append("<div><b>" + view.ShowTime + "</b></div>");
+            
             sb.Append("-------------------------------------------------------------------------------------------------------------------------------");
 
             sb.Append("<table style='width:100%'><tr><td style='text-align:left; font-size:18px;'>" + "Seats" + "</td><td style='text-align:center; font-size:18px;'>" + "No. ofTicket" + "</td></tr></table>");
-            sb.Append("<table style='width:100%'><tr><td style='text-align:left; font-size:18px; font-weight:bold;'>" + view.TypeName + "</td><td style='text-align:center; font-size:18px; font-weight:bold;'>" + view.NoOfTicket + "</td></tr></table>");
+            sb.Append("<table style='width:100%'><tr><td style='text-align:left; font-size:25px; font-weight:bold;'>" + view.TypeName.PadRight(30) + "</td><td style='font-size:25px; font-weight:bold;'>" + view.NoOfTicket + "</td></tr></table>");
 
             //sb.Append("<div><b>" + view.ShowTime + "</b></div>");
 
