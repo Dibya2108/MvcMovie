@@ -8,19 +8,66 @@
     .custom-navbar {
         background-color: grey;
     }
+
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        background-color: grey;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: black;
+        border-radius: 50%;
+        padding: 10px;
+    }
+
+    .carousel-control-prev:hover,
+    .carousel-control-next:hover {
+        background-color: darkgrey;
+    }
 </style>
 
 @Html.HiddenFor(model => model.UserTypeId, new { id = "UserTypeId" })
 
 @Html.HiddenFor(model => model.UserId, new { id = "UserId" })
+
+<div style="float: left; ">
+    <input style="width: 300px;" type="text" id="dashSearchText" placeholder="Search Movies" onkeyup="SortMovieDash()" />
+</div>
+
 <div id="cardBody" style="margin-top: 30px;">
 
 
-    @Html.Raw(ViewBag.CardHtml)
+    @*@Html.Raw(ViewBag.CardHtml)*@
+    @Html.Raw(ViewBag.CarouselHtml)
 </div>
 
 <script>
-    
-    //alert($("#UserId").val());
-    //alert($("#UserId").val());
+    function SortMovieDash() {
+        $("#carouselExampleControls").hide();
+        var searchText = $("#dashSearchText").val().toLowerCase();
+        var visibleCount = 0;
+        $(".card").each(function () {
+            var movieTitle = $(this).find(".card-title").text().toLowerCase();
+            if (movieTitle.indexOf(searchText) === -1) {
+                $(this).parent().hide(); // Hide the entire row containing the card
+            } else {
+                $(this).parent().show(); // Show the row if the movie matches the search text
+                visibleCount++;
+            }
+        });
+        //if (visibleCount > 4) {
+        //    $("#carouselExampleControls").show();
+        //} else {
+        //    $("#carouselExampleControls").hide();
+        //}
+    }
 </script>
+
